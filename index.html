@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3D Neumorphic App — БЛiК</title>
+    <style>
+        :root {
+            /* Светлая тема */
+            --bg-color: #e0e5ec;
+            --card-bg: #e0e5ec;
+            --text-color: #334155;
+            --text-muted: #64748b;
+            --shadow-light: #ffffff;
+            --shadow-dark: #a3b1c6;
+            
+            /* Настраиваемые параметры UI */
+            --accent-color: #007aff;
+            --accent-text: #ffffff;
+            --border-radius: 18px;
+            --shadow-blur: 10px;
+            --shadow-dist: 5px;
+
+            /* Шрифты */
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-size: 15px;
+            --letter-spacing: 0.5px;
+            --text-shadow-style: none;
+
+            /* Цвета предупреждений */
+            --alert-bg: #fff5f5;
+            --alert-text: #e53e3e;
+            --reset-color: #e53e3e;
+        }
+
+        [data-theme="dark"] {
+            /* Тёмная тема */
+            --bg-color: #1e2530;
+            --card-bg: #1e2530;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --shadow-light: #283242;
+            --shadow-dark: #14181e;
+
+            --alert-bg: #2d3748;
+            --alert-text: #fc8181;
+            --reset-color: #fc8181;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: var(--font-family);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: var(--font-size);
+            letter-spacing: var(--letter-spacing);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        /* Главная карточка */
+        .app-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 440px;
+            padding: 24px 20px 20px 20px;
+            border-radius: calc(var(--border-radius) + 8px);
+            box-shadow: 
+                calc(var(--shadow-dist) * 2) calc(var(--shadow-dist) * 2) calc(var(--shadow-blur) * 2) var(--shadow-dark),
+                calc(var(--shadow-dist) * -2) calc(var(--shadow-dist) * -2) calc(var(--shadow-blur) * 2) var(--shadow-light);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* Шапка карточки */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: calc(var(--font-size) * 1.2);
+            font-weight: 700;
+            color: var(--text-color);
+            text-shadow: var(--text-shadow-style);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Кнопки в Neumorphic стиле */
+        .neu-btn {
+            background: var(--card-bg);
+            border: none;
+            outline: none;
+            border-radius: var(--border-radius);
+            box-shadow: 
+                var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
+                calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: var(--font-size);
+            letter-spacing: var(--letter-spacing);
+        }
+
+        .neu-btn:active, .neu-btn.active {
+            box-shadow: 
+                inset var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
+                inset calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
+            color: var(--accent-color);
+        }
+
+        .neu-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Разделы карточки */
+        .view-screen {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .view-screen.active {
+            display: flex;
+        }
+
+        /* Список пунктов главного меню */
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .menu-item {
+            width: 100%;
+            padding: 16px 20px;
+            text-align: left;
+            justify-content: flex-start;
+            text-shadow: var(--text-shadow-style);
+            color: var(--item-color, var(--text-color));
+            background: var(--item-bg, var(--card-bg));
+        }
+
+        /* Навигация подвкладок генератора */
+        .sub-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sub-nav-btn {
+            flex: 1;
+            padding: 12px 8px;
+            font-size: calc(var(--font-size) * 0.8);
+        }
+
+        /* Формы и поля ввода */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: calc(var(--font-size) * 0.75);
+            font-weight: 700;
+            opacity: 0.8;
+        }
+
+        input[type="number"], input[type="date"], input[type="text"], select {
+            width: 100%;
+            padding: 12px 14px;
+            border: none;
+            border-radius: calc(var(--border-radius) - 4px);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: var(--font-size);
+            box-shadow: 
+                inset calc(var(--shadow-dist) * 0.7) calc(var(--shadow-dist) * 0.7) var(--shadow-blur) var(--shadow-dark),
+                inset calc(var(--shadow-dist) * -0.7) calc(var(--shadow-dist) * -0.7) var(--shadow-blur) var(--shadow-light);
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Баннер сообщений ТО */
+        .alert-banner {
+            padding: 12px;
+            border-radius: calc(var(--border-radius) - 4px);
+            font-weight: bold;
+            font-size: calc(var(--font-size) * 0.85);
+            text-align: center;
+            background-color: var(--alert-bg);
+            color: var(--alert-text);
+            box-shadow: 
+                inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            display: none;
+        }
+
+        /* Блок результатов */
+        .result-box {
+            padding: 15px;
+            border-radius: calc(var(--border-radius) - 4px);
+            box-shadow: 
+                inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .result-box h3 {
+            font-size: calc(var(--font-size) * 0.95);
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+
+        .result-item {
+            font-size: calc(var(--font-size) * 0.85);
+            line-height: 1.4;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .highlight-alert {
+            font-weight: bold;
+            color: var(--reset-color);
+        }
+
+        /* Заглушка для пустых пунктов */
+        .empty-module {
+            text-align: center;
+            padding: 40px 20px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Водяной знак */
+        .watermark {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            margin-top: 6px;
+        }
+
+        /* Модальное окно настроек */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 440px;
+            max-height: 85vh;
+            border-radius: calc(var(--border-radius) + 8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+        }
+
+        .tab-nav {
+            display: flex;
+            background: rgba(0,0,0,0.05);
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: calc(var(--border-radius) - 6px);
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--text-color);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            accent-color: var(--accent-color);
+        }
+
+        input[type="color"] {
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+        }
+
+        .edit-item-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .move-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .btn-small {
+            padding: 8px 10px;
+            font-size: 12px;
+            border-radius: calc(var(--border-radius) - 6px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <!-- Шапка -->
+        <div class="header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <button class="neu-btn icon-btn" id="backBtn" style="display: none;" title="Назад" onclick="openMainMenu()">
+                    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <h1 class="header-title" id="screenTitle">МЕНЮ</h1>
+            </div>
+            <div class="header-controls">
+                <button class="neu-btn icon-btn" id="themeToggle" title="Тема">
+                    <svg id="themeIcon" viewBox="0 0 24 24">
+                        <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </button>
+                <button class="neu-btn icon-btn" id="settingsToggle" title="Настройки">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ -->
+        <div id="screenMainMenu" class="view-screen active">
+            <div class="menu-list" id="menuContainer"></div>
+        </div>
+
+        <!-- ЭКРАН 2: МОДУЛЬ «ГЕНЕРАТОР» -->
+        <div id="screenGenerator" class="view-screen">
+            <div class="sub-nav">
+                <button class="neu-btn sub-nav-btn active" id="btnTabHours" onclick="switchGenTab('tabHours', this)">МОТОЧАСЫ, Т/О</button>
+                <button class="neu-btn sub-nav-btn" id="btnTabFuel" onclick="switchGenTab('tabFuel', this)">РАСХОД ТОПЛИВА</button>
+            </div>
+
+            <div id="genTabHours">
+                <div id="alertBanner" class="alert-banner"></div>
+
+                <div class="sub-nav" style="margin-bottom: 15px;">
+                    <button class="neu-btn sub-nav-btn active" id="btnModeDays" onclick="setMode('days')">ПО ДНЯМ</button>
+                    <button class="neu-btn sub-nav-btn" id="btnModeDate" onclick="setMode('date')">ПО ДАТЕ ТО</button>
+                </div>
+
+                <div id="sectionDays">
+                    <div class="input-group">
+                        <label for="days">КОЛИЧЕСТВО ДНЕЙ РАБОТЫ:</label>
+                        <input type="number" id="days" placeholder="НАПР. 5" min="0" oninput="autoCalculate()">
+                    </div>
+                </div>
+
+                <div id="sectionDate" style="display: none;">
+                    <div class="input-group">
+                        <label for="lastDate">ДАТА ПОСЛЕДНЕГО ТО:</label>
+                        <input type="date" id="lastDate" onchange="autoCalculate()">
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 12px;">
+                    <label>ВРЕМЯ РАБОТЫ В ДЕНЬ:</label>
+                    <div class="time-inputs">
+                        <input type="number" id="hours" placeholder="ЧАСОВ (0-24)" min="0" max="24" oninput="autoCalculate()">
+                        <input type="number" id="minutes" placeholder="МИНУТ (0-59)" min="0" max="59" oninput="autoCalculate()">
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 12px; margin-bottom: 15px;">
+                    <label for="targetHours">КОЛ-ВО М/Ч ДО СЛЕД. ТО:</label>
+                    <input type="number" id="targetHours" placeholder="50" min="1" value="50" oninput="autoCalculate()">
+                </div>
+
+                <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--reset-color);" onclick="clearGenData()">ОЧИСТИТЬ</button>
+
+                <div class="result-box" id="result" style="margin-top: 15px;">
+                    <h3>РЕЗУЛЬТАТ:</h3>
+                    <div class="result-item" id="lastServiceDisplay"></div>
+                    <div class="result-item" id="daysPassed"></div>
+                    <div class="result-item" id="totalTime"></div>
+                    <div class="result-item" id="totalDecimal"></div>
+                    <div class="result-item" id="equivalentDays"></div>
+                    <div class="result-item" id="nextServiceDate"></div>
+                </div>
+            </div>
+
+            <div id="genTabFuel" style="display: none;">
+                <div class="input-group">
+                    <label for="fuelStartDate">С ДАТЫ:</label>
+                    <input type="date" id="fuelStartDate" onchange="calcFuel()">
+                </div>
+                <div class="input-group" style="margin-top: 12px;">
+                    <label for="fuelEndDate">ПО ТЕКУЩУЮ:</label>
+                    <input type="date" id="fuelEndDate" onchange="calcFuel()">
+                </div>
+                <div class="input-group" style="margin-top: 12px; margin-bottom: 15px;">
+                    <label for="fuelLitersDay">ЛИТРОВ В ДЕНЬ:</label>
+                    <input type="number" id="fuelLitersDay" value="7" oninput="calcFuel()">
+                </div>
+                <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--accent-color);" onclick="calcFuel()">РАССЧИТАТЬ</button>
+                
+                <div class="result-box" id="fuelResultBox" style="display: flex; margin-top: 15px;">
+                    <h3>РЕЗУЛЬТАТ:</h3>
+                    <div class="result-item">ИТОГО РАСХОД: <span id="fuelTotalRes" class="highlight">-</span> Л</div>
+                    <div class="result-item">ПЕРИОД: <span id="fuelPeriodRes" class="highlight">-</span> ДН.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 3: УНИВЕРСАЛЬНАЯ ЗАГЛУШКА ДЛЯ ОСТАЛЬНЫХ ПУНКТОВ -->
+        <div id="screenEmptyModule" class="view-screen">
+            <div class="empty-module" id="emptyModuleTitle">РАЗДЕЛ В РАЗРАБОТКЕ</div>
+        </div>
+
+        <!-- Водяной знак БЛiК -->
+        <div class="watermark">БЛiК</div>
+    </div>
+
+    <!-- Модальное окно настроек -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Настройки</h3>
+                <button class="neu-btn icon-btn btn-small" id="modalClose">✕</button>
+            </div>
+
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="switchSettingsTab('tab-general')">Общие</button>
+                <button class="tab-btn" onclick="switchSettingsTab('tab-items')">Пункты меню</button>
+            </div>
+
+            <div class="modal-body">
+                <div id="tab-general" class="tab-content active">
+                    <div class="setting-group">
+                        <label class="setting-label">Акцентный цвет</label>
+                        <div class="setting-control">
+                            <input type="color" id="accentColorInput" value="#007aff">
+                            <span id="accentVal">#007aff</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Скруглить углы (<span id="radiusVal">18px</span>)</label>
+                        <input type="range" id="radiusInput" min="6" max="30" value="18">
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Глубина 3D тени (<span id="shadowVal">5px</span>)</label>
+                        <input type="range" id="shadowInput" min="2" max="10" value="5">
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Шрифт</label>
+                        <select id="fontFamilySelect">
+                            <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
+                            <option value='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'>System UI</option>
+                            <option value='"Montserrat", sans-serif'>Montserrat</option>
+                            <option value='monospace'>Monospace</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Размер текста (<span id="fontSizeVal">15px</span>)</label>
+                        <input type="range" id="fontSizeInput" min="12" max="22" value="15">
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Интервал букв (<span id="letterSpacingVal">0.5px</span>)</label>
+                        <input type="range" id="letterSpacingInput" min="-1" max="3" step="0.5" value="0.5">
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">3D Тень текста</label>
+                        <div class="setting-control">
+                            <input type="checkbox" id="textShadowToggle"> Включить тень
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-items" class="tab-content">
+                    <div class="setting-group">
+                        <label class="setting-label">Управление и порядок пунктов</label>
+                        <div id="itemsEditList"></div>
+                        <button class="neu-btn btn-small" id="addItemBtn" style="margin-top: 8px;">+ Добавить пункт</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let defaultMenu = [
+            { id: 1, type: "generator", name: "1. ГЕНЕРАТОР", color: "", bg: "" },
+            { id: 2, type: "custom", name: "2. ПУНКТ", color: "", bg: "" },
+            { id: 3, type: "custom", name: "3. ПУНКТ", color: "", bg: "" },
+            { id: 4, type: "custom", name: "4. ПУНКТ", color: "", bg: "" },
+            { id: 5, type: "custom", name: "5. ПУНКТ", color: "", bg: "" }
+        ];
+
+        let menuItems = JSON.parse(localStorage.getItem('menu_items')) || defaultMenu;
+        let settings = JSON.parse(localStorage.getItem('app_settings')) || {
+            theme: 'light',
+            accent: '#007aff',
+            radius: 18,
+            shadow: 5,
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            fontSize: 15,
+            letterSpacing: 0.5,
+            textShadow: false
+        };
+
+        let currentMode = 'days';
+
+        function init() {
+            applySettings();
+            renderMenu();
+            renderEditItems();
+
+            loadSavedGenData();
+            autoCalculate();
+
+            const fEnd = new Date();
+            const fStart = new Date();
+            fStart.setDate(fStart.getDate() - 5);
+            document.getElementById('fuelEndDate').valueAsDate = fEnd;
+            document.getElementById('fuelStartDate').valueAsDate = fStart;
+            calcFuel();
+        }
+
+        function applySettings() {
+            document.body.setAttribute('data-theme', settings.theme);
+            document.documentElement.style.setProperty('--accent-color', settings.accent);
+            document.documentElement.style.setProperty('--border-radius', settings.radius + 'px');
+            document.documentElement.style.setProperty('--shadow-dist', settings.shadow + 'px');
+            document.documentElement.style.setProperty('--shadow-blur', (settings.shadow * 2) + 'px');
+            document.documentElement.style.setProperty('--font-family', settings.fontFamily);
+            document.documentElement.style.setProperty('--font-size', settings.fontSize + 'px');
+            document.documentElement.style.setProperty('--letter-spacing', settings.letterSpacing + 'px');
+            document.documentElement.style.setProperty('--text-shadow-style', settings.textShadow ? '1px 1px 2px rgba(0,0,0,0.2)' : 'none');
+
+            const themeIcon = document.getElementById('themeIcon');
+            if (settings.theme === 'dark') {
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+            } else {
+                themeIcon.innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+            }
+
+            document.getElementById('accentColorInput').value = settings.accent;
+            document.getElementById('accentVal').innerText = settings.accent;
+            document.getElementById('radiusInput').value = settings.radius;
+            document.getElementById('radiusVal').innerText = settings.radius + 'px';
+            document.getElementById('shadowInput').value = settings.shadow;
+            document.getElementById('shadowVal').innerText = settings.shadow + 'px';
+            document.getElementById('fontFamilySelect').value = settings.fontFamily;
+            document.getElementById('fontSizeInput').value = settings.fontSize;
+            document.getElementById('fontSizeVal').innerText = settings.fontSize + 'px';
+            document.getElementById('letterSpacingInput').value = settings.letterSpacing;
+            document.getElementById('letterSpacingVal').innerText = settings.letterSpacing + 'px';
+            document.getElementById('textShadowToggle').checked = settings.textShadow;
+
+            localStorage.setItem('app_settings', JSON.stringify(settings));
+        }
+
+        // Обработка нажатий на пункты меню
+        function openModule(item) {
+            document.getElementById('screenMainMenu').classList.remove('active');
+            document.getElementById('screenGenerator').classList.remove('active');
+            document.getElementById('screenEmptyModule').classList.remove('active');
+            
+            document.getElementById('backBtn').style.display = 'flex';
+            document.getElementById('screenTitle').innerText = item.name;
+
+            if (item.type === 'generator') {
+                document.getElementById('screenGenerator').classList.add('active');
+            } else {
+                document.getElementById('emptyModuleTitle').innerText = `${item.name} В РАЗРАБОТКЕ`;
+                document.getElementById('screenEmptyModule').classList.add('active');
+            }
+        }
+
+        function openMainMenu() {
+            document.getElementById('screenGenerator').classList.remove('active');
+            document.getElementById('screenEmptyModule').classList.remove('active');
+            document.getElementById('screenMainMenu').classList.add('active');
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('screenTitle').innerText = "МЕНЮ";
+        }
+
+        function renderMenu() {
+            const menuContainer = document.getElementById('menuContainer');
+            menuContainer.innerHTML = '';
+            menuItems.forEach((item) => {
+                const btn = document.createElement('button');
+                btn.className = 'neu-btn menu-item';
+                btn.innerText = item.name;
+                if (item.color) btn.style.setProperty('--item-color', item.color);
+                if (item.bg) btn.style.setProperty('--item-bg', item.bg);
+                btn.onclick = () => openModule(item);
+                menuContainer.appendChild(btn);
+            });
+            localStorage.setItem('menu_items', JSON.stringify(menuItems));
+        }
+
+        function renderEditItems() {
+            const container = document.getElementById('itemsEditList');
+            container.innerHTML = '';
+            menuItems.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = 'edit-item-row';
+                
+                const isFirst = index === 0;
+                const isLast = index === menuItems.length - 1;
+
+                row.innerHTML = `
+                    <div class="move-btns">
+                        <button class="neu-btn btn-small" ${isFirst ? 'disabled' : ''} onclick="moveItem(${index}, -1)" title="Вверх">▲</button>
+                        <button class="neu-btn btn-small" ${isLast ? 'disabled' : ''} onclick="moveItem(${index}, 1)" title="Вниз">▼</button>
+                    </div>
+                    <input type="text" value="${item.name}" onchange="updateItemName(${index}, this.value)">
+                    <input type="color" value="${item.color || '#334155'}" title="Цвет текста" onchange="updateItemColor(${index}, this.value)">
+                    <button class="neu-btn btn-small" onclick="removeItem(${index})">✕</button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function moveItem(index, direction) {
+            const targetIndex = index + direction;
+            if (targetIndex < 0 || targetIndex >= menuItems.length) return;
+
+            const temp = menuItems[index];
+            menuItems[index] = menuItems[targetIndex];
+            menuItems[targetIndex] = temp;
+
+            renderMenu();
+            renderEditItems();
+        }
+
+        function updateItemName(index, val) {
+            menuItems[index].name = val;
+            renderMenu();
+        }
+
+        function updateItemColor(index, val) {
+            menuItems[index].color = val;
+            renderMenu();
+        }
+
+        function removeItem(index) {
+            menuItems.splice(index, 1);
+            renderMenu();
+            renderEditItems();
+        }
+
+        document.getElementById('addItemBtn').onclick = () => {
+            menuItems.push({ id: Date.now(), type: 'custom', name: `${menuItems.length + 1}. ПУНКТ`, color: '', bg: '' });
+            renderMenu();
+            renderEditItems();
+        };
+
+        function switchGenTab(tabId, btn) {
+            document.getElementById('genTabHours').style.display = tabId === 'tabHours' ? 'block' : 'none';
+            document.getElementById('genTabFuel').style.display = tabId === 'tabFuel' ? 'block' : 'none';
+            document.querySelectorAll('#screenGenerator .sub-nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('btnModeDays').classList.toggle('active', mode === 'days');
+            document.getElementById('btnModeDate').classList.toggle('active', mode === 'date');
+            document.getElementById('sectionDays').style.display = mode === 'days' ? 'block' : 'none';
+            document.getElementById('sectionDate').style.display = mode === 'date' ? 'block' : 'none';
+            autoCalculate();
+        }
+
+        function formatDate(dateObj) {
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const year = dateObj.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+
+        function autoCalculate() {
+            let totalDays = 0;
+            let startDate = null;
+
+            const hours = parseInt(document.getElementById('hours').value) || 0;
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const targetHours = parseFloat(document.getElementById('targetHours').value) || 50;
+
+            const dailyMinutes = (hours * 60) + minutes;
+            const banner = document.getElementById('alertBanner');
+
+            if (dailyMinutes === 0 || hours > 24 || minutes >= 60 || targetHours <= 0) {
+                document.getElementById('result').style.display = 'none';
+                banner.style.display = 'none';
+                saveGenData();
+                return;
+            }
+
+            if (currentMode === 'days') {
+                totalDays = parseInt(document.getElementById('days').value) || 0;
+                startDate = new Date();
+                startDate.setDate(startDate.getDate() - totalDays);
+            } else {
+                const dateVal = document.getElementById('lastDate').value;
+                if (!dateVal) {
+                    document.getElementById('result').style.display = 'none';
+                    banner.style.display = 'none';
+                    saveGenData();
+                    return;
+                }
+                startDate = new Date(dateVal);
+                const today = new Date();
+                
+                startDate.setHours(0, 0, 0, 0);
+                today.setHours(0, 0, 0, 0);
+
+                const diffTime = today - startDate;
+                totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                if (totalDays < 0) {
+                    document.getElementById('result').style.display = 'none';
+                    banner.style.display = 'none';
+                    saveGenData();
+                    return;
+                }
+            }
+
+            const totalMinutes = dailyMinutes * totalDays;
+            const resHours = Math.floor(totalMinutes / 60);
+            const resMinutes = totalMinutes % 60;
+            const decimalHours = (totalMinutes / 60).toFixed(2);
+
+            const continuousDays = Math.floor(resHours / 24);
+            const remainingHours = resHours % 24;
+
+            const dailyHours = dailyMinutes / 60;
+            const daysNeededForTarget = Math.ceil(targetHours / dailyHours);
+
+            const nextServiceDateObj = new Date(startDate);
+            nextServiceDateObj.setDate(nextServiceDateObj.getDate() + daysNeededForTarget);
+
+            const todayTime = new Date();
+            todayTime.setHours(0, 0, 0, 0);
+            nextServiceDateObj.setHours(0, 0, 0, 0);
+            
+            const diffTimeRemaining = nextServiceDateObj - todayTime;
+            const daysRemaining = Math.round(diffTimeRemaining / (1000 * 60 * 60 * 24));
+
+            if (daysRemaining < 0) {
+                banner.innerHTML = `⚠️ ВНИМАНИЕ! СРОК ТО ПРОШЕЛ СВЫШЕ ${targetHours} М/Ч!`;
+                banner.style.display = "block";
+            } else if (daysRemaining === 0) {
+                banner.innerHTML = `🚨 ВНИМАНИЕ! СЕГОДНЯ СРОК ПРОВЕДЕНИЯ ТО!`;
+                banner.style.display = "block";
+            } else if (daysRemaining === 1) {
+                banner.innerHTML = `⚠️ ПРЕДУПРЕЖДЕНИЕ: ДО СЛЕДУЮЩЕГО ТО ОСТАЛСЯ 1 ДЕНЬ!`;
+                banner.style.display = "block";
+            } else if (daysRemaining === 2) {
+                banner.innerHTML = `⚠️ ПРЕДУПРЕЖДЕНИЕ: ДО СЛЕДУЮЩЕГО ТО ОСТАЛОСЬ 2 ДНЯ!`;
+                banner.style.display = "block";
+            } else {
+                banner.style.display = "none";
+            }
+
+            document.getElementById('lastServiceDisplay').innerHTML = 
+                `ДАТА ПОСЛЕДНЕГО ТО: <span class="highlight">${formatDate(startDate)}</span>`;
+
+            document.getElementById('daysPassed').innerHTML = 
+                `ПРОШЛО ДНЕЙ: <span class="highlight">${totalDays} ДН.</span>`;
+
+            document.getElementById('totalTime').innerHTML = 
+                `ОБЩАЯ НАРАБОТКА: <span class="highlight">${resHours} Ч ${resMinutes} МИН</span>`;
+            
+            document.getElementById('totalDecimal').innerHTML = 
+                `В ДЕСЯТИЧНОМ ВИДЕ: <span class="highlight">${decimalHours} МОТОЧАСОВ</span>`;
+
+            document.getElementById('equivalentDays').innerHTML = 
+                `НЕПРЕРЫВНАЯ РАБОТА: <span class="highlight">${continuousDays} ДН. ${remainingHours} Ч ${resMinutes} МИН</span>`;
+
+            const isOverdue = resHours >= targetHours;
+            const nextServiceClass = isOverdue ? 'highlight-alert' : 'highlight';
+            const statusText = isOverdue ? ' (ТРЕБУЕТСЯ ТО!)' : '';
+
+            document.getElementById('nextServiceDate').innerHTML = 
+                `СЛЕДУЮЩЕЕ ТО (${targetHours} Ч): <span class="${nextServiceClass}">${formatDate(nextServiceDateObj)}${statusText}</span>`;
+
+            document.getElementById('result').style.display = 'flex';
+            saveGenData();
+        }
+
+        function calcFuel() {
+            const start = new Date(document.getElementById('fuelStartDate').value);
+            const end = new Date(document.getElementById('fuelEndDate').value);
+            const liters = parseFloat(document.getElementById('fuelLitersDay').value) || 0;
+            if (start && end && end >= start) {
+                const days = Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) + 1;
+                document.getElementById('fuelTotalRes').innerText = days * liters;
+                document.getElementById('fuelPeriodRes').innerText = days;
+            }
+        }
+
+        function clearGenData() {
+            document.getElementById('days').value = '';
+            document.getElementById('lastDate').value = '';
+            document.getElementById('hours').value = '';
+            document.getElementById('minutes').value = '';
+            document.getElementById('targetHours').value = '50';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('alertBanner').style.display = 'none';
+
+            localStorage.removeItem('generator_neumo_data');
+        }
+
+        function saveGenData() {
+            const data = {
+                mode: currentMode,
+                days: document.getElementById('days').value,
+                lastDate: document.getElementById('lastDate').value,
+                hours: document.getElementById('hours').value,
+                minutes: document.getElementById('minutes').value,
+                targetHours: document.getElementById('targetHours').value
+            };
+            localStorage.setItem('generator_neumo_data', JSON.stringify(data));
+        }
+
+        function loadSavedGenData() {
+            const savedData = localStorage.getItem('generator_neumo_data');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if (data.mode) setMode(data.mode);
+                if (data.days) document.getElementById('days').value = data.days;
+                if (data.lastDate) document.getElementById('lastDate').value = data.lastDate;
+                if (data.hours) document.getElementById('hours').value = data.hours;
+                if (data.minutes) document.getElementById('minutes').value = data.minutes;
+                if (data.targetHours) document.getElementById('targetHours').value = data.targetHours;
+            }
+        }
+
+        function switchSettingsTab(tabId) {
+            document.querySelectorAll('.modal .tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.modal .tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        document.getElementById('themeToggle').onclick = () => {
+            settings.theme = settings.theme === 'light' ? 'dark' : 'light';
+            applySettings();
+        };
+
+        document.getElementById('settingsToggle').onclick = () => document.getElementById('modalOverlay').classList.add('open');
+        document.getElementById('modalClose').onclick = () => document.getElementById('modalOverlay').classList.remove('open');
+
+        document.getElementById('accentColorInput').oninput = (e) => { settings.accent = e.target.value; applySettings(); };
+        document.getElementById('radiusInput').oninput = (e) => { settings.radius = e.target.value; applySettings(); };
+        document.getElementById('shadowInput').oninput = (e) => { settings.shadow = e.target.value; applySettings(); };
+        document.getElementById('fontFamilySelect').onchange = (e) => { settings.fontFamily = e.target.value; applySettings(); };
+        document.getElementById('fontSizeInput').oninput = (e) => { settings.fontSize = e.target.value; applySettings(); };
+        document.getElementById('letterSpacingInput').oninput = (e) => { settings.letterSpacing = e.target.value; applySettings(); };
+        document.getElementById('textShadowToggle').onchange = (e) => { settings.textShadow = e.target.checked; applySettings(); };
+
+        init();
+    </script>
+</body>
+</html>
