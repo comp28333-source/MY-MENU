@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3D Neumorphic App — БЛiК</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN с офлайн-дублированием стилей ниже -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -28,9 +28,8 @@
             }
         }
     </script>
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome Icons & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -61,7 +60,7 @@
             --color-brand-600: #2563eb;
             --color-brand-700: #1d4ed8;
 
-            /* Полные переменные календаря из первоначального кода */
+            /* Переменные календаря */
             --bg-main: #ebedf0;
             --month-cell-color: #ebedf0;
             --weekday-cell-color: #ebedf0;
@@ -132,6 +131,55 @@
             --alert-text: #fc8181;
             --reset-color: #fc8181;
         }
+
+        /* ОФФЛАЙН-ДУБЛЕРЫ UTILITY-КЛАССОВ (Гарантия работы без сети) */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .gap-4 { gap: 16px; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .right-4 { right: 16px; }
+        .top-2 { top: 8px; }
+        .left-3 { left: 12px; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .h-32 { height: 128px; }
+        .h-36 { height: 144px; }
+        .min-h-\[160px\] { min-height: 160px; }
+        .overflow-hidden { overflow: hidden; }
+        .overflow-visible { overflow: visible; }
+        .cursor-pointer { cursor: pointer; }
+        .font-mono { font-family: var(--font-mono); }
+        .font-bold { font-weight: 700; }
+        .font-extrabold { font-weight: 800; }
+        .text-xs { font-size: 12px; }
+        .text-sm { font-size: 14px; }
+        .text-lg { font-size: 18px; }
+        .text-2xl { font-size: 24px; }
+        .uppercase { text-transform: uppercase; }
+        .tracking-widest { letter-spacing: 0.1em; }
+        .tracking-wider { letter-spacing: 0.05em; }
+        .text-slate-400 { color: #94a3b8; }
+        .pointer-events-none { pointer-events: none; }
+        .pr-16 { padding-right: 64px; }
+        .p-2\.5 { padding: 10px; }
+        .p-3 { padding: 12px; }
+        .p-4 { padding: 16px; }
+        .mt-0\.5 { margin-top: 2px; }
+        .mt-1 { margin-top: 4px; }
+        .mb-1 { margin-top: 4px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mr-1\.5 { margin-right: 6px; }
+        .text-center { text-align: center; }
 
         * {
             box-sizing: border-box;
@@ -396,7 +444,7 @@
             transition: transform 0.2s ease;
         }
 
-        /* --- Стили модуля 4: Календарь с заметками (из первоначального кода) --- */
+        /* --- Стили календаря --- */
         .cal-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .cal-nav-frame {
             background-color: var(--month-cell-color);
@@ -481,7 +529,7 @@
             box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
         }
 
-        /* Таблица учета в модальном окне */
+        /* --- Исправленные тактильные поля таблиц «С / -ПО» --- */
         .table-container {
             background: var(--table-bg);
             padding: 10px;
@@ -526,10 +574,18 @@
             font-weight: var(--table-total-font-weight);
             box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
         }
+        /* Исправленные инпуты таблицы под общий 3D стиль приложения */
         .table-frame input { 
             width: 100%; height: 100%; text-align: center; border: none; outline: none; border-radius: 6px; 
             font-size: var(--table-cell-font-size); font-weight: var(--table-cell-font-weight); color: var(--table-cell-font-color); 
-            padding: 4px 2px; background: transparent; 
+            padding: 6px 2px; background: var(--table-cell-bg); 
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            text-transform: uppercase;
+            transition: box-shadow 0.2s ease, color 0.2s ease;
+        }
+        .table-frame input:focus {
+            color: var(--accent-color);
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
         }
         .highlight-row td { 
             background-color: var(--table-highlight-row-bg) !important;
@@ -710,7 +766,7 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 2: КАЛЬКУЛЯТОРЫ (С ДОБАВЛЕННОЙ ВКЛАДКОЙ «ВРЕМЯ») -->
+        <!-- ПУНКТ 2: КАЛЬКУЛЯТОРЫ -->
         <div id="screenCalculators" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="btnCalcPerc" onclick="switchCalcTab('calcPerc', this)">ПРОЦЕНТЫ</button>
@@ -718,7 +774,6 @@
                 <button class="neu-btn sub-nav-btn" id="btnCalcTime" onclick="switchCalcTab('calcTime', this)">ВРЕМЯ</button>
             </div>
 
-            <!-- Вкладка 1: Проценты -->
             <div id="calcTabPerc">
                 <div class="input-group">
                     <label for="percentInput">ПРОЦЕНТ (%):</label>
@@ -733,7 +788,6 @@
                 <div class="calc-result-box" id="calcResult">0% ОТ 100 = 0</div>
             </div>
 
-            <!-- Вкладка 2: Электро конвертер -->
             <div id="calcTabConv" style="display: none;">
                 <div class="input-group">
                     <label for="voltage">ВОЛЬТ (U, В)</label>
@@ -753,7 +807,6 @@
                 <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--reset-color);" onclick="clearConverter()">ОЧИСТИТЬ</button>
             </div>
 
-            <!-- Вкладка 3: Подсчет прошедшего времени (С / ДО) -->
             <div id="calcTabTime" style="display: none;">
                 <div class="input-group">
                     <label>С (ЧЧ / ММ)</label>
@@ -1113,7 +1166,6 @@
         let currentMode = 'days';
         let activeConvField = null;
 
-        // Переменные модуля Календаря
         const DISPLAY_MONTHS = ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"];
         const DOT_COLORS = ["#00E676", "#29B6F6", "#EF5350", "#FFEE58", "#AB47BC", "#FFA726", "#26A69A", "#EC407A", "#8D6E63", "#78909C", "#FF7043", "#66BB6A", "#42A5F5", "#E57373", "#FFF176", "#BA68C8", "#FFB74D", "#4DB6AC", "#F06292", "#A1887F", "#90A4AE", "#FF8A65"];
         
@@ -1183,7 +1235,6 @@
             calcPercent();
             calcSpider(145.00);
 
-            // Инициализация калькулятора времени
             calculateTime();
 
             initTable();
@@ -1224,7 +1275,6 @@
             document.getElementById('letterSpacingVal').innerText = settings.letterSpacing + 'px';
             document.getElementById('textShadowToggle').checked = settings.textShadow;
 
-            // Применяем настройки календаря
             let r = document.documentElement;
             r.style.setProperty('--bg-main', calSettings.bg_main);
             r.style.setProperty('--month-cell-color', calSettings.month_cell_color);
@@ -1255,7 +1305,6 @@
             r.style.setProperty('--other-day-font-color', calSettings.other_day_font_color);
             r.style.setProperty('--other-day-font-weight', calSettings.other_day_font_weight ? '600' : 'normal');
 
-            // Применяем настройки таблицы
             r.style.setProperty('--table-bg', tableSettings.table_bg);
             r.style.setProperty('--table-header-bg', tableSettings.table_header_bg);
             r.style.setProperty('--table-header-font-size', tableSettings.table_header_font_size + 'px');
@@ -1287,7 +1336,6 @@
             localStorage.setItem('app_settings', JSON.stringify(settings));
         }
 
-        /* Навигация по модулям */
         function openModule(item) {
             document.getElementById('screenMainMenu').classList.remove('active');
             document.getElementById('screenGenerator').classList.remove('active');
@@ -1397,7 +1445,6 @@
             renderEditItems();
         };
 
-        /* Логика генератора */
         function switchGenTab(tabId, btn) {
             document.getElementById('genTabHours').style.display = tabId === 'tabHours' ? 'block' : 'none';
             document.getElementById('genTabFuel').style.display = tabId === 'tabFuel' ? 'block' : 'none';
@@ -1578,7 +1625,6 @@
             }
         }
 
-        /* Логика пункта 2 (Калькуляторы) */
         function switchCalcTab(tabId, btn) {
             document.getElementById('calcTabPerc').style.display = tabId === 'calcPerc' ? 'block' : 'none';
             document.getElementById('calcTabConv').style.display = tabId === 'calcConv' ? 'block' : 'none';
@@ -1636,7 +1682,6 @@
             ['voltage', 'current', 'power'].forEach(id => document.getElementById(id).value = '');
         }
 
-        // Логика расчета прошедшего времени (С / ДО)
         const startHInput = document.getElementById('startH');
         const startMInput = document.getElementById('startM');
         const endHInput = document.getElementById('endH');
@@ -1654,7 +1699,6 @@
 
             let diffMinutes = endTotalMinutes - startTotalMinutes;
 
-            // Если время "ДО" меньше времени "С", учитываем переход через полночь
             if (diffMinutes < 0) {
                 diffMinutes += 24 * 60;
             }
@@ -1672,7 +1716,6 @@
             input.addEventListener('input', calculateTime);
         });
 
-        /* Логика пункта 3 (Антенна «Паук») */
         function switchSpiderMode(mode, btn) {
             document.getElementById('spiderViewExt').style.display = mode === 'ext' ? 'flex' : 'none';
             document.getElementById('spiderViewComp').style.display = mode === 'comp' ? 'flex' : 'none';
@@ -1753,7 +1796,6 @@
             }
         }
 
-        /* --- Логика пункта 4 (Календарь с заметками) --- */
         function initTable() {
             let tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
