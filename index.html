@@ -61,8 +61,8 @@
             --color-brand-600: #2563eb;
             --color-brand-700: #1d4ed8;
 
-            /* Переменные для модуля календаря */
-            --cal-bg-main: #ebedf0;
+            /* Полные переменные календаря из первоначального кода */
+            --bg-main: #ebedf0;
             --month-cell-color: #ebedf0;
             --weekday-cell-color: #ebedf0;
             --day-cell-color: #ffffff;
@@ -71,49 +71,49 @@
             --weekend-cell-color: #ffe3e3;
             --weekend-font-color: #9b1c1c;
             
-            --cal-month-font-size: 20px;
-            --cal-month-font-color: #1c2536;
-            --cal-month-font-weight: 800;
+            --month-font-size: 24px;
+            --month-font-color: #1c2536;
+            --month-font-weight: 800;
 
-            --cal-weekday-font-size: 13px;
-            --cal-weekday-font-color: #4a5568;
-            --cal-weekday-font-weight: 700;
+            --weekday-font-size: 14px;
+            --weekday-font-color: #4a5568;
+            --weekday-font-weight: 700;
 
-            --cal-day-font-size: 15px;
-            --cal-day-font-color: #1a202c;
-            --cal-day-font-weight: 700;
+            --day-font-size: 16px;
+            --day-font-color: #1a202c;
+            --day-font-weight: 700;
 
-            --cal-today-font-size: 15px;
-            --cal-today-font-color: #ffffff;
-            --cal-today-font-weight: 800;
+            --today-font-size: 16px;
+            --today-font-color: #ffffff;
+            --today-font-weight: 800;
 
-            --cal-other-day-font-size: 14px;
-            --cal-other-day-font-color: #a0aec0;
-            --cal-other-day-font-weight: 600;
+            --other-day-font-size: 15px;
+            --other-day-font-color: #a0aec0;
+            --other-day-font-weight: 600;
 
             --table-bg: #ebedf0;
             --table-header-bg: #e1e3e7;
-            --table-header-font-size: 11px;
+            --table-header-font-size: 12px;
             --table-header-font-color: #2d3748;
             --table-header-font-weight: bold;
 
             --table-month-cell-bg: #ffffff;
-            --table-month-font-size: 11px;
+            --table-month-font-size: 12px;
             --table-month-font-color: #1a202c;
             --table-month-font-weight: bold;
 
             --table-cell-bg: #ffffff;
-            --table-cell-font-size: 11px;
+            --table-cell-font-size: 12px;
             --table-cell-font-color: #1a202c;
             --table-cell-font-weight: normal;
 
             --table-result-cell-bg: #f0f2f5;
-            --table-result-font-size: 11px;
+            --table-result-font-size: 12px;
             --table-result-font-color: #2b82fb;
             --table-result-font-weight: bold;
 
             --table-total-cell-bg: #e1e3e7;
-            --table-total-font-size: 11px;
+            --table-total-font-size: 12px;
             --table-total-font-color: #e53e3e;
             --table-total-font-weight: bold;
 
@@ -396,46 +396,46 @@
             transition: transform 0.2s ease;
         }
 
-        /* --- Стили модуля 4: Календарь с заметками --- */
-        .cal-wrapper { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        /* --- Стили модуля 4: Календарь с заметками (из первоначального кода) --- */
+        .cal-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .cal-nav-frame {
             background-color: var(--month-cell-color);
-            padding: 4px 4px 8px 4px;
+            padding: 4px 8px 12px 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 12px;
+            border-radius: 14px;
         }
-        .cal-center-nav { display: flex; align-items: center; gap: 8px; flex-grow: 1; justify-content: space-between; }
+        .cal-center-nav { display: flex; align-items: center; gap: 12px; flex-grow: 1; justify-content: space-between; }
         #cal-header-label {
-            font-size: var(--cal-month-font-size);
-            color: var(--cal-month-font-color);
-            font-weight: var(--cal-month-font-weight);
+            font-size: var(--month-font-size);
+            color: var(--month-font-color);
+            font-weight: var(--month-font-weight);
             text-align: center;
             letter-spacing: -0.5px;
         }
         .cal-grid-frame { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
         .cal-header-cell {
             background: var(--weekday-cell-color);
-            color: var(--cal-weekday-font-color);
-            font-size: var(--cal-weekday-font-size);
-            font-weight: var(--cal-weekday-font-weight);
+            color: var(--weekday-font-color);
+            font-size: var(--weekday-font-size);
+            font-weight: var(--weekday-font-weight);
             text-align: center;
-            padding: 6px 0;
-            border-radius: 8px;
-            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+            padding: 8px 0;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
         }
         .cal-day-cell {
             background: var(--day-cell-color);
-            color: var(--cal-day-font-color);
-            font-size: var(--cal-day-font-size);
-            font-weight: var(--cal-day-font-weight);
+            color: var(--day-font-color);
+            font-size: var(--day-font-size);
+            font-weight: var(--day-font-weight);
             aspect-ratio: 1.05;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             position: relative;
             box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
@@ -450,30 +450,30 @@
         }
         .cal-day-cell.other-month {
             background: var(--other-cell-color);
-            color: var(--cal-other-day-font-color);
-            font-size: var(--cal-other-day-font-size);
-            font-weight: var(--cal-other-day-font-weight);
+            color: var(--other-day-font-color);
+            font-size: var(--other-day-font-size);
+            font-weight: var(--other-day-font-weight);
             box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
         }
         .cal-day-cell.today { 
             background: var(--today-cell-color) !important; 
-            color: var(--cal-today-font-color) !important; 
-            font-size: var(--cal-today-font-size) !important;
-            font-weight: var(--cal-today-font-weight) !important;
+            color: var(--today-font-color) !important; 
+            font-size: var(--today-font-size) !important;
+            font-weight: var(--today-font-weight) !important;
             box-shadow: 3px 3px 8px rgba(43, 130, 251, 0.4), -2px -2px 5px var(--shadow-light) !important;
         }
 
         .cal-ctrl-frame { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; gap: 4px; flex-wrap: wrap; }
-        .cal-left-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .cal-left-actions { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; justify-content: space-between; }
         .cal-action-btn {
-            background: var(--card-bg);
+            background: linear-gradient(145deg, #ffffff, #e1e3e7);
             border: none;
             border-radius: 10px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             cursor: pointer;
             font-weight: 700;
             font-size: 11px;
-            color: var(--text-color);
+            color: #2d3748;
             box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
             transition: all 0.1s ease;
         }
@@ -533,7 +533,7 @@
         }
         .highlight-row td { 
             background-color: var(--table-highlight-row-bg) !important;
-            box-shadow: 0 0 0 2px var(--accent-color) inset, 2px 2px 4px var(--shadow-dark) !important; 
+            box-shadow: 0 0 0 2px #2b82fb inset, 2px 2px 4px var(--shadow-dark) !important; 
         }
 
         /* Модальные окна */
@@ -541,6 +541,16 @@
         .modal-content-custom { 
             background: var(--card-bg); padding: 18px; border-radius: 18px; width: 92%; max-width: 440px; max-height: 85vh; overflow-y: auto; 
             display: flex; flex-direction: column; gap: 10px; box-shadow: 10px 10px 30px rgba(0,0,0,0.25), -6px -6px 20px var(--shadow-light); 
+        }
+        .modal-item-card {
+            background: var(--card-bg); padding: 8px; border-radius: 10px;
+            box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .modal-input {
+            border: none; outline: none; background: var(--card-bg); padding: 5px 8px; border-radius: 6px;
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            font-size: 11px; color: var(--text-color);
         }
         .palette { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 6px; }
         .color-btn { width: 100%; aspect-ratio: 1.4; border-radius: 6px; border: none; cursor: pointer; box-shadow: 2px 2px 4px rgba(0,0,0,0.15), -1px -1px 3px var(--shadow-light); }
@@ -554,138 +564,39 @@
 
         /* Модальное окно настроек */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center; padding: 16px;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
         .modal {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 440px;
-            max-height: 85vh;
-            border-radius: calc(var(--border-radius) + 8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            background: var(--card-bg); width: 100%; max-width: 440px; max-height: 85vh;
+            border-radius: calc(var(--border-radius) + 8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; overflow: hidden;
         }
-
         .modal-header {
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid rgba(100, 100, 100, 0.1);
         }
-
-        .tab-nav {
-            display: flex;
-            background: rgba(0,0,0,0.05);
-            padding: 4px;
-            gap: 4px;
-        }
-
+        .tab-nav { display: flex; background: rgba(0,0,0,0.05); padding: 4px; gap: 4px; }
         .tab-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            border-radius: calc(var(--border-radius) - 6px);
+            flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted);
+            font-weight: 700; font-size: 13px; cursor: pointer; border-radius: calc(var(--border-radius) - 6px);
             transition: all 0.2s ease;
         }
-
-        .tab-btn.active {
-            background: var(--card-bg);
-            color: var(--text-color);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .tab-content {
-            display: none;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .tab-content.active {
-            display: flex;
-        }
-
-        .setting-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .setting-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-muted);
-        }
-
-        .setting-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        input[type="range"] {
-            flex: 1;
-            accent-color: var(--accent-color);
-        }
-
-        input[type="color"] {
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            background: none;
-        }
-
-        .edit-item-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-
-        .move-btns {
-            display: flex;
-            gap: 4px;
-        }
-
-        .btn-small {
-            padding: 8px 10px;
-            font-size: 12px;
-            border-radius: calc(var(--border-radius) - 6px);
-        }
+        .tab-btn.active { background: var(--card-bg); color: var(--text-color); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; }
+        .tab-content { display: none; flex-direction: column; gap: 16px; }
+        .tab-content.active { display: flex; }
+        .setting-group { display: flex; flex-direction: column; gap: 8px; }
+        .setting-label { font-size: 12px; font-weight: 700; color: var(--text-muted); }
+        .setting-control { display: flex; align-items: center; gap: 10px; }
+        input[type="range"] { flex: 1; accent-color: var(--accent-color); }
+        input[type="color"] { border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; background: none; }
+        .edit-item-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+        .move-btns { display: flex; gap: 4px; }
+        .btn-small { padding: 8px 10px; font-size: 12px; border-radius: calc(var(--border-radius) - 6px); }
     </style>
 </head>
 <body>
@@ -851,7 +762,6 @@
                 </button>
             </div>
 
-            <!-- РАСШИРЕННАЯ ВЕРСИЯ ПАУКА -->
             <div id="spiderViewExt" class="flex flex-col gap-4">
                 <div class="input-group">
                     <label for="spiderFreqExt">ЧАСТОТА (136 – 174 МГц):</label>
@@ -871,7 +781,6 @@
                     </div>
                 </div>
 
-                <!-- Интерактивная SVG схема с 4 лучами -->
                 <div class="grid-3d-box p-3 flex flex-col items-center justify-center relative min-h-[160px]">
                     <span class="absolute top-2 left-3 text-[10px] font-mono text-slate-400 uppercase font-bold">GP 1/4 &lambda; (4 Луча)</span>
                     <svg viewBox="0 0 300 160" class="w-full h-32 drop-shadow-md overflow-visible">
@@ -920,7 +829,6 @@
                 </div>
             </div>
 
-            <!-- УРЕЗАННАЯ ВЕРСИЯ ПАУКА -->
             <div id="spiderViewComp" style="display: none;" class="flex flex-col gap-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100">Паук 136–174 МГц</h2>
@@ -972,25 +880,26 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 4: КАЛЕНДАРЬ С ЗАМЕТКАМИ (НОВЫЙ ИНТЕГРИРОВАННЫЙ МОДУЛЬ) -->
+        <!-- ПУНКТ 4: КАЛЕНДАРЬ С ЗАМЕТКАМИ (ПОЛНЫЙ ФУНКЦИОНАЛ И НАСТРОЙКИ) -->
         <div id="screenCalendar" class="view-screen">
             <div class="cal-wrapper">
                 <div class="cal-nav-frame">
                     <div class="cal-center-nav">
-                        <button class="neu-btn" style="width:36px; height:36px; font-size:15px;" onclick="prevMonth()">&lt;</button>
+                        <button class="neu-btn" style="width:40px; height:40px; font-size:16px;" onclick="prevMonth()">&lt;</button>
                         <div id="cal-header-label">МАРТ 2025</div>
-                        <button class="neu-btn" style="width:36px; height:36px; font-size:15px;" onclick="nextMonth()">&gt;</button>
+                        <button class="neu-btn" style="width:40px; height:40px; font-size:16px;" onclick="nextMonth()">&gt;</button>
                     </div>
                 </div>
 
                 <div class="cal-grid-frame" id="cal-frame"></div>
 
                 <div class="cal-ctrl-frame">
-                    <div class="cal-left-actions" style="width:100%; display:grid; grid-template-columns: repeat(4, 1fr); gap:4px;">
-                        <button class="cal-action-btn" onclick="openTableModal()" style="color:#006064; background:linear-gradient(145deg, #e0f7fa, #b2ebf2);">ТАБЛИЦА</button>
-                        <button class="cal-action-btn" onclick="exportCalendarData()">ЭКСПОРТ</button>
-                        <button class="cal-action-btn" onclick="importCalendarDataTrigger()">ИМПОРТ</button>
-                        <button class="cal-action-btn" style="color:#b71c1c; background:linear-gradient(145deg, #ffebee, #ffcdd2);" onclick="clearCalendarMonth()">ОЧИСТИТЬ</button>
+                    <div class="cal-left-actions">
+                        <button class="cal-action-btn" onclick="openTableModal()" style="background: linear-gradient(145deg, #e0f7fa, #b2ebf2); color:#006064;">ТАБЛ.</button>
+                        <button class="cal-action-btn" onclick="exportCalendarData()">ЭКСП.</button>
+                        <button class="cal-action-btn" onclick="importCalendarDataTrigger()">ИМП.</button>
+                        <button class="cal-action-btn" style="background: linear-gradient(145deg, #ffebee, #ffcdd2); color:#b71c1c;" onclick="clearCalendarMonth()">ЧИСТ.</button>
+                        <button class="cal-action-btn" onclick="openSettingsModal()" title="Настройки календаря">⚙️</button>
                     </div>
                     <input type="file" id="cal-import-file" style="display:none" onchange="importCalendarData(event)">
                 </div>
@@ -1074,6 +983,17 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК КАЛЕНДАРЯ (ИЗ ПЕРВОНАЧАЛЬНОГО КОДА) -->
+    <div class="modal-overlay-custom" id="settings-modal">
+        <div class="modal-content-custom" style="max-width: 440px;">
+            <h3 style="color:var(--text-color); font-weight:800;">НАСТРОЙКИ КАЛЕНДАРЯ</h3>
+            <div style="font-size: 11px; color: var(--text-muted);">Настройте внешний вид под себя:</div>
+            <div style="display:flex; flex-direction:column; gap:8px;" id="settings-controls"></div>
+            <button class="cal-action-btn" style="background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white; height:40px; font-weight:bold;" onclick="saveCalendarSettings()">СОХРАНИТЬ</button>
+            <button class="cal-action-btn" style="background: linear-gradient(145deg, #ef9a9a, #ef5350); color:white; height:36px;" onclick="closeCalendarSettingsModal()">ОТМЕНИТЬ</button>
         </div>
     </div>
 
@@ -1180,27 +1100,40 @@
         if (!calDb.notes) calDb.notes = {};
         if (!calDb.table_ranges) calDb.table_ranges = {};
 
+        let savedCalendarSettings = JSON.parse(localStorage.getItem('calendar_settings'));
+        let calSettings = savedCalendarSettings && typeof savedCalendarSettings === 'object' ? savedCalendarSettings : {
+            bg_main: "#ebedf0",
+            month_font_size: 24, month_font_color: "#1c2536", month_font_weight: true,
+            weekday_font_size: 14, weekday_font_color: "#4a5568", weekday_font_weight: true,
+            day_font_size: 16, day_font_color: "#1a202c", day_font_weight: true,
+            today_font_size: 16, today_font_color: "#ffffff", today_font_weight: true,
+            other_day_font_size: 15, other_day_font_color: "#a0aec0", other_day_font_weight: true,
+            month_cell_color: "#ebedf0", weekday_cell_color: "#ebedf0", day_cell_color: "#ffffff", today_cell_color: "#2b82fb", other_cell_color: "#e6e8ec",
+            weekend_cell_color: "#ffe3e3", weekend_font_color: "#9b1c1c",
+            dot_size: 12, dot_relief_sunken: 1, dot_relief_raised: 2, dot_3d_style: "Сфера с бликом", note_display_mode: "Цветные точки", note_font_size: 10
+        };
+
         let savedTableSettings = JSON.parse(localStorage.getItem('table_settings'));
         let tableSettings = savedTableSettings && typeof savedTableSettings === 'object' ? savedTableSettings : {
             table_bg: "#ebedf0",
             table_header_bg: "#e1e3e7",
-            table_header_font_size: 11,
+            table_header_font_size: 12,
             table_header_font_color: "#2d3748",
             table_header_font_weight: true,
             table_month_cell_bg: "#ffffff",
-            table_month_font_size: 11,
+            table_month_font_size: 12,
             table_month_font_color: "#1a202c",
             table_month_font_weight: true,
             table_cell_bg: "#ffffff",
-            table_cell_font_size: 11,
+            table_cell_font_size: 12,
             table_cell_font_color: "#1a202c",
             table_cell_font_weight: false,
             table_result_cell_bg: "#f0f2f5",
-            table_result_font_size: 11,
+            table_result_font_size: 12,
             table_result_font_color: "#2b82fb",
             table_result_font_weight: true,
             table_total_cell_bg: "#e1e3e7",
-            table_total_font_size: 11,
+            table_total_font_size: 12,
             table_total_font_color: "#e53e3e",
             table_total_font_weight: true,
             table_highlight_row_bg: "#fff5f5"
@@ -1261,8 +1194,38 @@
             document.getElementById('letterSpacingVal').innerText = settings.letterSpacing + 'px';
             document.getElementById('textShadowToggle').checked = settings.textShadow;
 
-            // Применяем настройки таблицы календаря
+            // Применяем настройки календаря
             let r = document.documentElement;
+            r.style.setProperty('--bg-main', calSettings.bg_main);
+            r.style.setProperty('--month-cell-color', calSettings.month_cell_color);
+            r.style.setProperty('--weekday-cell-color', calSettings.weekday_cell_color);
+            r.style.setProperty('--day-cell-color', calSettings.day_cell_color);
+            r.style.setProperty('--today-cell-color', calSettings.today_cell_color);
+            r.style.setProperty('--other-cell-color', calSettings.other_cell_color);
+            r.style.setProperty('--weekend-cell-color', calSettings.weekend_cell_color);
+            r.style.setProperty('--weekend-font-color', calSettings.weekend_font_color);
+
+            r.style.setProperty('--month-font-size', calSettings.month_font_size + 'px');
+            r.style.setProperty('--month-font-color', calSettings.month_font_color);
+            r.style.setProperty('--month-font-weight', calSettings.month_font_weight ? '800' : 'normal');
+
+            r.style.setProperty('--weekday-font-size', calSettings.weekday_font_size + 'px');
+            r.style.setProperty('--weekday-font-color', calSettings.weekday_font_color);
+            r.style.setProperty('--weekday-font-weight', calSettings.weekday_font_weight ? '700' : 'normal');
+
+            r.style.setProperty('--day-font-size', calSettings.day_font_size + 'px');
+            r.style.setProperty('--day-font-color', calSettings.day_font_color);
+            r.style.setProperty('--day-font-weight', calSettings.day_font_weight ? '700' : 'normal');
+
+            r.style.setProperty('--today-font-size', calSettings.today_font_size + 'px');
+            r.style.setProperty('--today-font-color', calSettings.today_font_color);
+            r.style.setProperty('--today-font-weight', calSettings.today_font_weight ? '800' : 'normal');
+
+            r.style.setProperty('--other-day-font-size', calSettings.other_day_font_size + 'px');
+            r.style.setProperty('--other-day-font-color', calSettings.other_day_font_color);
+            r.style.setProperty('--other-day-font-weight', calSettings.other_day_font_weight ? '600' : 'normal');
+
+            // Применяем настройки таблицы
             r.style.setProperty('--table-bg', tableSettings.table_bg);
             r.style.setProperty('--table-header-bg', tableSettings.table_header_bg);
             r.style.setProperty('--table-header-font-size', tableSettings.table_header_font_size + 'px');
@@ -1723,7 +1686,7 @@
             }
         }
 
-        /* --- Логика пункта 4 (Календарь с заметками) --- */
+        /* --- Логика пункта 4 (Календарь с заметками и полными настройками) --- */
         function initTable() {
             let tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
@@ -1744,6 +1707,7 @@
         }
 
         function renderCalendar() {
+            applySettings();
             document.getElementById('cal-header-label').innerText = `${DISPLAY_MONTHS[calMonth-1]} ${calYear}`;
             let calFrame = document.getElementById('cal-frame');
             calFrame.innerHTML = '';
@@ -1814,30 +1778,44 @@
                 }
             }
 
-            cell.innerText = day;
-            if (hasNote) {
-                let canvas = document.createElement('canvas');
-                let sz = 12;
-                canvas.width = sz;
-                canvas.height = sz;
-                canvas.style.position = 'absolute';
-                canvas.style.bottom = '2px';
-                canvas.style.left = '50%';
-                canvas.style.transform = 'translateX(-50%)';
-                
-                let ctx = canvas.getContext('2d');
-                let r = sz / 2 - 1;
-                let cx = sz / 2, cy = sz / 2;
-                
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-                ctx.fillStyle = dotColor;
-                ctx.fill();
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = "rgba(0,0,0,0.2)";
-                ctx.stroke();
-                
-                cell.appendChild(canvas);
+            if (calSettings.note_display_mode === "Текст заметки" && hasNote && !isOther) {
+                cell.innerHTML = `
+                    <div>${day}</div>
+                    <div style="font-size:${calSettings.note_font_size}px; font-weight:bold; color:${dotColor}; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:95%;">${noteText}</div>
+                `;
+            } else {
+                cell.innerText = day;
+                if (hasNote && calSettings.note_display_mode === "Цветные точки") {
+                    let canvas = document.createElement('canvas');
+                    let sz = calSettings.dot_size + 4;
+                    canvas.width = sz;
+                    canvas.height = sz;
+                    canvas.style.position = 'absolute';
+                    canvas.style.bottom = '3px';
+                    canvas.style.left = '50%';
+                    canvas.style.transform = 'translateX(-50%)';
+                    
+                    let ctx = canvas.getContext('2d');
+                    let r = calSettings.dot_size / 2;
+                    let cx = sz / 2, cy = sz / 2;
+                    
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+                    ctx.fillStyle = dotColor;
+                    ctx.fill();
+                    if (calSettings.dot_relief_sunken > 0) {
+                        ctx.lineWidth = calSettings.dot_relief_sunken;
+                        ctx.strokeStyle = "rgba(0,0,0,0.2)";
+                        ctx.stroke();
+                    }
+                    if (calSettings.dot_3d_style === "Сфера с бликом" && calSettings.dot_relief_raised > 0) {
+                        ctx.beginPath();
+                        ctx.arc(cx - r/3, cy - r/3, r/3, 0, 2 * Math.PI);
+                        ctx.fillStyle = "#ffffff";
+                        ctx.fill();
+                    }
+                    cell.appendChild(canvas);
+                }
             }
 
             cell.onclick = () => openNoteModal(dateStr);
@@ -2028,7 +2006,7 @@
 
         function exportCalendarData() {
             collectTableInputs();
-            let payload = { calendar_db: calDb, table_settings: tableSettings };
+            let payload = { calendar_db: calDb, calendar_settings: calSettings, table_settings: tableSettings };
             let jsonStr = JSON.stringify(payload, null, 4);
             let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
             let url = URL.createObjectURL(blob);
@@ -2058,6 +2036,10 @@
                     if (!calDb.table_ranges) calDb.table_ranges = {};
                     localStorage.setItem('calendar_db', JSON.stringify(calDb));
 
+                    if (imported.calendar_settings) {
+                        calSettings = imported.calendar_settings;
+                        localStorage.setItem('calendar_settings', JSON.stringify(calSettings));
+                    }
                     if (imported.table_settings) {
                         tableSettings = imported.table_settings;
                         localStorage.setItem('table_settings', JSON.stringify(tableSettings));
@@ -2066,10 +2048,93 @@
                     renderCalendar();
                     calcAllTime();
                     loadTableData();
-                    alert("Данные календаря успешно импортированы!");
+                    alert("Данные и настройки успешно импортированы!");
                 } catch(err) { alert("Ошибка чтения файла!"); }
             };
             reader.readAsText(file);
+        }
+
+        function openSettingsModal() {
+            let container = document.getElementById('settings-controls');
+            container.innerHTML = '';
+            let items = [
+                { label: "Общий фон приложения", cell: "bg_main" },
+                { label: "Шрифт месяца", sz: "month_font_size", col: "month_font_color", b: "month_font_weight", cell: "month_cell_color" },
+                { label: "Шрифт дней недели", sz: "weekday_font_size", col: "weekday_font_color", b: "weekday_font_weight", cell: "weekday_cell_color" },
+                { label: "Шрифт чисел календаря", sz: "day_font_size", col: "day_font_color", b: "day_font_weight", cell: "day_cell_color" },
+                { label: "Шрифт текущего дня", sz: "today_font_size", col: "today_font_color", b: "today_font_weight", cell: "today_cell_color" },
+                { label: "Шрифт чужих дней", sz: "other_day_font_size", col: "other_day_font_color", b: "other_day_font_weight", cell: "other_cell_color" },
+                { label: "Выходные дни", col: "weekend_font_color", cell: "weekend_cell_color" }
+            ];
+
+            items.forEach(item => {
+                let div = document.createElement('div');
+                div.className = "modal-item-card";
+                div.innerHTML = `<b style="font-size:11px; color:var(--text-color);">${item.label}</b>`;
+                if (item.sz) {
+                    div.innerHTML += `
+                        <div style="display:flex; gap:6px; align-items:center; font-size:11px; flex-wrap:wrap;">
+                            Размер: <input type="number" class="modal-input" id="st_${item.sz}" value="${calSettings[item.sz]}" style="width:45px;">
+                            Жирный: <input type="checkbox" id="st_${item.b}" ${calSettings[item.b] ? 'checked' : ''}>
+                            Цвет: <input type="text" class="modal-input" id="st_${item.col}" value="${calSettings[item.col]}" style="width:65px;">
+                            Фон: <input type="text" class="modal-input" id="st_${item.cell}" value="${calSettings[item.cell]}" style="width:65px;">
+                        </div>
+                    `;
+                } else if (item.col && item.cell) {
+                    div.innerHTML += `
+                        <div style="display:flex; gap:6px; align-items:center; font-size:11px; flex-wrap:wrap;">
+                            Цвет текста: <input type="text" class="modal-input" id="st_${item.col}" value="${calSettings[item.col]}" style="width:75px;">
+                            Цвет фона: <input type="text" class="modal-input" id="st_${item.cell}" value="${calSettings[item.cell]}" style="width:75px;">
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML += `<div style="font-size:11px;">HEX цвет: <input type="text" class="modal-input" id="st_${item.cell}" value="${calSettings[item.cell]}" style="width:85px;"></div>`;
+                }
+                container.appendChild(div);
+            });
+
+            let dotDiv = document.createElement('div');
+            dotDiv.className = "modal-item-card";
+            dotDiv.innerHTML = `
+                <b style="font-size:11px; color:var(--text-color);">Параметры заметок на календаре</b>
+                <div style="display:flex; flex-direction:column; gap:6px; font-size:11px; margin-top:4px;">
+                    <div>Режим: <select class="modal-input" id="st_note_display_mode"><option ${calSettings.note_display_mode==="Цветные точки"?"selected":""}>Цветные точки</option><option ${calSettings.note_display_mode==="Текст заметки"?"selected":""}>Текст заметки</option></select></div>
+                    <div>Размер точки: <input type="number" class="modal-input" id="st_dot_size" value="${calSettings.dot_size}" style="width:50px;"></div>
+                    <div>Шрифт текста: <input type="number" class="modal-input" id="st_note_font_size" value="${calSettings.note_font_size}" style="width:50px;"></div>
+                </div>
+            `;
+            container.appendChild(dotDiv);
+
+            document.getElementById('settings-modal').style.display = 'flex';
+        }
+
+        function closeCalendarSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
+
+        function saveCalendarSettings() {
+            let keys = [
+                "bg_main",
+                "month_font_size", "month_font_color", "month_font_weight", "month_cell_color",
+                "weekday_font_size", "weekday_font_color", "weekday_font_weight", "weekday_cell_color",
+                "day_font_size", "day_font_color", "day_font_weight", "day_cell_color",
+                "today_font_size", "today_font_color", "today_font_weight", "today_cell_color",
+                "other_day_font_size", "other_day_font_color", "other_day_font_weight", "other_cell_color",
+                "weekend_cell_color", "weekend_font_color",
+                "dot_size", "note_font_size"
+            ];
+            keys.forEach(key => {
+                let el = document.getElementById(`st_${key}`);
+                if (el) {
+                    if (key.includes('weight')) calSettings[key] = el.checked;
+                    else if (key.includes('size')) calSettings[key] = parseInt(el.value) || 12;
+                    else calSettings[key] = el.value;
+                }
+            });
+            let modeEl = document.getElementById('st_note_display_mode');
+            if (modeEl) calSettings.note_display_mode = modeEl.value;
+
+            localStorage.setItem('calendar_settings', JSON.stringify(calSettings));
+            closeCalendarSettingsModal();
+            renderCalendar();
         }
 
         function openTableSettings() {
@@ -2087,7 +2152,6 @@
             items.forEach(item => {
                 let div = document.createElement('div');
                 div.className = "modal-item-card";
-                div.style.cssText = "background:var(--card-bg); padding:8px; border-radius:10px; box-shadow:2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light); display:flex; flex-direction:column; gap:4px;";
                 div.innerHTML = `<b style="font-size:11px; color:var(--text-color);">${item.label}</b>`;
                 if (item.sz) {
                     div.innerHTML += `
@@ -2121,7 +2185,7 @@
                 let el = document.getElementById(`tst_${key}`);
                 if (el) {
                     if (key.includes('weight')) tableSettings[key] = el.checked;
-                    else if (key.includes('size')) tableSettings[key] = parseInt(el.value) || 11;
+                    else if (key.includes('size')) tableSettings[key] = parseInt(el.value) || 12;
                     else tableSettings[key] = el.value;
                 }
             });
