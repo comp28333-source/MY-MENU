@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3D Neumorphic App — БЛiК</title>
-    <!-- Tailwind CSS CDN с офлайн-дублированием стилей ниже -->
+    <!-- Tailwind CSS CDN (С полными CSS-дублерами ниже для офлайн-режима) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -132,7 +132,7 @@
             --reset-color: #fc8181;
         }
 
-        /* ОФФЛАЙН-ДУБЛЕРЫ UTILITY-КЛАССОВ (Гарантия работы без сети) */
+        /* ОФФЛАЙН-ДУБЛЕРЫ UTILITY-КЛАССОВ */
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
         .grid { display: grid; }
@@ -211,7 +211,7 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 900;
             letter-spacing: 3px;
             color: var(--text-muted);
@@ -444,7 +444,7 @@
             transition: transform 0.2s ease;
         }
 
-        /* --- Стили календаря --- */
+        /* Стили календаря */
         .cal-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .cal-nav-frame {
             background-color: var(--month-cell-color);
@@ -529,7 +529,7 @@
             box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
         }
 
-        /* --- Исправленные тактильные поля таблиц «С / -ПО» --- */
+        /* Объемные 3D-инпуты таблицы учетных данных */
         .table-container {
             background: var(--table-bg);
             padding: 10px;
@@ -574,7 +574,6 @@
             font-weight: var(--table-total-font-weight);
             box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
         }
-        /* Исправленные инпуты таблицы под общий 3D стиль приложения */
         .table-frame input { 
             width: 100%; height: 100%; text-align: center; border: none; outline: none; border-radius: 6px; 
             font-size: var(--table-cell-font-size); font-weight: var(--table-cell-font-weight); color: var(--table-cell-font-color); 
@@ -1144,6 +1143,7 @@
             { id: 5, type: "custom", name: "5. ПУНКТ", color: "", bg: "" }
         ];
 
+        let menuItems;
         let storedMenu = JSON.parse(localStorage.getItem('menu_items'));
         if (!storedMenu || !storedMenu.some(item => item.type === 'calendar')) {
             menuItems = defaultMenu;
@@ -1235,7 +1235,7 @@
             calcPercent();
             calcSpider(145.00);
 
-            calculateTime();
+            loadTimeCalcData();
 
             initTable();
             renderCalendar();
@@ -1710,6 +1710,23 @@
             let formattedM = String(minutes).padStart(2, '0');
 
             resultTimeDiv.textContent = `${formattedH} ч ${formattedM} м`;
+            
+            // Сохранение значений калькулятора времени
+            localStorage.setItem('calc_time_data', JSON.stringify({
+                sh: startHInput.value, sm: startMInput.value,
+                eh: endHInput.value, em: endMInput.value
+            }));
+        }
+
+        function loadTimeCalcData() {
+            let data = JSON.parse(localStorage.getItem('calc_time_data'));
+            if (data) {
+                if (data.sh !== undefined) startHInput.value = data.sh;
+                if (data.sm !== undefined) startMInput.value = data.sm;
+                if (data.eh !== undefined) endHInput.value = data.eh;
+                if (data.em !== undefined) endMInput.value = data.em;
+            }
+            calculateTime();
         }
 
         [startHInput, startMInput, endHInput, endMInput].forEach(input => {
@@ -1988,6 +2005,7 @@
         }
 
         function closeTableModal() {
+            collectTableInputs();
             document.getElementById('table-modal').style.display = 'none';
         }
 
@@ -2002,15 +2020,23 @@
             updateTableCalculations();
         }
 
+        /* Мгновенный сбор и сохранение всех данных таблицы */
         function collectTableInputs() {
             let yearStr = calYear.toString();
             if (!calDb.table_ranges[yearStr]) calDb.table_ranges[yearStr] = {};
 
             for (let i = 1; i <= 12; i++) {
-                let f1 = document.getElementById(`f1_${i}`).value.trim();
-                let t1 = document.getElementById(`t1_${i}`).value.trim();
-                let f2 = document.getElementById(`f2_${i}`).value.trim();
-                let t2 = document.getElementById(`t2_${i}`).value.trim();
+                let f1El = document.getElementById(`f1_${i}`);
+                let t1El = document.getElementById(`t1_${i}`);
+                let f2El = document.getElementById(`f2_${i}`);
+                let t2El = document.getElementById(`t2_${i}`);
+
+                if (!f1El) continue;
+
+                let f1 = f1El.value.trim();
+                let t1 = t1El.value.trim();
+                let f2 = f2El.value.trim();
+                let t2 = t2El.value.trim();
 
                 if (f1 || t1 || f2 || t2) {
                     calDb.table_ranges[yearStr][i] = { from1: f1, to1: t1, from2: f2, to2: t2 };
@@ -2029,11 +2055,13 @@
             for (let i = 1; i <= 12; i++) {
                 let mData = yearData[i] || {};
                 let monthSum = calcMonthDays(i, mData.from1, mData.to1, mData.from2, mData.to2);
-                document.getElementById(`res_${i}`).innerText = monthSum > 0 ? monthSum : '';
+                let resCell = document.getElementById(`res_${i}`);
+                if (resCell) resCell.innerText = monthSum > 0 ? monthSum : '';
                 totalYear += monthSum;
             }
 
-            document.getElementById('total-year-days').innerText = totalYear;
+            let totalYearEl = document.getElementById('total-year-days');
+            if (totalYearEl) totalYearEl.innerText = totalYear;
             calcAllTime();
         }
 
@@ -2057,10 +2085,14 @@
             let yearData = calDb.table_ranges[yearStr] || {};
             for (let i = 1; i <= 12; i++) {
                 let mData = yearData[i] || {};
-                document.getElementById(`f1_${i}`).value = mData.from1 || '';
-                document.getElementById(`t1_${i}`).value = mData.to1 || '';
-                document.getElementById(`f2_${i}`).value = mData.from2 || '';
-                document.getElementById(`t2_${i}`).value = mData.to2 || '';
+                let f1 = document.getElementById(`f1_${i}`);
+                let t1 = document.getElementById(`t1_${i}`);
+                let f2 = document.getElementById(`f2_${i}`);
+                let t2 = document.getElementById(`t2_${i}`);
+                if (f1) f1.value = mData.from1 || '';
+                if (t1) t1.value = mData.to1 || '';
+                if (f2) f2.value = mData.from2 || '';
+                if (t2) t2.value = mData.to2 || '';
             }
             updateTableCalculations();
         }
@@ -2077,7 +2109,8 @@
                     }
                 }
             }
-            document.getElementById('total-all-days').innerText = allTime;
+            let totalAll = document.getElementById('total-all-days');
+            if (totalAll) totalAll.innerText = allTime;
         }
 
         function calcMonthDaysForYear(y, m, f1, t1, f2, t2) {
@@ -2098,8 +2131,10 @@
         function highlightActiveTableRow() {
             for (let i = 1; i <= 12; i++) {
                 let row = document.getElementById(`row-month-${i}`);
-                if (i === calMonth) row.classList.add('highlight-row');
-                else row.classList.remove('highlight-row');
+                if (row) {
+                    if (i === calMonth) row.classList.add('highlight-row');
+                    else row.classList.remove('highlight-row');
+                }
             }
         }
 
@@ -2113,18 +2148,24 @@
             renderCalendar();
         }
 
+        /* ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ И НАДЕЖНАЯ ФУНКЦИЯ ЭКСПОРТА */
         function exportCalendarData() {
             collectTableInputs();
             let payload = { calendar_db: calDb, calendar_settings: calSettings, table_settings: tableSettings };
             let jsonStr = JSON.stringify(payload, null, 4);
+            
             let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
             let url = URL.createObjectURL(blob);
             let dlAnchor = document.createElement('a');
-            dlAnchor.href = url;
-            dlAnchor.download = "calendar_backup.json";
+            dlAnchor.setAttribute("href", url);
+            dlAnchor.setAttribute("download", `calendar_backup_${calYear}.json`);
+            dlAnchor.style.display = 'none';
             document.body.appendChild(dlAnchor);
             dlAnchor.click();
-            setTimeout(() => { document.body.removeChild(dlAnchor); URL.revokeObjectURL(url); }, 200);
+            setTimeout(() => { 
+                document.body.removeChild(dlAnchor); 
+                URL.revokeObjectURL(url); 
+            }, 500);
         }
 
         function importCalendarDataTrigger() { document.getElementById('cal-import-file').click(); }
@@ -2325,6 +2366,11 @@
         document.getElementById('fontSizeInput').oninput = (e) => { settings.fontSize = e.target.value; applySettings(); };
         document.getElementById('letterSpacingInput').oninput = (e) => { settings.letterSpacing = e.target.value; applySettings(); };
         document.getElementById('textShadowToggle').onchange = (e) => { settings.textShadow = e.target.checked; applySettings(); };
+
+        // Автосохранение при закрытии страницы или переключении приложения
+        window.addEventListener('beforeunload', () => {
+            collectTableInputs();
+        });
 
         init();
     </script>
