@@ -1,9 +1,38 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3D Neumorphic App — БЛiК</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: 'var(--color-brand-50, #eff6ff)',
+                            100: 'var(--color-brand-100, #dbeafe)',
+                            500: 'var(--color-brand-500, #3b82f6)',
+                            600: 'var(--color-brand-600, #2563eb)',
+                            700: 'var(--color-brand-700, #1d4ed8)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --bg-color: #e0e5ec;
@@ -27,9 +56,13 @@
             --alert-bg: #fff5f5;
             --alert-text: #e53e3e;
             --reset-color: #e53e3e;
+
+            --color-brand-500: #3b82f6;
+            --color-brand-600: #2563eb;
+            --color-brand-700: #1d4ed8;
         }
 
-        [data-theme="dark"] {
+        [data-theme="dark"], .dark {
             --bg-color: #1e2530;
             --card-bg: #1e2530;
             --text-color: #e2e8f0;
@@ -64,6 +97,22 @@
             padding: 16px;
             transition: background-color 0.3s ease, color 0.3s ease;
             text-transform: uppercase;
+            overflow-x: hidden;
+        }
+
+        /* ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК */
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 50;
+            user-select: none;
         }
 
         .app-card {
@@ -80,6 +129,7 @@
             gap: 20px;
             position: relative;
             transition: all 0.3s ease;
+            z-index: 10;
         }
 
         .header {
@@ -138,9 +188,11 @@
             border-radius: 50%;
         }
 
-        .icon-btn svg {
+        .icon-btn svg, .icon-btn i {
             width: 20px;
             height: 20px;
+            font-size: 18px;
+            line-height: 20px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2;
@@ -276,16 +328,21 @@
             margin-top: 5px;
         }
 
-        .watermark {
-            text-align: center;
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: var(--text-muted);
-            opacity: 0.4;
-            margin-top: 6px;
+        .grid-3d-box {
+            background: var(--card-bg);
+            box-shadow: inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            border-radius: calc(var(--border-radius) - 4px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease;
         }
 
+        .grid-3d-box:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Модальное окно настроек */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -423,6 +480,9 @@
 </head>
 <body>
 
+    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК -->
+    <div class="watermark">БЛiК</div>
+
     <div class="app-card">
         <div class="header">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -451,7 +511,7 @@
             <div class="menu-list" id="menuContainer"></div>
         </div>
 
-        <!-- ПУНКТ 1: ГЕНЕРАТОР (НЕ ТРОГАЕМ!) -->
+        <!-- ПУНКТ 1: ГЕНЕРАТОР (ЗАМОРОЖЕН) -->
         <div id="screenGenerator" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="btnTabHours" onclick="switchGenTab('tabHours', this)">МОТОЧАСЫ, Т/О</button>
@@ -529,14 +589,13 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 2: КАЛЬКУЛЯТОРЫ (С ЗАКЛАДКАМИ ПРОЦЕНТЫ / КОНВЕРТЕР) -->
+        <!-- ПУНКТ 2: КАЛЬКУЛЯТОРЫ (ЗАМОРОЖЕН) -->
         <div id="screenCalculators" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="btnCalcPerc" onclick="switchCalcTab('calcPerc', this)">ПРОЦЕНТЫ</button>
                 <button class="neu-btn sub-nav-btn" id="btnCalcConv" onclick="switchCalcTab('calcConv', this)">ЭЛЕКТРО КОНВЕРТЕР</button>
             </div>
 
-            <!-- Вкладка 1: Проценты -->
             <div id="calcTabPerc">
                 <div class="input-group">
                     <label for="percentInput">ПРОЦЕНТ (%):</label>
@@ -551,7 +610,6 @@
                 <div class="calc-result-box" id="calcResult">0% ОТ 100 = 0</div>
             </div>
 
-            <!-- Вкладка 2: Электро конвертер -->
             <div id="calcTabConv" style="display: none;">
                 <div class="input-group">
                     <label for="voltage">ВОЛЬТ (U, В)</label>
@@ -569,6 +627,142 @@
                 </div>
 
                 <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--reset-color);" onclick="clearConverter()">ОЧИСТИТЬ</button>
+            </div>
+        </div>
+
+        <!-- ПУНКТ 3: АНТЕННА «ПАУК» (ПОЛНАЯ С 4 ЛУЧАМИ НА СХЕМАХ) -->
+        <div id="screenSpider" class="view-screen">
+            <div class="sub-nav">
+                <button class="neu-btn sub-nav-btn active" id="spiderTabExt" onclick="switchSpiderMode('ext', this)">
+                    <i class="fa-solid fa-window-maximize mr-1.5"></i> Расширенная
+                </button>
+                <button class="neu-btn sub-nav-btn" id="spiderTabComp" onclick="switchSpiderMode('comp', this)">
+                    <i class="fa-solid fa-compress mr-1.5"></i> Урезанная
+                </button>
+            </div>
+
+            <!-- РАСШИРЕННАЯ ВЕРСИЯ ПАУКА -->
+            <div id="spiderViewExt" class="flex flex-col gap-4">
+                <div class="input-group">
+                    <label for="spiderFreqExt">ЧАСТОТА (136 – 174 МГц):</label>
+                    <div class="relative flex items-center">
+                        <input type="number" id="spiderFreqExt" step="0.01" min="0.1" placeholder="145.00" value="145.00" oninput="syncAndCalcSpider('ext')" class="pr-16 font-mono font-bold text-lg">
+                        <span class="absolute right-4 font-bold text-xs uppercase tracking-widest text-slate-400 pointer-events-none">МГц</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1"><i class="fa-solid fa-circle-info text-brand-500 mr-1"></i>Расчет работает для любых частот VHF</p>
+                </div>
+
+                <div>
+                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Быстрый выбор:</span>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button onclick="setSpiderFreq(136.00)" class="neu-btn py-2 text-xs font-mono font-bold">136.00</button>
+                        <button onclick="setSpiderFreq(145.00)" class="neu-btn py-2 text-xs font-mono font-bold">145.00</button>
+                        <button onclick="setSpiderFreq(150.00)" class="neu-btn py-2 text-xs font-mono font-bold">150.00</button>
+                        <button onclick="setSpiderFreq(174.00)" class="neu-btn py-2 text-xs font-mono font-bold">174.00</button>
+                    </div>
+                </div>
+
+                <!-- Интерактивная SVG схема с 4 лучами -->
+                <div class="grid-3d-box p-3 flex flex-col items-center justify-center relative min-h-[160px]">
+                    <span class="absolute top-2 left-3 text-[10px] font-mono text-slate-400 uppercase font-bold">GP 1/4 &lambda; (4 Луча)</span>
+                    <svg viewBox="0 0 300 160" class="w-full h-32 drop-shadow-md overflow-visible">
+                        <line x1="150" y1="10" x2="150" y2="30" stroke="#94a3b8" stroke-width="2" stroke-dasharray="3 3"/>
+                        <!-- Штырь (Element 2) -->
+                        <g class="cursor-pointer" onclick="highlightSpiderCard(2)">
+                            <line x1="150" y1="30" x2="150" y2="105" stroke="var(--accent-color)" stroke-width="5" stroke-linecap="round"/>
+                            <circle cx="150" cy="67" r="9" fill="var(--accent-color)"/>
+                            <text x="150" y="71" fill="#ffffff" font-weight="bold" font-size="9" text-anchor="middle">2</text>
+                        </g>
+                        <!-- 4 Противовеса (Element 7) -->
+                        <g class="cursor-pointer" onclick="highlightSpiderCard(7)">
+                            <line x1="142" y1="108" x2="80" y2="140" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="158" y1="108" x2="220" y2="140" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="145" y1="110" x2="100" y2="125" stroke="#6366f1" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="155" y1="110" x2="200" y2="125" stroke="#6366f1" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="115" cy="132" r="9" fill="#6366f1"/>
+                            <text x="115" y="136" fill="#ffffff" font-weight="bold" font-size="9" text-anchor="middle">7</text>
+                        </g>
+                    </svg>
+                    <span class="text-[10px] text-slate-400 text-center">Нажмите на штырь [2] или лучи [7]</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="calcSpiderAction()" class="neu-btn py-3 text-xs font-bold uppercase text-brand-600 dark:text-brand-500">
+                        <i class="fa-solid fa-calculator mr-1.5"></i> РАССЧИТАТЬ
+                    </button>
+                    <button onclick="clearSpider()" class="neu-btn py-3 text-xs font-bold uppercase text-red-500">
+                        <i class="fa-solid fa-rotate-left mr-1.5"></i> ОЧИСТИТЬ
+                    </button>
+                </div>
+
+                <!-- Блок детальных результатов -->
+                <div class="result-box" id="spiderResultBox" style="display: flex;">
+                    <h3>ПОДРОБНЫЕ РЕЗУЛЬТАТЫ:</h3>
+                    <div class="grid grid-cols-1 gap-2 mt-1">
+                        <div class="result-item p-2.5 grid-3d-box" id="card-spider-2">
+                            ШТЫРЬ ИЗЛУЧАТЕЛЬ (L2): <span id="spiderRes2" class="highlight">49.14 см</span><br>
+                            <span class="text-[11px] text-slate-400 font-mono" id="spiderRes2Mm">Точно: 491.4 мм</span>
+                        </div>
+                        <div class="result-item p-2.5 grid-3d-box" id="card-spider-7">
+                            ПРОТИВОВЕСЫ (4 ЛУЧА L7): <span id="spiderRes7" class="highlight">50.00 см</span><br>
+                            <span class="text-[11px] text-slate-400 font-mono" id="spiderRes7Mm">Точно: 500.0 мм (каждый)</span>
+                        </div>
+                        <div class="result-item p-2.5 grid-3d-box">
+                            ДЛИНА ВОЛНЫ (&lambda;): <span id="spiderResLambda" class="highlight">2.07 м</span> | 1/4 ВОЛНЫ: <span id="spiderResQuarter" class="highlight">51.72 см</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- УРЕЗАННАЯ ВЕРСИЯ ПАУКА (С 4 ЛУЧАМИ НА СХЕМЕ) -->
+            <div id="spiderViewComp" style="display: none;" class="flex flex-col gap-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100">Паук 136–174 МГц</h2>
+                </div>
+
+                <div class="grid-3d-box p-3 flex justify-center items-center h-36 overflow-hidden relative">
+                    <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                        <circle cx="100" cy="70" r="9" fill="#888" stroke="#555" stroke-width="1"/>
+                        <line x1="100" y1="70" x2="100" y2="15" stroke="var(--accent-color)" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="100" y1="70" x2="50" y2="105" stroke="var(--accent-color)" stroke-width="2.5" stroke-linecap="round"/>
+                        <line x1="100" y1="70" x2="150" y2="105" stroke="var(--accent-color)" stroke-width="2.5" stroke-linecap="round"/>
+                        <line x1="100" y1="70" x2="65" y2="85" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="100" y1="70" x2="135" y2="85" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div class="input-group">
+                    <label for="spiderFreqComp">ЧАСТОТА (136.00 – 174.00 МГц):</label>
+                    <div class="relative flex items-center">
+                        <input type="number" id="spiderFreqComp" step="0.01" min="0.1" placeholder="145.00" value="145.00" oninput="syncAndCalcSpider('comp')" class="pr-16 font-mono font-bold">
+                        <span class="absolute right-4 font-bold text-xs text-slate-400">МГц</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="setSpiderFreq(136.00)" class="neu-btn py-2 text-xs font-mono font-bold">136.00</button>
+                    <button onclick="setSpiderFreq(145.00)" class="neu-btn py-2 text-xs font-mono font-bold">145.00</button>
+                    <button onclick="setSpiderFreq(150.00)" class="neu-btn py-2 text-xs font-mono font-bold">150.00</button>
+                    <button onclick="setSpiderFreq(174.00)" class="neu-btn py-2 text-xs font-mono font-bold">174.00</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="calcSpiderAction()" class="neu-btn py-3 text-xs font-bold uppercase text-brand-600 dark:text-brand-500">РАССЧИТАТЬ</button>
+                    <button onclick="clearSpider()" class="neu-btn py-3 text-xs font-bold uppercase text-red-500">ОЧИСТИТЬ</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="grid-3d-box p-4 text-center">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">ШТЫРЬ:</div>
+                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes2">49.14</span>
+                        <div class="text-xs text-slate-400 mt-0.5">см</div>
+                    </div>
+                    <div class="grid-3d-box p-4 text-center">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">ЛУЧИ (4 ШТ):</div>
+                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes7">50.00</span>
+                        <div class="text-xs text-slate-400 mt-0.5">см</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -656,13 +850,13 @@
         let defaultMenu = [
             { id: 1, type: "generator", name: "1. ГЕНЕРАТОР", color: "", bg: "" },
             { id: 2, type: "calculators", name: "2. КАЛЬКУЛЯТОРЫ", color: "", bg: "" },
-            { id: 3, type: "custom", name: "3. ПУНКТ", color: "", bg: "" },
+            { id: 3, type: "spider", name: "3. АНТЕННА «ПАУК»", color: "", bg: "" },
             { id: 4, type: "custom", name: "4. ПУНКТ", color: "", bg: "" },
             { id: 5, type: "custom", name: "5. ПУНКТ", color: "", bg: "" }
         ];
 
         let storedMenu = JSON.parse(localStorage.getItem('menu_items'));
-        if (!storedMenu || !storedMenu.some(item => item.type === 'calculators')) {
+        if (!storedMenu || !storedMenu.some(item => item.type === 'spider')) {
             menuItems = defaultMenu;
             localStorage.setItem('menu_items', JSON.stringify(menuItems));
         } else {
@@ -698,6 +892,7 @@
             document.getElementById('fuelStartDate').valueAsDate = fStart;
             calcFuel();
             calcPercent();
+            calcSpider(145.00);
         }
 
         function applySettings() {
@@ -714,8 +909,10 @@
             const themeIcon = document.getElementById('themeIcon');
             if (settings.theme === 'dark') {
                 themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+                document.documentElement.classList.add('dark');
             } else {
                 themeIcon.innerHTML = '<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+                document.documentElement.classList.remove('dark');
             }
 
             document.getElementById('accentColorInput').value = settings.accent;
@@ -739,6 +936,7 @@
             document.getElementById('screenMainMenu').classList.remove('active');
             document.getElementById('screenGenerator').classList.remove('active');
             document.getElementById('screenCalculators').classList.remove('active');
+            document.getElementById('screenSpider').classList.remove('active');
             document.getElementById('screenEmptyModule').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
@@ -748,6 +946,8 @@
                 document.getElementById('screenGenerator').classList.add('active');
             } else if (item.type === 'calculators') {
                 document.getElementById('screenCalculators').classList.add('active');
+            } else if (item.type === 'spider') {
+                document.getElementById('screenSpider').classList.add('active');
             } else {
                 document.getElementById('emptyModuleTitle').innerText = `${item.name} В РАЗРАБОТКЕ`;
                 document.getElementById('screenEmptyModule').classList.add('active');
@@ -757,6 +957,7 @@
         function openMainMenu() {
             document.getElementById('screenGenerator').classList.remove('active');
             document.getElementById('screenCalculators').classList.remove('active');
+            document.getElementById('screenSpider').classList.remove('active');
             document.getElementById('screenEmptyModule').classList.remove('active');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
@@ -835,7 +1036,7 @@
             renderEditItems();
         };
 
-        /* Логика генератора (Пункт 1) */
+        /* Логика генератора (Пункт 1 - Заморожен) */
         function switchGenTab(tabId, btn) {
             document.getElementById('genTabHours').style.display = tabId === 'tabHours' ? 'block' : 'none';
             document.getElementById('genTabFuel').style.display = tabId === 'tabFuel' ? 'block' : 'none';
@@ -1016,7 +1217,7 @@
             }
         }
 
-        /* Логика закладок в пункте 2 (Калькуляторы) */
+        /* Логика пункта 2 (Калькуляторы - Заморожен) */
         function switchCalcTab(tabId, btn) {
             document.getElementById('calcTabPerc').style.display = tabId === 'calcPerc' ? 'block' : 'none';
             document.getElementById('calcTabConv').style.display = tabId === 'calcConv' ? 'block' : 'none';
@@ -1024,7 +1225,6 @@
             btn.classList.add('active');
         }
 
-        /* Логика калькулятора процентов */
         function calcPercent() {
             const percentInput = parseFloat(document.getElementById('percentInput').value) || 0;
             const numberInput = parseFloat(document.getElementById('numberInput').value) || 0;
@@ -1033,7 +1233,6 @@
             document.getElementById('calcResult').innerText = `${percentInput}% ОТ ${numberInput} = ${formattedResult}`;
         }
 
-        /* Логика электро конвертера */
         function getConvVal(id) {
             const val = parseFloat(document.getElementById(id).value);
             return isNaN(val) ? null : val;
@@ -1073,6 +1272,87 @@
 
         function clearConverter() {
             ['voltage', 'current', 'power'].forEach(id => document.getElementById(id).value = '');
+        }
+
+        /* Логика пункта 3 (Антенна «Паук» с 4 лучами) */
+        function switchSpiderMode(mode, btn) {
+            document.getElementById('spiderViewExt').style.display = mode === 'ext' ? 'flex' : 'none';
+            document.getElementById('spiderViewComp').style.display = mode === 'comp' ? 'flex' : 'none';
+            document.querySelectorAll('#screenSpider > .sub-nav .sub-nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function syncAndCalcSpider(source) {
+            const extInput = document.getElementById('spiderFreqExt');
+            const compInput = document.getElementById('spiderFreqComp');
+            
+            let val = source === 'ext' ? extInput.value : compInput.value;
+            if (source === 'ext') compInput.value = val;
+            else extInput.value = val;
+
+            const freq = parseFloat(val);
+            if (isNaN(freq) || freq <= 0) return;
+
+            calcSpider(freq);
+        }
+
+        function setSpiderFreq(val) {
+            document.getElementById('spiderFreqExt').value = val.toFixed(2);
+            document.getElementById('spiderFreqComp').value = val.toFixed(2);
+            calcSpider(val);
+        }
+
+        function calcSpiderAction() {
+            const freq = parseFloat(document.getElementById('spiderFreqExt').value);
+            if (!isNaN(freq)) calcSpider(freq);
+        }
+
+        function calcSpider(freq) {
+            const elem2_cm = 7125 / freq;
+            const elem2_mm = elem2_cm * 10;
+            const elem7_cm = 7250 / freq;
+            const elem7_mm = elem7_cm * 10;
+            const lambda_m = 300 / freq;
+            const quarter_cm = (lambda_m * 100) / 4;
+
+            document.getElementById('spiderRes2').innerText = `${elem2_cm.toFixed(2)} см`;
+            document.getElementById('spiderRes2Mm').innerText = `Точно: ${elem2_mm.toFixed(1)} мм`;
+            document.getElementById('spiderRes7').innerText = `${elem7_cm.toFixed(2)} см`;
+            document.getElementById('spiderRes7Mm').innerText = `Точно: ${elem7_mm.toFixed(1)} мм (каждый)`;
+            document.getElementById('spiderResLambda').innerText = `${lambda_m.toFixed(2)} м`;
+            document.getElementById('spiderResQuarter').innerText = `${quarter_cm.toFixed(2)} см`;
+
+            document.getElementById('compRes2').innerText = elem2_cm.toFixed(2);
+            document.getElementById('compRes7').innerText = elem7_cm.toFixed(2);
+        }
+
+        function clearSpider() {
+            document.getElementById('spiderFreqExt').value = '';
+            document.getElementById('spiderFreqComp').value = '';
+            document.getElementById('spiderRes2').innerText = '-- см';
+            document.getElementById('spiderRes2Mm').innerText = 'Точно: -- мм';
+            document.getElementById('spiderRes7').innerText = '-- см';
+            document.getElementById('spiderRes7Mm').innerText = 'Точно: -- мм (каждый)';
+            document.getElementById('spiderResLambda').innerText = '-- м';
+            document.getElementById('spiderResQuarter').innerText = '-- см';
+            document.getElementById('compRes2').innerText = '0.00';
+            document.getElementById('compRes7').innerText = '0.00';
+        }
+
+        function highlightSpiderCard(elemId) {
+            const card2 = document.getElementById('card-spider-2');
+            const card7 = document.getElementById('card-spider-7');
+            if(!card2 || !card7) return;
+
+            if(elemId === 2) {
+                card2.classList.add('ring-2', 'ring-brand-500', 'scale-[1.02]');
+                card7.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]');
+                setTimeout(() => card2.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]'), 1500);
+            } else if(elemId === 7) {
+                card7.classList.add('ring-2', 'ring-brand-500', 'scale-[1.02]');
+                card2.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]');
+                setTimeout(() => card7.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]'), 1500);
+            }
         }
 
         function switchSettingsTab(tabId) {
