@@ -60,6 +60,64 @@
             --color-brand-500: #3b82f6;
             --color-brand-600: #2563eb;
             --color-brand-700: #1d4ed8;
+
+            /* Переменные для модуля календаря */
+            --cal-bg-main: #ebedf0;
+            --month-cell-color: #ebedf0;
+            --weekday-cell-color: #ebedf0;
+            --day-cell-color: #ffffff;
+            --today-cell-color: #2b82fb;
+            --other-cell-color: #e6e8ec;
+            --weekend-cell-color: #ffe3e3;
+            --weekend-font-color: #9b1c1c;
+            
+            --cal-month-font-size: 20px;
+            --cal-month-font-color: #1c2536;
+            --cal-month-font-weight: 800;
+
+            --cal-weekday-font-size: 13px;
+            --cal-weekday-font-color: #4a5568;
+            --cal-weekday-font-weight: 700;
+
+            --cal-day-font-size: 15px;
+            --cal-day-font-color: #1a202c;
+            --cal-day-font-weight: 700;
+
+            --cal-today-font-size: 15px;
+            --cal-today-font-color: #ffffff;
+            --cal-today-font-weight: 800;
+
+            --cal-other-day-font-size: 14px;
+            --cal-other-day-font-color: #a0aec0;
+            --cal-other-day-font-weight: 600;
+
+            --table-bg: #ebedf0;
+            --table-header-bg: #e1e3e7;
+            --table-header-font-size: 11px;
+            --table-header-font-color: #2d3748;
+            --table-header-font-weight: bold;
+
+            --table-month-cell-bg: #ffffff;
+            --table-month-font-size: 11px;
+            --table-month-font-color: #1a202c;
+            --table-month-font-weight: bold;
+
+            --table-cell-bg: #ffffff;
+            --table-cell-font-size: 11px;
+            --table-cell-font-color: #1a202c;
+            --table-cell-font-weight: normal;
+
+            --table-result-cell-bg: #f0f2f5;
+            --table-result-font-size: 11px;
+            --table-result-font-color: #2b82fb;
+            --table-result-font-weight: bold;
+
+            --table-total-cell-bg: #e1e3e7;
+            --table-total-font-size: 11px;
+            --table-total-font-color: #e53e3e;
+            --table-total-font-weight: bold;
+
+            --table-highlight-row-bg: #fff5f5;
         }
 
         [data-theme="dark"], .dark {
@@ -100,7 +158,7 @@
             overflow-x: hidden;
         }
 
-        /* ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК */
+        /* ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК В ЛЕВОМ НИЖНЕМ УГЛУ */
         .watermark {
             position: fixed;
             bottom: 20px;
@@ -338,9 +396,161 @@
             transition: transform 0.2s ease;
         }
 
-        .grid-3d-box:hover {
-            transform: translateY(-2px);
+        /* --- Стили модуля 4: Календарь с заметками --- */
+        .cal-wrapper { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .cal-nav-frame {
+            background-color: var(--month-cell-color);
+            padding: 4px 4px 8px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px;
         }
+        .cal-center-nav { display: flex; align-items: center; gap: 8px; flex-grow: 1; justify-content: space-between; }
+        #cal-header-label {
+            font-size: var(--cal-month-font-size);
+            color: var(--cal-month-font-color);
+            font-weight: var(--cal-month-font-weight);
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+        .cal-grid-frame { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .cal-header-cell {
+            background: var(--weekday-cell-color);
+            color: var(--cal-weekday-font-color);
+            font-size: var(--cal-weekday-font-size);
+            font-weight: var(--cal-weekday-font-weight);
+            text-align: center;
+            padding: 6px 0;
+            border-radius: 8px;
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+        }
+        .cal-day-cell {
+            background: var(--day-cell-color);
+            color: var(--cal-day-font-color);
+            font-size: var(--cal-day-font-size);
+            font-weight: var(--cal-day-font-weight);
+            aspect-ratio: 1.05;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+            transition: all 0.1s ease;
+        }
+        .cal-day-cell:active {
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+        }
+        .cal-day-cell.weekend {
+            background: var(--weekend-cell-color) !important;
+            color: var(--weekend-font-color) !important;
+        }
+        .cal-day-cell.other-month {
+            background: var(--other-cell-color);
+            color: var(--cal-other-day-font-color);
+            font-size: var(--cal-other-day-font-size);
+            font-weight: var(--cal-other-day-font-weight);
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+        }
+        .cal-day-cell.today { 
+            background: var(--today-cell-color) !important; 
+            color: var(--cal-today-font-color) !important; 
+            font-size: var(--cal-today-font-size) !important;
+            font-weight: var(--cal-today-font-weight) !important;
+            box-shadow: 3px 3px 8px rgba(43, 130, 251, 0.4), -2px -2px 5px var(--shadow-light) !important;
+        }
+
+        .cal-ctrl-frame { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; gap: 4px; flex-wrap: wrap; }
+        .cal-left-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .cal-action-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--text-color);
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+            transition: all 0.1s ease;
+        }
+        .cal-action-btn:active {
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+        }
+
+        /* Таблица учета в модальном окне */
+        .table-container {
+            background: var(--table-bg);
+            padding: 10px;
+            border-radius: 14px;
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            overflow-x: auto;
+        }
+        .table-frame { border-collapse: separate; border-spacing: 5px; width: 100%; }
+        .table-frame th, .table-frame td { border: none; padding: 6px 4px; text-align: center; border-radius: 8px; }
+        .table-frame th { 
+            background: var(--table-header-bg); 
+            font-size: var(--table-header-font-size); 
+            color: var(--table-header-font-color); 
+            font-weight: var(--table-header-font-weight); 
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+        }
+        .table-month-name {
+            background: var(--table-month-cell-bg);
+            font-size: var(--table-month-font-size);
+            color: var(--table-month-font-color);
+            font-weight: var(--table-month-font-weight);
+            text-align: left;
+            padding-left: 8px;
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+        }
+        .table-data-cell {
+            background: var(--table-cell-bg);
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            padding: 2px;
+        }
+        .table-result-cell {
+            background: var(--table-result-cell-bg);
+            font-size: var(--table-result-font-size);
+            color: var(--table-result-font-color);
+            font-weight: var(--table-result-font-weight);
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+        }
+        .table-total-cell {
+            background: var(--table-total-cell-bg);
+            font-size: var(--table-total-font-size);
+            color: var(--table-total-font-color);
+            font-weight: var(--table-total-font-weight);
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+        }
+        .table-frame input { 
+            width: 100%; height: 100%; text-align: center; border: none; outline: none; border-radius: 6px; 
+            font-size: var(--table-cell-font-size); font-weight: var(--table-cell-font-weight); color: var(--table-cell-font-color); 
+            padding: 4px 2px; background: transparent; 
+        }
+        .highlight-row td { 
+            background-color: var(--table-highlight-row-bg) !important;
+            box-shadow: 0 0 0 2px var(--accent-color) inset, 2px 2px 4px var(--shadow-dark) !important; 
+        }
+
+        /* Модальные окна */
+        .modal-overlay-custom { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 3000; }
+        .modal-content-custom { 
+            background: var(--card-bg); padding: 18px; border-radius: 18px; width: 92%; max-width: 440px; max-height: 85vh; overflow-y: auto; 
+            display: flex; flex-direction: column; gap: 10px; box-shadow: 10px 10px 30px rgba(0,0,0,0.25), -6px -6px 20px var(--shadow-light); 
+        }
+        .palette { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 6px; }
+        .color-btn { width: 100%; aspect-ratio: 1.4; border-radius: 6px; border: none; cursor: pointer; box-shadow: 2px 2px 4px rgba(0,0,0,0.15), -1px -1px 3px var(--shadow-light); }
+        .color-btn.selected { border: 2px solid var(--accent-color); transform: scale(1.08); }
+        textarea.cal-textarea { width: 100%; height: 85px; padding: 8px; font-size: 12px; border: none; border-radius: 10px; background: var(--card-bg); box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light); resize: none; outline: none; color: var(--text-color); }
+
+        /* Полноэкранная таблица */
+        .fullscreen-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 2000; flex-direction: column; padding: 12px; overflow: hidden; }
+        .fullscreen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: var(--card-bg); padding: 8px 12px; border-radius: 14px; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); }
+        .fullscreen-body { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
 
         /* Модальное окно настроек */
         .modal-overlay {
@@ -480,7 +690,7 @@
 </head>
 <body>
 
-    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК -->
+    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК В ЛЕВОМ НИЖНЕМ УГЛУ -->
     <div class="watermark">БЛiК</div>
 
     <div class="app-card">
@@ -630,7 +840,7 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 3: АНТЕННА «ПАУК» (ПОЛНАЯ С 4 ЛУЧАМИ НА СХЕМАХ) -->
+        <!-- ПУНКТ 3: АНТЕННА «ПАУК» (ЗАМОРОЖЕН) -->
         <div id="screenSpider" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="spiderTabExt" onclick="switchSpiderMode('ext', this)">
@@ -649,7 +859,6 @@
                         <input type="number" id="spiderFreqExt" step="0.01" min="0.1" placeholder="145.00" value="145.00" oninput="syncAndCalcSpider('ext')" class="pr-16 font-mono font-bold text-lg">
                         <span class="absolute right-4 font-bold text-xs uppercase tracking-widest text-slate-400 pointer-events-none">МГц</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 mt-1"><i class="fa-solid fa-circle-info text-brand-500 mr-1"></i>Расчет работает для любых частот VHF</p>
                 </div>
 
                 <div>
@@ -667,13 +876,11 @@
                     <span class="absolute top-2 left-3 text-[10px] font-mono text-slate-400 uppercase font-bold">GP 1/4 &lambda; (4 Луча)</span>
                     <svg viewBox="0 0 300 160" class="w-full h-32 drop-shadow-md overflow-visible">
                         <line x1="150" y1="10" x2="150" y2="30" stroke="#94a3b8" stroke-width="2" stroke-dasharray="3 3"/>
-                        <!-- Штырь (Element 2) -->
                         <g class="cursor-pointer" onclick="highlightSpiderCard(2)">
                             <line x1="150" y1="30" x2="150" y2="105" stroke="var(--accent-color)" stroke-width="5" stroke-linecap="round"/>
                             <circle cx="150" cy="67" r="9" fill="var(--accent-color)"/>
                             <text x="150" y="71" fill="#ffffff" font-weight="bold" font-size="9" text-anchor="middle">2</text>
                         </g>
-                        <!-- 4 Противовеса (Element 7) -->
                         <g class="cursor-pointer" onclick="highlightSpiderCard(7)">
                             <line x1="142" y1="108" x2="80" y2="140" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round"/>
                             <line x1="158" y1="108" x2="220" y2="140" stroke="#6366f1" stroke-width="3.5" stroke-linecap="round"/>
@@ -695,7 +902,6 @@
                     </button>
                 </div>
 
-                <!-- Блок детальных результатов -->
                 <div class="result-box" id="spiderResultBox" style="display: flex;">
                     <h3>ПОДРОБНЫЕ РЕЗУЛЬТАТЫ:</h3>
                     <div class="grid grid-cols-1 gap-2 mt-1">
@@ -714,7 +920,7 @@
                 </div>
             </div>
 
-            <!-- УРЕЗАННАЯ ВЕРСИЯ ПАУКА (С 4 ЛУЧАМИ НА СХЕМЕ) -->
+            <!-- УРЕЗАННАЯ ВЕРСИЯ ПАУКА -->
             <div id="spiderViewComp" style="display: none;" class="flex flex-col gap-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-slate-100">Паук 136–174 МГц</h2>
@@ -766,6 +972,31 @@
             </div>
         </div>
 
+        <!-- ПУНКТ 4: КАЛЕНДАРЬ С ЗАМЕТКАМИ (НОВЫЙ ИНТЕГРИРОВАННЫЙ МОДУЛЬ) -->
+        <div id="screenCalendar" class="view-screen">
+            <div class="cal-wrapper">
+                <div class="cal-nav-frame">
+                    <div class="cal-center-nav">
+                        <button class="neu-btn" style="width:36px; height:36px; font-size:15px;" onclick="prevMonth()">&lt;</button>
+                        <div id="cal-header-label">МАРТ 2025</div>
+                        <button class="neu-btn" style="width:36px; height:36px; font-size:15px;" onclick="nextMonth()">&gt;</button>
+                    </div>
+                </div>
+
+                <div class="cal-grid-frame" id="cal-frame"></div>
+
+                <div class="cal-ctrl-frame">
+                    <div class="cal-left-actions" style="width:100%; display:grid; grid-template-columns: repeat(4, 1fr); gap:4px;">
+                        <button class="cal-action-btn" onclick="openTableModal()" style="color:#006064; background:linear-gradient(145deg, #e0f7fa, #b2ebf2);">ТАБЛИЦА</button>
+                        <button class="cal-action-btn" onclick="exportCalendarData()">ЭКСПОРТ</button>
+                        <button class="cal-action-btn" onclick="importCalendarDataTrigger()">ИМПОРТ</button>
+                        <button class="cal-action-btn" style="color:#b71c1c; background:linear-gradient(145deg, #ffebee, #ffcdd2);" onclick="clearCalendarMonth()">ОЧИСТИТЬ</button>
+                    </div>
+                    <input type="file" id="cal-import-file" style="display:none" onchange="importCalendarData(event)">
+                </div>
+            </div>
+        </div>
+
         <!-- ЗАГЛУШКА ДЛЯ ОСТАЛЬНЫХ ПУНКТОВ -->
         <div id="screenEmptyModule" class="view-screen">
             <div style="text-align: center; padding: 40px 20px; font-weight: 600; color: var(--text-muted);" id="emptyModuleTitle">РАЗДЕЛ В РАЗРАБОТКЕ</div>
@@ -774,7 +1005,7 @@
         <div class="watermark">БЛiК</div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК -->
+    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК ГЛАВНОГО ПРИЛОЖЕНИЯ -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -846,17 +1077,75 @@
         </div>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО ЗАМЕТКИ КАЛЕНДАРЯ -->
+    <div class="modal-overlay-custom" id="note-modal">
+        <div class="modal-content-custom">
+            <h3 id="modal-date-title" style="font-size: 14px; color: var(--text-color); font-weight:800;">Заметка</h3>
+            <div>
+                <label style="font-size: 11px; font-weight: bold; color: var(--text-muted);">ЦВЕТ ТОЧКИ:</label>
+                <div class="palette" id="color-palette" style="margin-top:4px;"></div>
+            </div>
+            <textarea class="cal-textarea" id="note-text" placeholder="Введите заметку..."></textarea>
+            <button class="cal-action-btn" style="background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white; height:36px; font-weight:bold;" onclick="saveCalendarNote()">СОХРАНИТЬ</button>
+            <button class="cal-action-btn" onclick="closeNoteModal()" style="height:32px;">ОТМЕНА</button>
+        </div>
+    </div>
+
+    <!-- ПОЛНОЭКРАННОЕ ОКНО ТАБЛИЦЫ УЧЕТА КАЛЕНДАРЯ -->
+    <div class="fullscreen-modal" id="table-modal">
+        <div class="fullscreen-header">
+            <div style="display:flex; gap:6px;">
+                <button class="cal-action-btn" style="background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white;" onclick="saveTableChanges()">СОХРАНИТЬ</button>
+                <button class="cal-action-btn" style="background: linear-gradient(145deg, #ef9a9a, #ef5350); color:white;" onclick="closeTableModal()">ЗАКРЫТЬ</button>
+            </div>
+            <div style="font-weight:800; font-size:14px; color:var(--text-color);" id="table-modal-year-title">ГОД</div>
+            <button class="cal-action-btn" onclick="openTableSettings()">НАСТРОЙКИ</button>
+        </div>
+        <div class="fullscreen-body">
+            <div class="table-container" id="table-container-box">
+                <table class="table-frame" id="stats-table">
+                    <thead>
+                        <tr>
+                            <th>МЕСЯЦ</th><th>С -</th><th>- ПО</th><th>С -</th><th>- ПО</th><th>ДНЕЙ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="table-total-cell" style="text-align:left; padding-left:8px;">ГОД:</td>
+                            <td colspan="5" id="total-year-days" class="table-total-cell" style="text-align:center;">0</td>
+                        </tr>
+                        <tr>
+                            <td class="table-total-cell" style="text-align:left; padding-left:8px; color:var(--accent-color);">ВСЕ ВРЕМЯ:</td>
+                            <td colspan="5" id="total-all-days" class="table-total-cell" style="text-align:center; color:var(--accent-color);">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК ТАБЛИЦЫ -->
+    <div class="modal-overlay-custom" id="table-settings-modal">
+        <div class="modal-content-custom" style="max-width: 420px;">
+            <h3 style="color:var(--text-color); font-weight:800; font-size:14px;">НАСТРОЙКИ ТАБЛИЦЫ</h3>
+            <div style="display:flex; flex-direction:column; gap:6px;" id="table-settings-controls"></div>
+            <button class="cal-action-btn" style="background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white; height:36px; font-weight:bold;" onclick="saveTableSettings()">СОХРАНИТЬ</button>
+            <button class="cal-action-btn" style="background: linear-gradient(145deg, #ef9a9a, #ef5350); color:white; height:32px;" onclick="closeTableSettings()">ОТМЕНИТЬ</button>
+        </div>
+    </div>
+
     <script>
         let defaultMenu = [
             { id: 1, type: "generator", name: "1. ГЕНЕРАТОР", color: "", bg: "" },
             { id: 2, type: "calculators", name: "2. КАЛЬКУЛЯТОРЫ", color: "", bg: "" },
             { id: 3, type: "spider", name: "3. АНТЕННА «ПАУК»", color: "", bg: "" },
-            { id: 4, type: "custom", name: "4. ПУНКТ", color: "", bg: "" },
+            { id: 4, type: "calendar", name: "4. КАЛЕНДАРЬ С ЗАМЕТКАМИ", color: "", bg: "" },
             { id: 5, type: "custom", name: "5. ПУНКТ", color: "", bg: "" }
         ];
 
         let storedMenu = JSON.parse(localStorage.getItem('menu_items'));
-        if (!storedMenu || !storedMenu.some(item => item.type === 'spider')) {
+        if (!storedMenu || !storedMenu.some(item => item.type === 'calendar')) {
             menuItems = defaultMenu;
             localStorage.setItem('menu_items', JSON.stringify(menuItems));
         } else {
@@ -877,6 +1166,46 @@
         let currentMode = 'days';
         let activeConvField = null;
 
+        // Переменные модуля Календаря
+        const DISPLAY_MONTHS = ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"];
+        const DOT_COLORS = ["#00E676", "#29B6F6", "#EF5350", "#FFEE58", "#AB47BC", "#FFA726", "#26A69A", "#EC407A", "#8D6E63", "#78909C", "#FF7043", "#66BB6A", "#42A5F5", "#E57373", "#FFF176", "#BA68C8", "#FFB74D", "#4DB6AC", "#F06292", "#A1887F", "#90A4AE", "#FF8A65"];
+        
+        let calCurrentDate = new Date();
+        let calYear = calCurrentDate.getFullYear();
+        let calMonth = calCurrentDate.getMonth() + 1;
+        let selectedDateStr = "";
+        let selectedColor = DOT_COLORS[0];
+
+        let calDb = JSON.parse(localStorage.getItem('calendar_db')) || { notes: {}, table_ranges: {} };
+        if (!calDb.notes) calDb.notes = {};
+        if (!calDb.table_ranges) calDb.table_ranges = {};
+
+        let savedTableSettings = JSON.parse(localStorage.getItem('table_settings'));
+        let tableSettings = savedTableSettings && typeof savedTableSettings === 'object' ? savedTableSettings : {
+            table_bg: "#ebedf0",
+            table_header_bg: "#e1e3e7",
+            table_header_font_size: 11,
+            table_header_font_color: "#2d3748",
+            table_header_font_weight: true,
+            table_month_cell_bg: "#ffffff",
+            table_month_font_size: 11,
+            table_month_font_color: "#1a202c",
+            table_month_font_weight: true,
+            table_cell_bg: "#ffffff",
+            table_cell_font_size: 11,
+            table_cell_font_color: "#1a202c",
+            table_cell_font_weight: false,
+            table_result_cell_bg: "#f0f2f5",
+            table_result_font_size: 11,
+            table_result_font_color: "#2b82fb",
+            table_result_font_weight: true,
+            table_total_cell_bg: "#e1e3e7",
+            table_total_font_size: 11,
+            table_total_font_color: "#e53e3e",
+            table_total_font_weight: true,
+            table_highlight_row_bg: "#fff5f5"
+        };
+
         function init() {
             applySettings();
             renderMenu();
@@ -893,6 +1222,10 @@
             calcFuel();
             calcPercent();
             calcSpider(145.00);
+
+            initTable();
+            renderCalendar();
+            calcAllTime();
         }
 
         function applySettings() {
@@ -928,6 +1261,36 @@
             document.getElementById('letterSpacingVal').innerText = settings.letterSpacing + 'px';
             document.getElementById('textShadowToggle').checked = settings.textShadow;
 
+            // Применяем настройки таблицы календаря
+            let r = document.documentElement;
+            r.style.setProperty('--table-bg', tableSettings.table_bg);
+            r.style.setProperty('--table-header-bg', tableSettings.table_header_bg);
+            r.style.setProperty('--table-header-font-size', tableSettings.table_header_font_size + 'px');
+            r.style.setProperty('--table-header-font-color', tableSettings.table_header_font_color);
+            r.style.setProperty('--table-header-font-weight', tableSettings.table_header_font_weight ? 'bold' : 'normal');
+
+            r.style.setProperty('--table-month-cell-bg', tableSettings.table_month_cell_bg);
+            r.style.setProperty('--table-month-font-size', tableSettings.table_month_font_size + 'px');
+            r.style.setProperty('--table-month-font-color', tableSettings.table_month_font_color);
+            r.style.setProperty('--table-month-font-weight', tableSettings.table_month_font_weight ? 'bold' : 'normal');
+
+            r.style.setProperty('--table-cell-bg', tableSettings.table_cell_bg);
+            r.style.setProperty('--table-cell-font-size', tableSettings.table_cell_font_size + 'px');
+            r.style.setProperty('--table-cell-font-color', tableSettings.table_cell_font_color);
+            r.style.setProperty('--table-cell-font-weight', tableSettings.table_cell_font_weight ? 'bold' : 'normal');
+
+            r.style.setProperty('--table-result-cell-bg', tableSettings.table_result_cell_bg);
+            r.style.setProperty('--table-result-font-size', tableSettings.table_result_font_size + 'px');
+            r.style.setProperty('--table-result-font-color', tableSettings.table_result_font_color);
+            r.style.setProperty('--table-result-font-weight', tableSettings.table_result_font_weight ? 'bold' : 'normal');
+
+            r.style.setProperty('--table-total-cell-bg', tableSettings.table_total_cell_bg);
+            r.style.setProperty('--table-total-font-size', tableSettings.table_total_font_size + 'px');
+            r.style.setProperty('--table-total-font-color', tableSettings.table_total_font_color);
+            r.style.setProperty('--table-total-font-weight', tableSettings.table_total_font_weight ? 'bold' : 'normal');
+
+            r.style.setProperty('--table-highlight-row-bg', tableSettings.table_highlight_row_bg);
+
             localStorage.setItem('app_settings', JSON.stringify(settings));
         }
 
@@ -937,6 +1300,7 @@
             document.getElementById('screenGenerator').classList.remove('active');
             document.getElementById('screenCalculators').classList.remove('active');
             document.getElementById('screenSpider').classList.remove('active');
+            document.getElementById('screenCalendar').classList.remove('active');
             document.getElementById('screenEmptyModule').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
@@ -948,6 +1312,9 @@
                 document.getElementById('screenCalculators').classList.add('active');
             } else if (item.type === 'spider') {
                 document.getElementById('screenSpider').classList.add('active');
+            } else if (item.type === 'calendar') {
+                document.getElementById('screenCalendar').classList.add('active');
+                renderCalendar();
             } else {
                 document.getElementById('emptyModuleTitle').innerText = `${item.name} В РАЗРАБОТКЕ`;
                 document.getElementById('screenEmptyModule').classList.add('active');
@@ -958,6 +1325,7 @@
             document.getElementById('screenGenerator').classList.remove('active');
             document.getElementById('screenCalculators').classList.remove('active');
             document.getElementById('screenSpider').classList.remove('active');
+            document.getElementById('screenCalendar').classList.remove('active');
             document.getElementById('screenEmptyModule').classList.remove('active');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
@@ -1274,7 +1642,7 @@
             ['voltage', 'current', 'power'].forEach(id => document.getElementById(id).value = '');
         }
 
-        /* Логика пункта 3 (Антенна «Паук» с 4 лучами) */
+        /* Логика пункта 3 (Антенна «Паук» - Заморожен) */
         function switchSpiderMode(mode, btn) {
             document.getElementById('spiderViewExt').style.display = mode === 'ext' ? 'flex' : 'none';
             document.getElementById('spiderViewComp').style.display = mode === 'comp' ? 'flex' : 'none';
@@ -1353,6 +1721,413 @@
                 card2.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]');
                 setTimeout(() => card7.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]'), 1500);
             }
+        }
+
+        /* --- Логика пункта 4 (Календарь с заметками) --- */
+        function initTable() {
+            let tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            for (let i = 1; i <= 12; i++) {
+                let tr = document.createElement('tr');
+                tr.id = `row-month-${i}`;
+                tr.innerHTML = `
+                    <td class="table-month-name">${DISPLAY_MONTHS[i-1]}</td>
+                    <td class="table-data-cell"><input type="number" id="f1_${i}" oninput="onTableInput()"></td>
+                    <td class="table-data-cell"><input type="number" id="t1_${i}" oninput="onTableInput()"></td>
+                    <td class="table-data-cell"><input type="number" id="f2_${i}" oninput="onTableInput()"></td>
+                    <td class="table-data-cell"><input type="number" id="t2_${i}" oninput="onTableInput()"></td>
+                    <td id="res_${i}" class="table-result-cell"></td>
+                `;
+                tbody.appendChild(tr);
+            }
+            loadTableData();
+        }
+
+        function renderCalendar() {
+            document.getElementById('cal-header-label').innerText = `${DISPLAY_MONTHS[calMonth-1]} ${calYear}`;
+            let calFrame = document.getElementById('cal-frame');
+            calFrame.innerHTML = '';
+
+            let daysOfWeek = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+            daysOfWeek.forEach((d) => {
+                let div = document.createElement('div');
+                div.className = 'cal-header-cell';
+                div.innerText = d;
+                calFrame.appendChild(div);
+            });
+
+            let firstDayIndex = (new Date(calYear, calMonth - 1, 1).getDay() + 6) % 7;
+            let totalDays = new Date(calYear, calMonth, 0).getDate();
+            let prevTotalDays = new Date(calYear, calMonth - 1, 0).getDate();
+            let now = new Date();
+
+            for (let i = firstDayIndex - 1; i >= 0; i--) {
+                let d = prevTotalDays - i;
+                let prevM = calMonth === 1 ? 12 : calMonth - 1;
+                let prevY = calMonth === 1 ? calYear - 1 : calYear;
+                let colIdx = (firstDayIndex - 1 - i) % 7;
+                createDayCell(calFrame, d, prevY, prevM, true, false, colIdx >= 5);
+            }
+
+            for (let d = 1; d <= totalDays; d++) {
+                let colIdx = (firstDayIndex + d - 1) % 7;
+                let isToday = (d === now.getDate() && calMonth === now.getMonth() + 1 && calYear === now.getFullYear());
+                createDayCell(calFrame, d, calYear, calMonth, false, isToday, colIdx >= 5);
+            }
+
+            let remainingCells = 42 - (firstDayIndex + totalDays);
+            for (let d = 1; d <= remainingCells; d++) {
+                let nextM = calMonth === 12 ? 1 : calMonth + 1;
+                let nextY = calMonth === 12 ? calYear + 1 : calYear;
+                let colIdx = (firstDayIndex + totalDays + d - 1) % 7;
+                createDayCell(calFrame, d, nextY, nextM, true, false, colIdx >= 5);
+            }
+            
+            if (document.getElementById('table-modal').style.display === 'flex') {
+                loadTableData();
+            }
+        }
+
+        function createDayCell(parent, day, y, m, isOther, isToday = false, isWeekend = false) {
+            let cell = document.createElement('div');
+            let classes = ['cal-day-cell'];
+            if (isOther) classes.push('other-month');
+            else if (isToday) classes.push('today');
+            else if (isWeekend) classes.push('weekend');
+            
+            cell.className = classes.join(' ');
+            
+            let dateStr = `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            let noteInfo = calDb.notes[dateStr];
+            let hasNote = false;
+            let noteText = "";
+            let dotColor = "#00E676";
+
+            if (noteInfo) {
+                if (typeof noteInfo === 'object') {
+                    noteText = noteInfo.text || "";
+                    dotColor = noteInfo.color || "#00E676";
+                    if (noteText.trim() !== "") hasNote = true;
+                } else if (typeof noteInfo === 'string' && noteInfo.trim() !== "") {
+                    hasNote = true;
+                    noteText = noteInfo.trim();
+                }
+            }
+
+            cell.innerText = day;
+            if (hasNote) {
+                let canvas = document.createElement('canvas');
+                let sz = 12;
+                canvas.width = sz;
+                canvas.height = sz;
+                canvas.style.position = 'absolute';
+                canvas.style.bottom = '2px';
+                canvas.style.left = '50%';
+                canvas.style.transform = 'translateX(-50%)';
+                
+                let ctx = canvas.getContext('2d');
+                let r = sz / 2 - 1;
+                let cx = sz / 2, cy = sz / 2;
+                
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+                ctx.fillStyle = dotColor;
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "rgba(0,0,0,0.2)";
+                ctx.stroke();
+                
+                cell.appendChild(canvas);
+            }
+
+            cell.onclick = () => openNoteModal(dateStr);
+            parent.appendChild(cell);
+        }
+
+        function prevMonth() {
+            calMonth--;
+            if (calMonth < 1) { calMonth = 12; calYear--; }
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            calMonth++;
+            if (calMonth > 12) { calMonth = 1; calYear++; }
+            renderCalendar();
+        }
+
+        function openNoteModal(dateStr) {
+            selectedDateStr = dateStr;
+            document.getElementById('modal-date-title').innerText = `ЗАМЕТКА НА ${dateStr}`;
+            let noteData = calDb.notes[dateStr] || { text: '', color: DOT_COLORS[0] };
+            document.getElementById('note-text').value = typeof noteData === 'object' ? noteData.text : noteData;
+            selectedColor = typeof noteData === 'object' ? noteData.color : DOT_COLORS[0];
+
+            let palette = document.getElementById('color-palette');
+            palette.innerHTML = '';
+            DOT_COLORS.forEach(color => {
+                let btn = document.createElement('div');
+                btn.className = `color-btn ${color === selectedColor ? 'selected' : ''}`;
+                btn.style.background = color;
+                btn.onclick = () => {
+                    selectedColor = color;
+                    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                };
+                palette.appendChild(btn);
+            });
+            document.getElementById('note-modal').style.display = 'flex';
+        }
+
+        function closeNoteModal() { document.getElementById('note-modal').style.display = 'none'; }
+
+        function saveCalendarNote() {
+            let text = document.getElementById('note-text').value.trim();
+            if (text) {
+                calDb.notes[selectedDateStr] = { text: text, color: selectedColor };
+            } else {
+                delete calDb.notes[selectedDateStr];
+            }
+            localStorage.setItem('calendar_db', JSON.stringify(calDb));
+            closeNoteModal();
+            renderCalendar();
+        }
+
+        function openTableModal() {
+            document.getElementById('table-modal-year-title').innerText = `${calYear} ГОД`;
+            loadTableData();
+            highlightActiveTableRow();
+            document.getElementById('table-modal').style.display = 'flex';
+        }
+
+        function closeTableModal() {
+            document.getElementById('table-modal').style.display = 'none';
+        }
+
+        function saveTableChanges() {
+            collectTableInputs();
+            calcAllTime();
+            closeTableModal();
+        }
+
+        function onTableInput() {
+            collectTableInputs();
+            updateTableCalculations();
+        }
+
+        function collectTableInputs() {
+            let yearStr = calYear.toString();
+            if (!calDb.table_ranges[yearStr]) calDb.table_ranges[yearStr] = {};
+
+            for (let i = 1; i <= 12; i++) {
+                let f1 = document.getElementById(`f1_${i}`).value.trim();
+                let t1 = document.getElementById(`t1_${i}`).value.trim();
+                let f2 = document.getElementById(`f2_${i}`).value.trim();
+                let t2 = document.getElementById(`t2_${i}`).value.trim();
+
+                if (f1 || t1 || f2 || t2) {
+                    calDb.table_ranges[yearStr][i] = { from1: f1, to1: t1, from2: f2, to2: t2 };
+                } else {
+                    delete calDb.table_ranges[yearStr][i];
+                }
+            }
+            localStorage.setItem('calendar_db', JSON.stringify(calDb));
+        }
+
+        function updateTableCalculations() {
+            let yearStr = calYear.toString();
+            let yearData = calDb.table_ranges[yearStr] || {};
+            let totalYear = 0;
+
+            for (let i = 1; i <= 12; i++) {
+                let mData = yearData[i] || {};
+                let monthSum = calcMonthDays(i, mData.from1, mData.to1, mData.from2, mData.to2);
+                document.getElementById(`res_${i}`).innerText = monthSum > 0 ? monthSum : '';
+                totalYear += monthSum;
+            }
+
+            document.getElementById('total-year-days').innerText = totalYear;
+            calcAllTime();
+        }
+
+        function calcMonthDays(m, f1, t1, f2, t2) {
+            let sum = 0;
+            if (f1 && t1) {
+                let d1 = new Date(calYear, m - 1, parseInt(f1));
+                let d2 = new Date(calYear, m - 1, parseInt(t1));
+                if (d1 <= d2) sum += Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+            }
+            if (f2 && t2) {
+                let d3 = new Date(calYear, m - 1, parseInt(f2));
+                let d4 = new Date(calYear, m - 1, parseInt(t2));
+                if (d3 <= d4) sum += Math.round((d4 - d3) / (1000 * 60 * 60 * 24)) + 1;
+            }
+            return sum;
+        }
+
+        function loadTableData() {
+            let yearStr = calYear.toString();
+            let yearData = calDb.table_ranges[yearStr] || {};
+            for (let i = 1; i <= 12; i++) {
+                let mData = yearData[i] || {};
+                document.getElementById(`f1_${i}`).value = mData.from1 || '';
+                document.getElementById(`t1_${i}`).value = mData.to1 || '';
+                document.getElementById(`f2_${i}`).value = mData.from2 || '';
+                document.getElementById(`t2_${i}`).value = mData.to2 || '';
+            }
+            updateTableCalculations();
+        }
+
+        function calcAllTime() {
+            let allTime = 0;
+            for (let yStr in calDb.table_ranges) {
+                let yVal = parseInt(yStr);
+                for (let mStr in calDb.table_ranges[yStr]) {
+                    let mVal = parseInt(mStr);
+                    let r = calDb.table_ranges[yStr][mStr];
+                    if (r) {
+                        allTime += calcMonthDaysForYear(yVal, mVal, r.from1, r.to1, r.from2, r.to2);
+                    }
+                }
+            }
+            document.getElementById('total-all-days').innerText = allTime;
+        }
+
+        function calcMonthDaysForYear(y, m, f1, t1, f2, t2) {
+            let sum = 0;
+            if (f1 && t1) {
+                let d1 = new Date(y, m - 1, parseInt(f1));
+                let d2 = new Date(y, m - 1, parseInt(t1));
+                if (d1 <= d2) sum += Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+            }
+            if (f2 && t2) {
+                let d3 = new Date(y, m - 1, parseInt(f2));
+                let d4 = new Date(y, m - 1, parseInt(t2));
+                if (d3 <= d4) sum += Math.round((d4 - d3) / (1000 * 60 * 60 * 24)) + 1;
+            }
+            return sum;
+        }
+
+        function highlightActiveTableRow() {
+            for (let i = 1; i <= 12; i++) {
+                let row = document.getElementById(`row-month-${i}`);
+                if (i === calMonth) row.classList.add('highlight-row');
+                else row.classList.remove('highlight-row');
+            }
+        }
+
+        function clearCalendarMonth() {
+            if (!confirm(`Удалить все заметки за ${DISPLAY_MONTHS[calMonth-1]} ${calYear}?`)) return;
+            let prefix = `${calYear}-${String(calMonth).padStart(2, '0')}-`;
+            for (let k in calDb.notes) {
+                if (k.startsWith(prefix)) delete calDb.notes[k];
+            }
+            localStorage.setItem('calendar_db', JSON.stringify(calDb));
+            renderCalendar();
+        }
+
+        function exportCalendarData() {
+            collectTableInputs();
+            let payload = { calendar_db: calDb, table_settings: tableSettings };
+            let jsonStr = JSON.stringify(payload, null, 4);
+            let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
+            let url = URL.createObjectURL(blob);
+            let dlAnchor = document.createElement('a');
+            dlAnchor.href = url;
+            dlAnchor.download = "calendar_backup.json";
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            setTimeout(() => { document.body.removeChild(dlAnchor); URL.revokeObjectURL(url); }, 200);
+        }
+
+        function importCalendarDataTrigger() { document.getElementById('cal-import-file').click(); }
+        
+        function importCalendarData(e) {
+            let file = e.target.files[0];
+            if (!file) return;
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    let imported = JSON.parse(event.target.result);
+                    if (imported.calendar_db) {
+                        calDb = imported.calendar_db;
+                    } else if (imported.notes || imported.table_ranges) {
+                        calDb = imported;
+                    }
+                    if (!calDb.notes) calDb.notes = {};
+                    if (!calDb.table_ranges) calDb.table_ranges = {};
+                    localStorage.setItem('calendar_db', JSON.stringify(calDb));
+
+                    if (imported.table_settings) {
+                        tableSettings = imported.table_settings;
+                        localStorage.setItem('table_settings', JSON.stringify(tableSettings));
+                    }
+                    applySettings();
+                    renderCalendar();
+                    calcAllTime();
+                    loadTableData();
+                    alert("Данные календаря успешно импортированы!");
+                } catch(err) { alert("Ошибка чтения файла!"); }
+            };
+            reader.readAsText(file);
+        }
+
+        function openTableSettings() {
+            let container = document.getElementById('table-settings-controls');
+            container.innerHTML = '';
+            let items = [
+                { label: "Фон контейнера таблицы", cell: "table_bg" },
+                { label: "Шапка таблицы", sz: "table_header_font_size", col: "table_header_font_color", b: "table_header_font_weight", cell: "table_header_bg" },
+                { label: "Ячейки месяцев", sz: "table_month_font_size", col: "table_month_font_color", b: "table_month_font_weight", cell: "table_month_cell_bg" },
+                { label: "Ячейки диапазона дат", sz: "table_cell_font_size", col: "table_cell_font_color", b: "table_cell_font_weight", cell: "table_cell_bg" },
+                { label: "Ячейки результатов", sz: "table_result_font_size", col: "table_result_font_color", b: "table_result_font_weight", cell: "table_result_cell_bg" },
+                { label: "Итоговые строки", sz: "table_total_font_size", col: "table_total_font_color", b: "table_total_font_weight", cell: "table_total_cell_bg" },
+                { label: "Цвет подсветки строки", cell: "table_highlight_row_bg" }
+            ];
+            items.forEach(item => {
+                let div = document.createElement('div');
+                div.className = "modal-item-card";
+                div.style.cssText = "background:var(--card-bg); padding:8px; border-radius:10px; box-shadow:2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light); display:flex; flex-direction:column; gap:4px;";
+                div.innerHTML = `<b style="font-size:11px; color:var(--text-color);">${item.label}</b>`;
+                if (item.sz) {
+                    div.innerHTML += `
+                        <div style="display:flex; gap:4px; align-items:center; font-size:11px; flex-wrap:wrap;">
+                            Р-р: <input type="number" class="modal-input" id="tst_${item.sz}" value="${tableSettings[item.sz]}" style="width:40px;">
+                            Жирн: <input type="checkbox" id="tst_${item.b}" ${tableSettings[item.b] ? 'checked' : ''}>
+                            Цвет: <input type="text" class="modal-input" id="tst_${item.col}" value="${tableSettings[item.col]}" style="width:60px;">
+                            Фон: <input type="text" class="modal-input" id="tst_${item.cell}" value="${tableSettings[item.cell]}" style="width:60px;">
+                        </div>
+                    `;
+                } else {
+                    div.innerHTML += `<div style="font-size:11px;">HEX: <input type="text" class="modal-input" id="tst_${item.cell}" value="${tableSettings[item.cell]}" style="width:80px;"></div>`;
+                }
+                container.appendChild(div);
+            });
+            document.getElementById('table-settings-modal').style.display = 'flex';
+        }
+
+        function closeTableSettings() { document.getElementById('table-settings-modal').style.display = 'none'; }
+
+        function saveTableSettings() {
+            let keys = [
+                "table_bg", "table_header_bg", "table_header_font_size", "table_header_font_color", "table_header_font_weight",
+                "table_month_cell_bg", "table_month_font_size", "table_month_font_color", "table_month_font_weight",
+                "table_cell_bg", "table_cell_font_size", "table_cell_font_color", "table_cell_font_weight",
+                "table_result_cell_bg", "table_result_font_size", "table_result_font_color", "table_result_font_weight",
+                "table_total_cell_bg", "table_total_font_size", "table_total_font_color", "table_total_font_weight",
+                "table_highlight_row_bg"
+            ];
+            keys.forEach(key => {
+                let el = document.getElementById(`tst_${key}`);
+                if (el) {
+                    if (key.includes('weight')) tableSettings[key] = el.checked;
+                    else if (key.includes('size')) tableSettings[key] = parseInt(el.value) || 11;
+                    else tableSettings[key] = el.value;
+                }
+            });
+            localStorage.setItem('table_settings', JSON.stringify(tableSettings));
+            closeTableSettings();
+            applySettings();
         }
 
         function switchSettingsTab(tabId) {
