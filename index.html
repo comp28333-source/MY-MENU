@@ -975,7 +975,7 @@
                 <div class="cal-ctrl-frame">
                     <div class="cal-left-actions">
                         <button class="cal-action-btn" onclick="openTableModal()" style="background: linear-gradient(145deg, #e0f7fa, #b2ebf2); color:#006064;">ТАБЛ.</button>
-                        <button class="cal-action-btn" onclick="exportCalendarData()">ЭКСП.</button>
+                        <button class="cal-action-btn" onclick="openExportModal()" style="background: linear-gradient(145deg, #e1f5fe, #b3e5fc); color:#01579b;">ЭКСП.</button>
                         <button class="cal-action-btn" onclick="importCalendarDataTrigger()">ИМП.</button>
                         <button class="cal-action-btn" style="background: linear-gradient(145deg, #ffebee, #ffcdd2); color:#b71c1c;" onclick="clearCalendarMonth()">ЧИСТ.</button>
                         <button class="cal-action-btn" onclick="openSettingsModal()" title="Настройки календаря">⚙️</button>
@@ -991,6 +991,25 @@
         </div>
 
         <div class="watermark">БЛiК</div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭКСПОРТА (ФАЙЛ / БУФЕР) -->
+    <div class="modal-overlay-custom" id="export-modal">
+        <div class="modal-content-custom" style="max-width: 360px; text-align: center;">
+            <h3 style="color:var(--text-color); font-weight:800; font-size: 15px; margin-bottom: 4px;">ЭКСПОРТ ДАННЫХ</h3>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Выберите удобный способ сохранения:</div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="cal-action-btn" style="background: linear-gradient(145deg, #e3f2fd, #bbdefb); color:#0d47a1; padding: 12px; font-size: 13px;" onclick="exportAsFile()">
+                    <i class="fa-solid fa-download mr-1.5"></i> СКАЧАТЬ ФАЙЛ JSON
+                </button>
+                <button class="cal-action-btn" style="background: linear-gradient(145deg, #e8f5e9, #c8e6c9); color:#1b5e20; padding: 12px; font-size: 13px;" onclick="exportAsClipboard()">
+                    <i class="fa-solid fa-copy mr-1.5"></i> КОПИРОВАТЬ В БУФЕР ОБМЕНА
+                </button>
+            </div>
+            
+            <button class="cal-action-btn" style="margin-top: 6px; height: 34px;" onclick="closeExportModal()">ЗАКРЫТЬ</button>
+        </div>
     </div>
 
     <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК ГЛАВНОГО ПРИЛОЖЕНИЯ -->
@@ -1711,7 +1730,6 @@
 
             resultTimeDiv.textContent = `${formattedH} ч ${formattedM} м`;
             
-            // Сохранение значений калькулятора времени
             localStorage.setItem('calc_time_data', JSON.stringify({
                 sh: startHInput.value, sm: startMInput.value,
                 eh: endHInput.value, em: endMInput.value
@@ -2020,7 +2038,6 @@
             updateTableCalculations();
         }
 
-        /* Мгновенный сбор и сохранение всех данных таблицы */
         function collectTableInputs() {
             let yearStr = calYear.toString();
             if (!calDb.table_ranges[yearStr]) calDb.table_ranges[yearStr] = {};
@@ -2148,24 +2165,77 @@
             renderCalendar();
         }
 
-        /* ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ И НАДЕЖНАЯ ФУНКЦИЯ ЭКСПОРТА */
-        function exportCalendarData() {
+        /* УНИВЕРСАЛЬНЫЕ ФУНКЦИИ ЭКСПОРТА (ФАЙЛ И БУФЕР ОБМЕНА) */
+        function openExportModal() {
             collectTableInputs();
+            document.getElementById('export-modal').style.display = 'flex';
+        }
+
+        function closeExportModal() {
+            document.getElementById('export-modal').style.display = 'none';
+        }
+
+        function getExportPayloadString() {
             let payload = { calendar_db: calDb, calendar_settings: calSettings, table_settings: tableSettings };
-            let jsonStr = JSON.stringify(payload, null, 4);
-            
-            let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
-            let url = URL.createObjectURL(blob);
-            let dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", url);
-            dlAnchor.setAttribute("download", `calendar_backup_${calYear}.json`);
-            dlAnchor.style.display = 'none';
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            setTimeout(() => { 
-                document.body.removeChild(dlAnchor); 
-                URL.revokeObjectURL(url); 
-            }, 500);
+            return JSON.stringify(payload, null, 4);
+        }
+
+        function exportAsFile() {
+            try {
+                let jsonStr = getExportPayloadString();
+                let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
+                let url = URL.createObjectURL(blob);
+                let dlAnchor = document.createElement('a');
+                dlAnchor.href = url;
+                dlAnchor.download = `calendar_backup_${calYear}.json`;
+                document.body.appendChild(dlAnchor);
+                dlAnchor.click();
+                setTimeout(() => { 
+                    document.body.removeChild(dlAnchor); 
+                    URL.revokeObjectURL(url); 
+                }, 500);
+                closeExportModal();
+            } catch(e) {
+                alert("Ошибка сохранения файла. Попробуйте скопировать данные в буфер обмена!");
+            }
+        }
+
+        function exportAsClipboard() {
+            let jsonStr = getExportPayloadString();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(jsonStr).then(() => {
+                    alert("Все данные успешно скопированы в буфер обмена!");
+                    closeExportModal();
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(jsonStr);
+                });
+            } else {
+                fallbackCopyTextToClipboard(jsonStr);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                let successful = document.execCommand('copy');
+                if (successful) {
+                    alert("Все данные успешно скопированы в буфер обмена!");
+                } else {
+                    alert("Не удалось скопировать автоматически.");
+                }
+            } catch (err) {
+                alert("Ошибка копирования в буфер обмена.");
+            }
+            document.body.removeChild(textArea);
+            closeExportModal();
         }
 
         function importCalendarDataTrigger() { document.getElementById('cal-import-file').click(); }
@@ -2367,7 +2437,6 @@
         document.getElementById('letterSpacingInput').oninput = (e) => { settings.letterSpacing = e.target.value; applySettings(); };
         document.getElementById('textShadowToggle').onchange = (e) => { settings.textShadow = e.target.checked; applySettings(); };
 
-        // Автосохранение при закрытии страницы или переключении приложения
         window.addEventListener('beforeunload', () => {
             collectTableInputs();
         });
