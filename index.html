@@ -632,7 +632,7 @@
             <div class="menu-list" id="menuContainer"></div>
         </div>
 
-        <!-- ПУНКТ 1: ГЕНЕРАТОР (ЗАМОРОЖЕН) -->
+        <!-- ПУНКТ 1: ГЕНЕРАТОР -->
         <div id="screenGenerator" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="btnTabHours" onclick="switchGenTab('tabHours', this)">МОТОЧАСЫ, Т/О</button>
@@ -710,13 +710,15 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 2: КАЛЬКУЛЯТОРЫ (ЗАМОРОЖЕН) -->
+        <!-- ПУНКТ 2: КАЛЬКУЛЯТОРЫ (С ДОБАВЛЕННОЙ ВКЛАДКОЙ «ВРЕМЯ») -->
         <div id="screenCalculators" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="btnCalcPerc" onclick="switchCalcTab('calcPerc', this)">ПРОЦЕНТЫ</button>
-                <button class="neu-btn sub-nav-btn" id="btnCalcConv" onclick="switchCalcTab('calcConv', this)">ЭЛЕКТРО КОНВЕРТЕР</button>
+                <button class="neu-btn sub-nav-btn" id="btnCalcConv" onclick="switchCalcTab('calcConv', this)">ЭЛЕКТРО</button>
+                <button class="neu-btn sub-nav-btn" id="btnCalcTime" onclick="switchCalcTab('calcTime', this)">ВРЕМЯ</button>
             </div>
 
+            <!-- Вкладка 1: Проценты -->
             <div id="calcTabPerc">
                 <div class="input-group">
                     <label for="percentInput">ПРОЦЕНТ (%):</label>
@@ -731,6 +733,7 @@
                 <div class="calc-result-box" id="calcResult">0% ОТ 100 = 0</div>
             </div>
 
+            <!-- Вкладка 2: Электро конвертер -->
             <div id="calcTabConv" style="display: none;">
                 <div class="input-group">
                     <label for="voltage">ВОЛЬТ (U, В)</label>
@@ -749,9 +752,33 @@
 
                 <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--reset-color);" onclick="clearConverter()">ОЧИСТИТЬ</button>
             </div>
+
+            <!-- Вкладка 3: Подсчет прошедшего времени (С / ДО) -->
+            <div id="calcTabTime" style="display: none;">
+                <div class="input-group">
+                    <label>С (ЧЧ / ММ)</label>
+                    <div class="time-inputs">
+                        <input type="number" id="startH" placeholder="ЧЧ" min="0" max="23" value="08">
+                        <input type="number" id="startM" placeholder="ММ" min="0" max="59" value="30">
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 12px;">
+                    <label>ДО (ЧЧ / ММ)</label>
+                    <div class="time-inputs">
+                        <input type="number" id="endH" placeholder="ЧЧ" min="0" max="23" value="17">
+                        <input type="number" id="endM" placeholder="ММ" min="0" max="59" value="15">
+                    </div>
+                </div>
+
+                <div class="result-box" id="timeResultBox" style="display: flex; margin-top: 15px; text-align: center;">
+                    <div class="result-title" style="font-size: 11px; opacity: 0.7; text-transform: uppercase; margin-bottom: 4px;">Результат</div>
+                    <div class="result-value" id="resultTime" style="font-size: 22px; font-weight: bold; color: var(--accent-color);">08 ч 45 м</div>
+                </div>
+            </div>
         </div>
 
-        <!-- ПУНКТ 3: АНТЕННА «ПАУК» (ЗАМОРОЖЕН) -->
+        <!-- ПУНКТ 3: АНТЕННА «ПАУК» -->
         <div id="screenSpider" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="spiderTabExt" onclick="switchSpiderMode('ext', this)">
@@ -880,7 +907,7 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 4: КАЛЕНДАРЬ С ЗАМЕТКАМИ (ПОЛНЫЙ ФУНКЦИОНАЛ И НАСТРОЙКИ) -->
+        <!-- ПУНКТ 4: КАЛЕНДАРЬ С ЗАМЕТКАМИ -->
         <div id="screenCalendar" class="view-screen">
             <div class="cal-wrapper">
                 <div class="cal-nav-frame">
@@ -986,7 +1013,7 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК КАЛЕНДАРЯ (ИЗ ПЕРВОНАЧАЛЬНОГО КОДА) -->
+    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК КАЛЕНДАРЯ -->
     <div class="modal-overlay-custom" id="settings-modal">
         <div class="modal-content-custom" style="max-width: 440px;">
             <h3 style="color:var(--text-color); font-weight:800;">НАСТРОЙКИ КАЛЕНДАРЯ</h3>
@@ -1155,6 +1182,9 @@
             calcFuel();
             calcPercent();
             calcSpider(145.00);
+
+            // Инициализация калькулятора времени
+            calculateTime();
 
             initTable();
             renderCalendar();
@@ -1367,7 +1397,7 @@
             renderEditItems();
         };
 
-        /* Логика генератора (Пункт 1 - Заморожен) */
+        /* Логика генератора */
         function switchGenTab(tabId, btn) {
             document.getElementById('genTabHours').style.display = tabId === 'tabHours' ? 'block' : 'none';
             document.getElementById('genTabFuel').style.display = tabId === 'tabFuel' ? 'block' : 'none';
@@ -1548,10 +1578,11 @@
             }
         }
 
-        /* Логика пункта 2 (Калькуляторы - Заморожен) */
+        /* Логика пункта 2 (Калькуляторы) */
         function switchCalcTab(tabId, btn) {
             document.getElementById('calcTabPerc').style.display = tabId === 'calcPerc' ? 'block' : 'none';
             document.getElementById('calcTabConv').style.display = tabId === 'calcConv' ? 'block' : 'none';
+            document.getElementById('calcTabTime').style.display = tabId === 'calcTime' ? 'block' : 'none';
             document.querySelectorAll('#screenCalculators > .sub-nav .sub-nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
@@ -1605,7 +1636,43 @@
             ['voltage', 'current', 'power'].forEach(id => document.getElementById(id).value = '');
         }
 
-        /* Логика пункта 3 (Антенна «Паук» - Заморожен) */
+        // Логика расчета прошедшего времени (С / ДО)
+        const startHInput = document.getElementById('startH');
+        const startMInput = document.getElementById('startM');
+        const endHInput = document.getElementById('endH');
+        const endMInput = document.getElementById('endM');
+        const resultTimeDiv = document.getElementById('resultTime');
+
+        function calculateTime() {
+            let sh = parseInt(startHInput.value) || 0;
+            let sm = parseInt(startMInput.value) || 0;
+            let eh = parseInt(endHInput.value) || 0;
+            let em = parseInt(endMInput.value) || 0;
+
+            let startTotalMinutes = sh * 60 + sm;
+            let endTotalMinutes = eh * 60 + em;
+
+            let diffMinutes = endTotalMinutes - startTotalMinutes;
+
+            // Если время "ДО" меньше времени "С", учитываем переход через полночь
+            if (diffMinutes < 0) {
+                diffMinutes += 24 * 60;
+            }
+
+            let hours = Math.floor(diffMinutes / 60);
+            let minutes = diffMinutes % 60;
+
+            let formattedH = String(hours).padStart(2, '0');
+            let formattedM = String(minutes).padStart(2, '0');
+
+            resultTimeDiv.textContent = `${formattedH} ч ${formattedM} м`;
+        }
+
+        [startHInput, startMInput, endHInput, endMInput].forEach(input => {
+            input.addEventListener('input', calculateTime);
+        });
+
+        /* Логика пункта 3 (Антенна «Паук») */
         function switchSpiderMode(mode, btn) {
             document.getElementById('spiderViewExt').style.display = mode === 'ext' ? 'flex' : 'none';
             document.getElementById('spiderViewComp').style.display = mode === 'comp' ? 'flex' : 'none';
@@ -1686,7 +1753,7 @@
             }
         }
 
-        /* --- Логика пункта 4 (Календарь с заметками и полными настройками) --- */
+        /* --- Логика пункта 4 (Календарь с заметками) --- */
         function initTable() {
             let tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
