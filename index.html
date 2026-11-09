@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3D Neumorphic App — БЛiК</title>
-    <!-- Tailwind CSS CDN (С полными CSS-дублерами ниже для офлайн-режима) -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -55,68 +55,6 @@
             --alert-bg: #fff5f5;
             --alert-text: #e53e3e;
             --reset-color: #e53e3e;
-
-            --color-brand-500: #3b82f6;
-            --color-brand-600: #2563eb;
-            --color-brand-700: #1d4ed8;
-
-            /* Светлая тема по умолчанию */
-            --bg-main: #ebedf0;
-            --month-cell-color: #ebedf0;
-            --weekday-cell-color: #ebedf0;
-            --day-cell-color: #ffffff;
-            --today-cell-color: #2b82fb;
-            --other-cell-color: #e6e8ec;
-            --weekend-cell-color: #ffe3e3;
-            --weekend-font-color: #9b1c1c;
-            
-            --month-font-size: 24px;
-            --month-font-color: #1c2536;
-            --month-font-weight: 800;
-
-            --weekday-font-size: 14px;
-            --weekday-font-color: #4a5568;
-            --weekday-font-weight: 700;
-
-            --day-font-size: 16px;
-            --day-font-color: #1a202c;
-            --day-font-weight: 700;
-
-            --today-font-size: 16px;
-            --today-font-color: #ffffff;
-            --today-font-weight: 800;
-
-            --other-day-font-size: 15px;
-            --other-day-font-color: #a0aec0;
-            --other-day-font-weight: 600;
-
-            --table-bg: #ebedf0;
-            --table-header-bg: #e1e3e7;
-            --table-header-font-size: 12px;
-            --table-header-font-color: #2d3748;
-            --table-header-font-weight: bold;
-
-            --table-month-cell-bg: #ffffff;
-            --table-month-font-size: 12px;
-            --table-month-font-color: #1a202c;
-            --table-month-font-weight: bold;
-
-            --table-cell-bg: #ffffff;
-            --table-cell-font-size: 12px;
-            --table-cell-font-color: #1a202c;
-            --table-cell-font-weight: normal;
-
-            --table-result-cell-bg: #f0f2f5;
-            --table-result-font-size: 12px;
-            --table-result-font-color: #2b82fb;
-            --table-result-font-weight: bold;
-
-            --table-total-cell-bg: #e1e3e7;
-            --table-total-font-size: 12px;
-            --table-total-font-color: #e53e3e;
-            --table-total-font-weight: bold;
-
-            --table-highlight-row-bg: #fff5f5;
         }
 
         [data-theme="dark"], .dark {
@@ -130,39 +68,6 @@
             --alert-bg: #2d3748;
             --alert-text: #fc8181;
             --reset-color: #fc8181;
-
-            /* Темная тема по умолчанию для календаря и таблиц */
-            --bg-main: #1e2530;
-            --month-cell-color: #1e2530;
-            --weekday-cell-color: #1e2530;
-            --day-cell-color: #242c38;
-            --today-cell-color: #2563eb;
-            --other-cell-color: #181f28;
-            --weekend-cell-color: #3b2020;
-            --weekend-font-color: #fc8181;
-
-            --month-font-color: #e2e8f0;
-            --weekday-font-color: #94a3b8;
-            --day-font-color: #e2e8f0;
-            --other-day-font-color: #64748b;
-
-            --table-bg: #1e2530;
-            --table-header-bg: #283242;
-            --table-header-font-color: #94a3b8;
-
-            --table-month-cell-bg: #242c38;
-            --table-month-font-color: #e2e8f0;
-
-            --table-cell-bg: #242c38;
-            --table-cell-font-color: #e2e8f0;
-
-            --table-result-cell-bg: #181f28;
-            --table-result-font-color: #60a5fa;
-
-            --table-total-cell-bg: #283242;
-            --table-total-font-color: #fc8181;
-
-            --table-highlight-row-bg: #3b2020;
         }
 
         /* ОФФЛАЙН-ДУБЛЕРЫ UTILITY-КЛАССОВ */
@@ -239,7 +144,7 @@
             overflow-x: hidden;
         }
 
-        /* ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК В ЛЕВОМ НИЖНЕМ УГЛУ */
+        /* ВОДЯНОЙ ЗНАК БЛiК: ИЗМЕНЕН РАЗМЕР ШРИФТА С 11px НА 20px */
         .watermark {
             position: fixed;
             bottom: 20px;
@@ -481,6 +386,7 @@
         .cal-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .cal-nav-frame {
             background-color: var(--month-cell-color);
+            color: var(--month-font-color);
             padding: 4px 8px 12px 8px;
             display: flex;
             justify-content: space-between;
@@ -563,12 +469,12 @@
             box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
         }
 
-        /* Объемные 3D-инпуты таблицы учетных данных */
+        /* Плоские 3D-поля в таблице */
         .table-container {
             background: var(--table-bg);
             padding: 10px;
             border-radius: 14px;
-            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
             overflow-x: auto;
         }
         .table-frame { border-collapse: separate; border-spacing: 5px; width: 100%; }
@@ -578,7 +484,7 @@
             font-size: var(--table-header-font-size); 
             color: var(--table-header-font-color); 
             font-weight: var(--table-header-font-weight); 
-            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+            box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
         .table-month-name {
             background: var(--table-month-cell-bg);
@@ -587,11 +493,11 @@
             font-weight: var(--table-month-font-weight);
             text-align: left;
             padding-left: 8px;
-            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+            box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
         .table-data-cell {
             background: var(--table-cell-bg);
-            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
             padding: 2px;
         }
         .table-result-cell {
@@ -599,40 +505,40 @@
             font-size: var(--table-result-font-size);
             color: var(--table-result-font-color);
             font-weight: var(--table-result-font-weight);
-            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+            box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
         .table-total-cell {
             background: var(--table-total-cell-bg);
             font-size: var(--table-total-font-size);
             color: var(--table-total-font-color);
             font-weight: var(--table-total-font-weight);
-            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+            box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
         .table-frame input { 
             width: 100%; height: 100%; text-align: center; border: none; outline: none; border-radius: 6px; 
             font-size: var(--table-cell-font-size); font-weight: var(--table-cell-font-weight); color: var(--table-cell-font-color); 
             padding: 6px 2px; background: var(--table-cell-bg); 
-            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+            box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
             text-transform: uppercase;
             transition: box-shadow 0.2s ease, color 0.2s ease;
         }
         .table-frame input:focus {
             color: var(--accent-color);
-            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
         }
         .highlight-row td { 
             background-color: var(--table-highlight-row-bg) !important;
-            box-shadow: 0 0 0 2px #2b82fb inset, 2px 2px 4px var(--shadow-dark) !important; 
+            box-shadow: 0 0 0 2px #2b82fb inset, 1px 1px 3px var(--shadow-dark) !important; 
         }
 
         /* Модальные окна */
         .modal-overlay-custom { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 3000; }
         .modal-content-custom { 
-            background: var(--card-bg); padding: 18px; border-radius: 18px; width: 92%; max-width: 440px; max-height: 85vh; overflow-y: auto; 
+            background: var(--card-bg); color: var(--text-color); padding: 18px; border-radius: 18px; width: 92%; max-width: 440px; max-height: 85vh; overflow-y: auto; 
             display: flex; flex-direction: column; gap: 10px; box-shadow: 10px 10px 30px rgba(0,0,0,0.25), -6px -6px 20px var(--shadow-light); 
         }
         .modal-item-card {
-            background: var(--card-bg); padding: 8px; border-radius: 10px;
+            background: var(--card-bg); color: var(--text-color); padding: 8px; border-radius: 10px;
             box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
             display: flex; flex-direction: column; gap: 4px;
         }
@@ -660,7 +566,7 @@
         }
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
         .modal {
-            background: var(--card-bg); width: 100%; max-width: 440px; max-height: 85vh;
+            background: var(--card-bg); color: var(--text-color); width: 100%; max-width: 440px; max-height: 85vh;
             border-radius: calc(var(--border-radius) + 8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             display: flex; flex-direction: column; overflow: hidden;
         }
@@ -690,7 +596,7 @@
 </head>
 <body>
 
-    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК В ЛЕВОМ НИЖНЕМ УГЛУ -->
+    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК В ЛЕВОМ НИЖНЕМ УГЛУ (Шрифт 20px) -->
     <div class="watermark">БЛiК</div>
 
     <div class="app-card">
@@ -864,7 +770,7 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 3: АНТЕННА «ПАУК» -->
+        <!-- ПУНКТ 3: АНТЕННА «ПАУК» (Частота по умолчанию 0) -->
         <div id="screenSpider" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="spiderTabExt" onclick="switchSpiderMode('ext', this)">
@@ -879,7 +785,7 @@
                 <div class="input-group">
                     <label for="spiderFreqExt">ЧАСТОТА (136 – 174 МГц):</label>
                     <div class="relative flex items-center">
-                        <input type="number" id="spiderFreqExt" step="0.01" min="0.1" placeholder="145.00" value="145.00" oninput="syncAndCalcSpider('ext')" class="pr-16 font-mono font-bold text-lg">
+                        <input type="number" id="spiderFreqExt" step="0.01" min="0" placeholder="0" value="0" oninput="syncAndCalcSpider('ext')" class="pr-16 font-mono font-bold text-lg">
                         <span class="absolute right-4 font-bold text-xs uppercase tracking-widest text-slate-400 pointer-events-none">МГц</span>
                     </div>
                 </div>
@@ -928,15 +834,15 @@
                     <h3>ПОДРОБНЫЕ РЕЗУЛЬТАТЫ:</h3>
                     <div class="grid grid-cols-1 gap-2 mt-1">
                         <div class="result-item p-2.5 grid-3d-box" id="card-spider-2">
-                            ШТЫРЬ ИЗЛУЧАТЕЛЬ (L2): <span id="spiderRes2" class="highlight">49.14 см</span><br>
-                            <span class="text-[11px] text-slate-400 font-mono" id="spiderRes2Mm">Точно: 491.4 мм</span>
+                            ШТЫРЬ ИЗЛУЧАТЕЛЬ (L2): <span id="spiderRes2" class="highlight">0.00 см</span><br>
+                            <span class="text-[11px] text-slate-400 font-mono" id="spiderRes2Mm">Точно: 0.0 мм</span>
                         </div>
                         <div class="result-item p-2.5 grid-3d-box" id="card-spider-7">
-                            ПРОТИВОВЕСЫ (4 ЛУЧА L7): <span id="spiderRes7" class="highlight">50.00 см</span><br>
-                            <span class="text-[11px] text-slate-400 font-mono" id="spiderRes7Mm">Точно: 500.0 мм (каждый)</span>
+                            ПРОТИВОВЕСЫ (4 ЛУЧА L7): <span id="spiderRes7" class="highlight">0.00 см</span><br>
+                            <span class="text-[11px] text-slate-400 font-mono" id="spiderRes7Mm">Точно: 0.0 мм (каждый)</span>
                         </div>
                         <div class="result-item p-2.5 grid-3d-box">
-                            ДЛИНА ВОЛНЫ (&lambda;): <span id="spiderResLambda" class="highlight">2.07 м</span> | 1/4 ВОЛНЫ: <span id="spiderResQuarter" class="highlight">51.72 см</span>
+                            ДЛИНА ВОЛНЫ (&lambda;): <span id="spiderResLambda" class="highlight">0.00 м</span> | 1/4 ВОЛНЫ: <span id="spiderResQuarter" class="highlight">0.00 см</span>
                         </div>
                     </div>
                 </div>
@@ -961,7 +867,7 @@
                 <div class="input-group">
                     <label for="spiderFreqComp">ЧАСТОТА (136.00 – 174.00 МГц):</label>
                     <div class="relative flex items-center">
-                        <input type="number" id="spiderFreqComp" step="0.01" min="0.1" placeholder="145.00" value="145.00" oninput="syncAndCalcSpider('comp')" class="pr-16 font-mono font-bold">
+                        <input type="number" id="spiderFreqComp" step="0.01" min="0" placeholder="0" value="0" oninput="syncAndCalcSpider('comp')" class="pr-16 font-mono font-bold">
                         <span class="absolute right-4 font-bold text-xs text-slate-400">МГц</span>
                     </div>
                 </div>
@@ -981,12 +887,12 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div class="grid-3d-box p-4 text-center">
                         <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">ШТЫРЬ:</div>
-                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes2">49.14</span>
+                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes2">0.00</span>
                         <div class="text-xs text-slate-400 mt-0.5">см</div>
                     </div>
                     <div class="grid-3d-box p-4 text-center">
                         <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">ЛУЧИ (4 ШТ):</div>
-                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes7">50.00</span>
+                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes7">0.00</span>
                         <div class="text-xs text-slate-400 mt-0.5">см</div>
                     </div>
                 </div>
@@ -1027,7 +933,7 @@
         <div class="watermark">БЛiК</div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭКСПОРТА -->
+    <!-- МОДАЛЬНОЕ ОКНО ЭКСПОРТА -->
     <div class="modal-overlay-custom" id="export-modal">
         <div class="modal-content-custom" style="max-width: 360px; text-align: center;">
             <h3 style="color:var(--text-color); font-weight:800; font-size: 15px; margin-bottom: 4px;">ЭКСПОРТ ДАННЫХ</h3>
@@ -1232,7 +1138,6 @@
         if (!calDb.notes) calDb.notes = {};
         if (!calDb.table_ranges) calDb.table_ranges = {};
 
-        // Базовые фабричные настройки календаря (адаптируются под тему, но сохраняют гибкость)
         const lightCalDefaults = {
             bg_main: "#ebedf0", month_cell_color: "#ebedf0", weekday_cell_color: "#ebedf0", day_cell_color: "#ffffff", today_cell_color: "#2b82fb", other_cell_color: "#e6e8ec", weekend_cell_color: "#ffe3e3", weekend_font_color: "#9b1c1c",
             month_font_size: 24, month_font_color: "#1c2536", month_font_weight: true,
@@ -1253,8 +1158,16 @@
             dot_size: 12, dot_relief_sunken: 1, dot_relief_raised: 2, dot_3d_style: "Сфера с бликом", note_display_mode: "Цветные точки", note_font_size: 10
         };
 
-        let savedCalendarSettings = JSON.parse(localStorage.getItem('calendar_settings'));
-        let calSettings = savedCalendarSettings && typeof savedCalendarSettings === 'object' ? savedCalendarSettings : (settings.theme === 'dark' ? darkCalDefaults : lightCalDefaults);
+        // Раздельное хранение настроек календаря по темам для предотвращения сброса
+        function getStoredCalendarSettings(theme) {
+            let saved = localStorage.getItem('calendar_settings_' + theme);
+            if (saved) {
+                try { return JSON.parse(saved); } catch(e) {}
+            }
+            return theme === 'dark' ? darkCalDefaults : lightCalDefaults;
+        }
+
+        let calSettings = getStoredCalendarSettings(settings.theme);
 
         const lightTableDefaults = {
             table_bg: "#ebedf0", table_header_bg: "#e1e3e7", table_header_font_size: 12, table_header_font_color: "#2d3748", table_header_font_weight: true,
@@ -1274,8 +1187,16 @@
             table_highlight_row_bg: "#3b2020"
         };
 
-        let savedTableSettings = JSON.parse(localStorage.getItem('table_settings'));
-        let tableSettings = savedTableSettings && typeof savedTableSettings === 'object' ? savedTableSettings : (settings.theme === 'dark' ? darkTableDefaults : lightTableDefaults);
+        // Раздельное хранение настроек таблицы по темам для предотвращения сброса
+        function getStoredTableSettings(theme) {
+            let saved = localStorage.getItem('table_settings_' + theme);
+            if (saved) {
+                try { return JSON.parse(saved); } catch(e) {}
+            }
+            return theme === 'dark' ? darkTableDefaults : lightTableDefaults;
+        }
+
+        let tableSettings = getStoredTableSettings(settings.theme);
 
         function init() {
             applySettings();
@@ -1292,7 +1213,7 @@
             document.getElementById('fuelStartDate').valueAsDate = fStart;
             calcFuel();
             calcPercent();
-            calcSpider(145.00);
+            calcSpider(0);
 
             loadTimeCalcData();
 
@@ -1393,6 +1314,8 @@
             r.style.setProperty('--table-highlight-row-bg', tableSettings.table_highlight_row_bg);
 
             localStorage.setItem('app_settings', JSON.stringify(settings));
+            localStorage.setItem('calendar_settings_' + settings.theme, JSON.stringify(calSettings));
+            localStorage.setItem('table_settings_' + settings.theme, JSON.stringify(tableSettings));
         }
 
         function openModule(item) {
@@ -1462,7 +1385,7 @@
                         <button class="neu-btn btn-small" ${isFirst ? 'disabled' : ''} onclick="moveItem(${index}, -1)" title="Вверх">▲</button>
                         <button class="neu-btn btn-small" ${isLast ? 'disabled' : ''} onclick="moveItem(${index}, 1)" title="Вниз">▼</button>
                     </div>
-                    <input type="text" value="${item.name}" onchange="updateItemName(${index}, this.value)">
+                    <input type="text" value="${item.name}" oninput="updateItemName(${index}, this.value)">
                     <input type="color" value="${item.color || '#334155'}" title="Цвет текста" onchange="updateItemColor(${index}, this.value)">
                     <button class="neu-btn btn-small" onclick="removeItem(${index})">✕</button>
                 `;
@@ -1807,7 +1730,10 @@
             else extInput.value = val;
 
             const freq = parseFloat(val);
-            if (isNaN(freq) || freq <= 0) return;
+            if (isNaN(freq) || freq <= 0) {
+                calcSpider(0);
+                return;
+            }
 
             calcSpider(freq);
         }
@@ -1819,11 +1745,24 @@
         }
 
         function calcSpiderAction() {
-            const freq = parseFloat(document.getElementById('spiderFreqExt').value);
-            if (!isNaN(freq)) calcSpider(freq);
+            const freq = parseFloat(document.getElementById('spiderFreqExt').value) || 0;
+            calcSpider(freq);
         }
 
         function calcSpider(freq) {
+            if (!freq || freq <= 0) {
+                document.getElementById('spiderRes2').innerText = `0.00 см`;
+                document.getElementById('spiderRes2Mm').innerText = `Точно: 0.0 мм`;
+                document.getElementById('spiderRes7').innerText = `0.00 см`;
+                document.getElementById('spiderRes7Mm').innerText = `Точно: 0.0 мм (каждый)`;
+                document.getElementById('spiderResLambda').innerText = `0.00 м`;
+                document.getElementById('spiderResQuarter').innerText = `0.00 см`;
+
+                document.getElementById('compRes2').innerText = "0.00";
+                document.getElementById('compRes7').innerText = "0.00";
+                return;
+            }
+
             const elem2_cm = 7125 / freq;
             const elem2_mm = elem2_cm * 10;
             const elem7_cm = 7250 / freq;
@@ -1843,16 +1782,9 @@
         }
 
         function clearSpider() {
-            document.getElementById('spiderFreqExt').value = '';
-            document.getElementById('spiderFreqComp').value = '';
-            document.getElementById('spiderRes2').innerText = '-- см';
-            document.getElementById('spiderRes2Mm').innerText = 'Точно: -- мм';
-            document.getElementById('spiderRes7').innerText = '-- см';
-            document.getElementById('spiderRes7Mm').innerText = 'Точно: -- мм (каждый)';
-            document.getElementById('spiderResLambda').innerText = '-- м';
-            document.getElementById('spiderResQuarter').innerText = '-- см';
-            document.getElementById('compRes2').innerText = '0.00';
-            document.getElementById('compRes7').innerText = '0.00';
+            document.getElementById('spiderFreqExt').value = '0';
+            document.getElementById('spiderFreqComp').value = '0';
+            calcSpider(0);
         }
 
         function highlightSpiderCard(elemId) {
@@ -1891,7 +1823,6 @@
         }
 
         function renderCalendar() {
-            applySettings();
             document.getElementById('cal-header-label').innerText = `${DISPLAY_MONTHS[calMonth-1]} ${calYear}`;
             let calFrame = document.getElementById('cal-frame');
             calFrame.innerHTML = '';
@@ -2235,7 +2166,7 @@
                 }, 500);
                 closeExportModal();
             } catch(e) {
-                alert("Ошибка сохранения файла. Попробуйте скопировать данные в буфер обмена!");
+                alert("Ошибка сохранения файла. Используйте кнопку копирования в буфер обмена!");
             }
         }
 
@@ -2297,11 +2228,11 @@
 
                     if (imported.calendar_settings) {
                         calSettings = imported.calendar_settings;
-                        localStorage.setItem('calendar_settings', JSON.stringify(calSettings));
+                        localStorage.setItem('calendar_settings_' + settings.theme, JSON.stringify(calSettings));
                     }
                     if (imported.table_settings) {
                         tableSettings = imported.table_settings;
-                        localStorage.setItem('table_settings', JSON.stringify(tableSettings));
+                        localStorage.setItem('table_settings_' + settings.theme, JSON.stringify(tableSettings));
                     }
                     applySettings();
                     renderCalendar();
@@ -2391,9 +2322,9 @@
             let modeEl = document.getElementById('st_note_display_mode');
             if (modeEl) calSettings.note_display_mode = modeEl.value;
 
-            localStorage.setItem('calendar_settings', JSON.stringify(calSettings));
+            localStorage.setItem('calendar_settings_' + settings.theme, JSON.stringify(calSettings));
             closeCalendarSettingsModal();
-            renderCalendar();
+            applySettings();
         }
 
         function openTableSettings() {
@@ -2448,7 +2379,7 @@
                     else tableSettings[key] = el.value;
                 }
             });
-            localStorage.setItem('table_settings', JSON.stringify(tableSettings));
+            localStorage.setItem('table_settings_' + settings.theme, JSON.stringify(tableSettings));
             closeTableSettings();
             applySettings();
         }
@@ -2461,13 +2392,12 @@
         }
 
         document.getElementById('themeToggle').onclick = () => {
-            settings.theme = settings.theme === 'light' ? 'dark' : 'light';
+            let newTheme = settings.theme === 'light' ? 'dark' : 'light';
+            settings.theme = newTheme;
             
-            // При переключении темы обновляем дефолтные цвета календаря и таблицы под новую тему, если пользователь не переопределял их вручную
-            calSettings = settings.theme === 'dark' ? darkCalDefaults : lightCalDefaults;
-            tableSettings = settings.theme === 'dark' ? darkTableDefaults : lightTableDefaults;
-            localStorage.setItem('calendar_settings', JSON.stringify(calSettings));
-            localStorage.setItem('table_settings', JSON.stringify(tableSettings));
+            // Подгружаем изолированные настройки для выбранной темы
+            calSettings = getStoredCalendarSettings(newTheme);
+            tableSettings = getStoredTableSettings(newTheme);
 
             applySettings();
             renderCalendar();
@@ -2486,6 +2416,7 @@
 
         window.addEventListener('beforeunload', () => {
             collectTableInputs();
+            localStorage.setItem('menu_items', JSON.stringify(menuItems));
         });
 
         init();
