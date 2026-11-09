@@ -6,7 +6,6 @@
     <title>3D Neumorphic App — БЛiК</title>
     <style>
         :root {
-            /* Светлая тема */
             --bg-color: #e0e5ec;
             --card-bg: #e0e5ec;
             --text-color: #334155;
@@ -14,27 +13,23 @@
             --shadow-light: #ffffff;
             --shadow-dark: #a3b1c6;
             
-            /* Настраиваемые параметры UI */
             --accent-color: #007aff;
             --accent-text: #ffffff;
             --border-radius: 18px;
             --shadow-blur: 10px;
             --shadow-dist: 5px;
 
-            /* Шрифты */
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             --font-size: 15px;
             --letter-spacing: 0.5px;
             --text-shadow-style: none;
 
-            /* Цвета предупреждений */
             --alert-bg: #fff5f5;
             --alert-text: #e53e3e;
             --reset-color: #e53e3e;
         }
 
         [data-theme="dark"] {
-            /* Тёмная тема */
             --bg-color: #1e2530;
             --card-bg: #1e2530;
             --text-color: #e2e8f0;
@@ -71,7 +66,6 @@
             text-transform: uppercase;
         }
 
-        /* Главная карточка */
         .app-card {
             background: var(--card-bg);
             width: 100%;
@@ -88,7 +82,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Шапка карточки */
         .header {
             display: flex;
             justify-content: space-between;
@@ -107,7 +100,6 @@
             gap: 12px;
         }
 
-        /* Кнопки в Neumorphic стиле */
         .neu-btn {
             background: var(--card-bg);
             border: none;
@@ -156,7 +148,6 @@
             stroke-linejoin: round;
         }
 
-        /* Разделы карточки */
         .view-screen {
             display: none;
             flex-direction: column;
@@ -167,7 +158,6 @@
             display: flex;
         }
 
-        /* Список пунктов главного меню */
         .menu-list {
             display: flex;
             flex-direction: column;
@@ -184,7 +174,6 @@
             background: var(--item-bg, var(--card-bg));
         }
 
-        /* Навигация подвкладок генератора */
         .sub-nav {
             display: flex;
             gap: 10px;
@@ -196,7 +185,6 @@
             font-size: calc(var(--font-size) * 0.8);
         }
 
-        /* Формы и поля ввода */
         .input-group {
             display: flex;
             flex-direction: column;
@@ -229,7 +217,6 @@
             gap: 10px;
         }
 
-        /* Баннер сообщений ТО */
         .alert-banner {
             padding: 12px;
             border-radius: calc(var(--border-radius) - 4px);
@@ -244,7 +231,6 @@
             display: none;
         }
 
-        /* Блок результатов */
         .result-box {
             padding: 15px;
             border-radius: calc(var(--border-radius) - 4px);
@@ -277,15 +263,19 @@
             color: var(--reset-color);
         }
 
-        /* Заглушка для пустых пунктов */
-        .empty-module {
+        .calc-result-box {
+            padding: 15px;
+            border-radius: calc(var(--border-radius) - 4px);
+            box-shadow: 
+                inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
             text-align: center;
-            padding: 40px 20px;
-            font-weight: 600;
-            color: var(--text-muted);
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: calc(var(--font-size) * 1.05);
+            margin-top: 5px;
         }
 
-        /* Водяной знак */
         .watermark {
             text-align: center;
             font-size: 11px;
@@ -296,7 +286,6 @@
             margin-top: 6px;
         }
 
-        /* Модальное окно настроек */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -435,7 +424,6 @@
 <body>
 
     <div class="app-card">
-        <!-- Шапка -->
         <div class="header">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <button class="neu-btn icon-btn" id="backBtn" style="display: none;" title="Назад" onclick="openMainMenu()">
@@ -458,12 +446,12 @@
             </div>
         </div>
 
-        <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ -->
+        <!-- ГЛАВНОЕ МЕНЮ -->
         <div id="screenMainMenu" class="view-screen active">
             <div class="menu-list" id="menuContainer"></div>
         </div>
 
-        <!-- ЭКРАН 2: МОДУЛЬ «ГЕНЕРАТОР» -->
+        <!-- ПУНКТ 1: ГЕНЕРАТОР (НЕ ТРОГАЕМ!) -->
         <div id="screenGenerator" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="btnTabHours" onclick="switchGenTab('tabHours', this)">МОТОЧАСЫ, Т/О</button>
@@ -481,28 +469,28 @@
                 <div id="sectionDays">
                     <div class="input-group">
                         <label for="days">КОЛИЧЕСТВО ДНЕЙ РАБОТЫ:</label>
-                        <input type="number" id="days" placeholder="НАПР. 5" min="0" oninput="autoCalculate()">
+                        <input type="number" id="days" placeholder="НАПР. 5" min="0" oninput="autoCalculateGen()">
                     </div>
                 </div>
 
                 <div id="sectionDate" style="display: none;">
                     <div class="input-group">
                         <label for="lastDate">ДАТА ПОСЛЕДНЕГО ТО:</label>
-                        <input type="date" id="lastDate" onchange="autoCalculate()">
+                        <input type="date" id="lastDate" onchange="autoCalculateGen()">
                     </div>
                 </div>
 
                 <div class="input-group" style="margin-top: 12px;">
                     <label>ВРЕМЯ РАБОТЫ В ДЕНЬ:</label>
                     <div class="time-inputs">
-                        <input type="number" id="hours" placeholder="ЧАСОВ (0-24)" min="0" max="24" oninput="autoCalculate()">
-                        <input type="number" id="minutes" placeholder="МИНУТ (0-59)" min="0" max="59" oninput="autoCalculate()">
+                        <input type="number" id="hours" placeholder="ЧАСОВ (0-24)" min="0" max="24" oninput="autoCalculateGen()">
+                        <input type="number" id="minutes" placeholder="МИНУТ (0-59)" min="0" max="59" oninput="autoCalculateGen()">
                     </div>
                 </div>
 
                 <div class="input-group" style="margin-top: 12px; margin-bottom: 15px;">
                     <label for="targetHours">КОЛ-ВО М/Ч ДО СЛЕД. ТО:</label>
-                    <input type="number" id="targetHours" placeholder="50" min="1" value="50" oninput="autoCalculate()">
+                    <input type="number" id="targetHours" placeholder="50" min="1" value="50" oninput="autoCalculateGen()">
                 </div>
 
                 <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--reset-color);" onclick="clearGenData()">ОЧИСТИТЬ</button>
@@ -541,16 +529,58 @@
             </div>
         </div>
 
-        <!-- ЭКРАН 3: УНИВЕРСАЛЬНАЯ ЗАГЛУШКА ДЛЯ ОСТАЛЬНЫХ ПУНКТОВ -->
-        <div id="screenEmptyModule" class="view-screen">
-            <div class="empty-module" id="emptyModuleTitle">РАЗДЕЛ В РАЗРАБОТКЕ</div>
+        <!-- ПУНКТ 2: КАЛЬКУЛЯТОРЫ (С ЗАКЛАДКАМИ ПРОЦЕНТЫ / КОНВЕРТЕР) -->
+        <div id="screenCalculators" class="view-screen">
+            <div class="sub-nav">
+                <button class="neu-btn sub-nav-btn active" id="btnCalcPerc" onclick="switchCalcTab('calcPerc', this)">ПРОЦЕНТЫ</button>
+                <button class="neu-btn sub-nav-btn" id="btnCalcConv" onclick="switchCalcTab('calcConv', this)">ЭЛЕКТРО КОНВЕРТЕР</button>
+            </div>
+
+            <!-- Вкладка 1: Проценты -->
+            <div id="calcTabPerc">
+                <div class="input-group">
+                    <label for="percentInput">ПРОЦЕНТ (%):</label>
+                    <input type="number" id="percentInput" placeholder="0" value="0" oninput="calcPercent()">
+                </div>
+                
+                <div class="input-group" style="margin-top: 12px; margin-bottom: 15px;">
+                    <label for="numberInput">ОТ ЧИСЛА:</label>
+                    <input type="number" id="numberInput" placeholder="100" value="100" oninput="calcPercent()">
+                </div>
+
+                <div class="calc-result-box" id="calcResult">0% ОТ 100 = 0</div>
+            </div>
+
+            <!-- Вкладка 2: Электро конвертер -->
+            <div id="calcTabConv" style="display: none;">
+                <div class="input-group">
+                    <label for="voltage">ВОЛЬТ (U, В)</label>
+                    <input type="number" id="voltage" placeholder="Например: 12">
+                </div>
+
+                <div class="input-group" style="margin-top: 12px;">
+                    <label for="current">АМПЕР (I, А)</label>
+                    <input type="number" id="current" placeholder="Например: 5">
+                </div>
+
+                <div class="input-group" style="margin-top: 12px; margin-bottom: 15px;">
+                    <label for="power">ВАТТ (P, Вт)</label>
+                    <input type="number" id="power" placeholder="Например: 60">
+                </div>
+
+                <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--reset-color);" onclick="clearConverter()">ОЧИСТИТЬ</button>
+            </div>
         </div>
 
-        <!-- Водяной знак БЛiК -->
+        <!-- ЗАГЛУШКА ДЛЯ ОСТАЛЬНЫХ ПУНКТОВ -->
+        <div id="screenEmptyModule" class="view-screen">
+            <div style="text-align: center; padding: 40px 20px; font-weight: 600; color: var(--text-muted);" id="emptyModuleTitle">РАЗДЕЛ В РАЗРАБОТКЕ</div>
+        </div>
+
         <div class="watermark">БЛiК</div>
     </div>
 
-    <!-- Модальное окно настроек -->
+    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -625,13 +655,20 @@
     <script>
         let defaultMenu = [
             { id: 1, type: "generator", name: "1. ГЕНЕРАТОР", color: "", bg: "" },
-            { id: 2, type: "custom", name: "2. ПУНКТ", color: "", bg: "" },
+            { id: 2, type: "calculators", name: "2. КАЛЬКУЛЯТОРЫ", color: "", bg: "" },
             { id: 3, type: "custom", name: "3. ПУНКТ", color: "", bg: "" },
             { id: 4, type: "custom", name: "4. ПУНКТ", color: "", bg: "" },
             { id: 5, type: "custom", name: "5. ПУНКТ", color: "", bg: "" }
         ];
 
-        let menuItems = JSON.parse(localStorage.getItem('menu_items')) || defaultMenu;
+        let storedMenu = JSON.parse(localStorage.getItem('menu_items'));
+        if (!storedMenu || !storedMenu.some(item => item.type === 'calculators')) {
+            menuItems = defaultMenu;
+            localStorage.setItem('menu_items', JSON.stringify(menuItems));
+        } else {
+            menuItems = storedMenu;
+        }
+
         let settings = JSON.parse(localStorage.getItem('app_settings')) || {
             theme: 'light',
             accent: '#007aff',
@@ -644,6 +681,7 @@
         };
 
         let currentMode = 'days';
+        let activeConvField = null;
 
         function init() {
             applySettings();
@@ -651,7 +689,7 @@
             renderEditItems();
 
             loadSavedGenData();
-            autoCalculate();
+            autoCalculateGen();
 
             const fEnd = new Date();
             const fStart = new Date();
@@ -659,6 +697,7 @@
             document.getElementById('fuelEndDate').valueAsDate = fEnd;
             document.getElementById('fuelStartDate').valueAsDate = fStart;
             calcFuel();
+            calcPercent();
         }
 
         function applySettings() {
@@ -695,10 +734,11 @@
             localStorage.setItem('app_settings', JSON.stringify(settings));
         }
 
-        // Обработка нажатий на пункты меню
+        /* Навигация по модулям */
         function openModule(item) {
             document.getElementById('screenMainMenu').classList.remove('active');
             document.getElementById('screenGenerator').classList.remove('active');
+            document.getElementById('screenCalculators').classList.remove('active');
             document.getElementById('screenEmptyModule').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
@@ -706,6 +746,8 @@
 
             if (item.type === 'generator') {
                 document.getElementById('screenGenerator').classList.add('active');
+            } else if (item.type === 'calculators') {
+                document.getElementById('screenCalculators').classList.add('active');
             } else {
                 document.getElementById('emptyModuleTitle').innerText = `${item.name} В РАЗРАБОТКЕ`;
                 document.getElementById('screenEmptyModule').classList.add('active');
@@ -714,6 +756,7 @@
 
         function openMainMenu() {
             document.getElementById('screenGenerator').classList.remove('active');
+            document.getElementById('screenCalculators').classList.remove('active');
             document.getElementById('screenEmptyModule').classList.remove('active');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
@@ -792,10 +835,11 @@
             renderEditItems();
         };
 
+        /* Логика генератора (Пункт 1) */
         function switchGenTab(tabId, btn) {
             document.getElementById('genTabHours').style.display = tabId === 'tabHours' ? 'block' : 'none';
             document.getElementById('genTabFuel').style.display = tabId === 'tabFuel' ? 'block' : 'none';
-            document.querySelectorAll('#screenGenerator .sub-nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#screenGenerator > .sub-nav .sub-nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
@@ -805,7 +849,7 @@
             document.getElementById('btnModeDate').classList.toggle('active', mode === 'date');
             document.getElementById('sectionDays').style.display = mode === 'days' ? 'block' : 'none';
             document.getElementById('sectionDate').style.display = mode === 'date' ? 'block' : 'none';
-            autoCalculate();
+            autoCalculateGen();
         }
 
         function formatDate(dateObj) {
@@ -815,7 +859,7 @@
             return `${day}.${month}.${year}`;
         }
 
-        function autoCalculate() {
+        function autoCalculateGen() {
             let totalDays = 0;
             let startDate = null;
 
@@ -944,7 +988,6 @@
             document.getElementById('targetHours').value = '50';
             document.getElementById('result').style.display = 'none';
             document.getElementById('alertBanner').style.display = 'none';
-
             localStorage.removeItem('generator_neumo_data');
         }
 
@@ -973,10 +1016,68 @@
             }
         }
 
+        /* Логика закладок в пункте 2 (Калькуляторы) */
+        function switchCalcTab(tabId, btn) {
+            document.getElementById('calcTabPerc').style.display = tabId === 'calcPerc' ? 'block' : 'none';
+            document.getElementById('calcTabConv').style.display = tabId === 'calcConv' ? 'block' : 'none';
+            document.querySelectorAll('#screenCalculators > .sub-nav .sub-nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        /* Логика калькулятора процентов */
+        function calcPercent() {
+            const percentInput = parseFloat(document.getElementById('percentInput').value) || 0;
+            const numberInput = parseFloat(document.getElementById('numberInput').value) || 0;
+            const calculatedResult = (percentInput / 100) * numberInput;
+            const formattedResult = Number(calculatedResult.toFixed(2));
+            document.getElementById('calcResult').innerText = `${percentInput}% ОТ ${numberInput} = ${formattedResult}`;
+        }
+
+        /* Логика электро конвертера */
+        function getConvVal(id) {
+            const val = parseFloat(document.getElementById(id).value);
+            return isNaN(val) ? null : val;
+        }
+
+        function setConvVal(id, val) {
+            if (id === activeConvField) return;
+            const el = document.getElementById(id);
+            if (val !== null && !isNaN(val) && isFinite(val) && val >= 0) {
+                el.value = Number(val.toFixed(2));
+            } else {
+                el.value = '';
+            }
+        }
+
+        function autoCalculateConverter(source) {
+            activeConvField = source;
+            let U = getConvVal('voltage');
+            let I = getConvVal('current');
+            let P = getConvVal('power');
+
+            if (source === 'voltage') {
+                if (I !== null) { P = U * I; setConvVal('power', P); }
+                else if (P !== null && U !== 0) { I = P / U; setConvVal('current', I); }
+            } else if (source === 'current') {
+                if (U !== null) { P = U * I; setConvVal('power', P); }
+                else if (P !== null && I !== 0) { U = P / I; setConvVal('voltage', U); }
+            } else if (source === 'power') {
+                if (U !== null && U !== 0) { I = P / U; setConvVal('current', I); }
+                else if (I !== null && I !== 0) { U = P / I; setConvVal('voltage', U); }
+            }
+        }
+
+        ['voltage', 'current', 'power'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => autoCalculateConverter(id));
+        });
+
+        function clearConverter() {
+            ['voltage', 'current', 'power'].forEach(id => document.getElementById(id).value = '');
+        }
+
         function switchSettingsTab(tabId) {
             document.querySelectorAll('.modal .tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.modal .tab-content').forEach(c => c.classList.remove('active'));
-            
             event.target.classList.add('active');
             document.getElementById(tabId).classList.add('active');
         }
