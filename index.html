@@ -60,7 +60,7 @@
             --color-brand-600: #2563eb;
             --color-brand-700: #1d4ed8;
 
-            /* Переменные календаря */
+            /* Светлая тема по умолчанию */
             --bg-main: #ebedf0;
             --month-cell-color: #ebedf0;
             --weekday-cell-color: #ebedf0;
@@ -130,6 +130,39 @@
             --alert-bg: #2d3748;
             --alert-text: #fc8181;
             --reset-color: #fc8181;
+
+            /* Темная тема по умолчанию для календаря и таблиц */
+            --bg-main: #1e2530;
+            --month-cell-color: #1e2530;
+            --weekday-cell-color: #1e2530;
+            --day-cell-color: #242c38;
+            --today-cell-color: #2563eb;
+            --other-cell-color: #181f28;
+            --weekend-cell-color: #3b2020;
+            --weekend-font-color: #fc8181;
+
+            --month-font-color: #e2e8f0;
+            --weekday-font-color: #94a3b8;
+            --day-font-color: #e2e8f0;
+            --other-day-font-color: #64748b;
+
+            --table-bg: #1e2530;
+            --table-header-bg: #283242;
+            --table-header-font-color: #94a3b8;
+
+            --table-month-cell-bg: #242c38;
+            --table-month-font-color: #e2e8f0;
+
+            --table-cell-bg: #242c38;
+            --table-cell-font-color: #e2e8f0;
+
+            --table-result-cell-bg: #181f28;
+            --table-result-font-color: #60a5fa;
+
+            --table-total-cell-bg: #283242;
+            --table-total-font-color: #fc8181;
+
+            --table-highlight-row-bg: #3b2020;
         }
 
         /* ОФФЛАЙН-ДУБЛЕРЫ UTILITY-КЛАССОВ */
@@ -211,7 +244,7 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
-            font-size: 20px;
+            font-size: 11px;
             font-weight: 900;
             letter-spacing: 3px;
             color: var(--text-muted);
@@ -453,6 +486,7 @@
             justify-content: space-between;
             align-items: center;
             border-radius: 14px;
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
         }
         .cal-center-nav { display: flex; align-items: center; gap: 12px; flex-grow: 1; justify-content: space-between; }
         #cal-header-label {
@@ -514,14 +548,14 @@
         .cal-ctrl-frame { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; gap: 4px; flex-wrap: wrap; }
         .cal-left-actions { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; justify-content: space-between; }
         .cal-action-btn {
-            background: linear-gradient(145deg, #ffffff, #e1e3e7);
+            background: var(--card-bg);
             border: none;
             border-radius: 10px;
             padding: 8px 10px;
             cursor: pointer;
             font-weight: 700;
             font-size: 11px;
-            color: #2d3748;
+            color: var(--text-color);
             box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
             transition: all 0.1s ease;
         }
@@ -974,10 +1008,10 @@
 
                 <div class="cal-ctrl-frame">
                     <div class="cal-left-actions">
-                        <button class="cal-action-btn" onclick="openTableModal()" style="background: linear-gradient(145deg, #e0f7fa, #b2ebf2); color:#006064;">ТАБЛ.</button>
-                        <button class="cal-action-btn" onclick="openExportModal()" style="background: linear-gradient(145deg, #e1f5fe, #b3e5fc); color:#01579b;">ЭКСП.</button>
+                        <button class="cal-action-btn" onclick="openTableModal()">ТАБЛ.</button>
+                        <button class="cal-action-btn" onclick="openExportModal()">ЭКСП.</button>
                         <button class="cal-action-btn" onclick="importCalendarDataTrigger()">ИМП.</button>
-                        <button class="cal-action-btn" style="background: linear-gradient(145deg, #ffebee, #ffcdd2); color:#b71c1c;" onclick="clearCalendarMonth()">ЧИСТ.</button>
+                        <button class="cal-action-btn" style="color:var(--reset-color);" onclick="clearCalendarMonth()">ЧИСТ.</button>
                         <button class="cal-action-btn" onclick="openSettingsModal()" title="Настройки календаря">⚙️</button>
                     </div>
                     <input type="file" id="cal-import-file" style="display:none" onchange="importCalendarData(event)">
@@ -993,17 +1027,17 @@
         <div class="watermark">БЛiК</div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭКСПОРТА (ФАЙЛ / БУФЕР) -->
+    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ЭКСПОРТА -->
     <div class="modal-overlay-custom" id="export-modal">
         <div class="modal-content-custom" style="max-width: 360px; text-align: center;">
             <h3 style="color:var(--text-color); font-weight:800; font-size: 15px; margin-bottom: 4px;">ЭКСПОРТ ДАННЫХ</h3>
             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Выберите удобный способ сохранения:</div>
             
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button class="cal-action-btn" style="background: linear-gradient(145deg, #e3f2fd, #bbdefb); color:#0d47a1; padding: 12px; font-size: 13px;" onclick="exportAsFile()">
+                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportAsFile()">
                     <i class="fa-solid fa-download mr-1.5"></i> СКАЧАТЬ ФАЙЛ JSON
                 </button>
-                <button class="cal-action-btn" style="background: linear-gradient(145deg, #e8f5e9, #c8e6c9); color:#1b5e20; padding: 12px; font-size: 13px;" onclick="exportAsClipboard()">
+                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportAsClipboard()">
                     <i class="fa-solid fa-copy mr-1.5"></i> КОПИРОВАТЬ В БУФЕР ОБМЕНА
                 </button>
             </div>
@@ -1172,7 +1206,7 @@
         }
 
         let settings = JSON.parse(localStorage.getItem('app_settings')) || {
-            theme: 'light',
+            theme: 'dark',
             accent: '#007aff',
             radius: 18,
             shadow: 5,
@@ -1198,44 +1232,50 @@
         if (!calDb.notes) calDb.notes = {};
         if (!calDb.table_ranges) calDb.table_ranges = {};
 
-        let savedCalendarSettings = JSON.parse(localStorage.getItem('calendar_settings'));
-        let calSettings = savedCalendarSettings && typeof savedCalendarSettings === 'object' ? savedCalendarSettings : {
-            bg_main: "#ebedf0",
+        // Базовые фабричные настройки календаря (адаптируются под тему, но сохраняют гибкость)
+        const lightCalDefaults = {
+            bg_main: "#ebedf0", month_cell_color: "#ebedf0", weekday_cell_color: "#ebedf0", day_cell_color: "#ffffff", today_cell_color: "#2b82fb", other_cell_color: "#e6e8ec", weekend_cell_color: "#ffe3e3", weekend_font_color: "#9b1c1c",
             month_font_size: 24, month_font_color: "#1c2536", month_font_weight: true,
             weekday_font_size: 14, weekday_font_color: "#4a5568", weekday_font_weight: true,
             day_font_size: 16, day_font_color: "#1a202c", day_font_weight: true,
             today_font_size: 16, today_font_color: "#ffffff", today_font_weight: true,
             other_day_font_size: 15, other_day_font_color: "#a0aec0", other_day_font_weight: true,
-            month_cell_color: "#ebedf0", weekday_cell_color: "#ebedf0", day_cell_color: "#ffffff", today_cell_color: "#2b82fb", other_cell_color: "#e6e8ec",
-            weekend_cell_color: "#ffe3e3", weekend_font_color: "#9b1c1c",
             dot_size: 12, dot_relief_sunken: 1, dot_relief_raised: 2, dot_3d_style: "Сфера с бликом", note_display_mode: "Цветные точки", note_font_size: 10
         };
 
-        let savedTableSettings = JSON.parse(localStorage.getItem('table_settings'));
-        let tableSettings = savedTableSettings && typeof savedTableSettings === 'object' ? savedTableSettings : {
-            table_bg: "#ebedf0",
-            table_header_bg: "#e1e3e7",
-            table_header_font_size: 12,
-            table_header_font_color: "#2d3748",
-            table_header_font_weight: true,
-            table_month_cell_bg: "#ffffff",
-            table_month_font_size: 12,
-            table_month_font_color: "#1a202c",
-            table_month_font_weight: true,
-            table_cell_bg: "#ffffff",
-            table_cell_font_size: 12,
-            table_cell_font_color: "#1a202c",
-            table_cell_font_weight: false,
-            table_result_cell_bg: "#f0f2f5",
-            table_result_font_size: 12,
-            table_result_font_color: "#2b82fb",
-            table_result_font_weight: true,
-            table_total_cell_bg: "#e1e3e7",
-            table_total_font_size: 12,
-            table_total_font_color: "#e53e3e",
-            table_total_font_weight: true,
+        const darkCalDefaults = {
+            bg_main: "#1e2530", month_cell_color: "#1e2530", weekday_cell_color: "#1e2530", day_cell_color: "#242c38", today_cell_color: "#2563eb", other_cell_color: "#181f28", weekend_cell_color: "#3b2020", weekend_font_color: "#fc8181",
+            month_font_size: 24, month_font_color: "#e2e8f0", month_font_weight: true,
+            weekday_font_size: 14, weekday_font_color: "#94a3b8", weekday_font_weight: true,
+            day_font_size: 16, day_font_color: "#e2e8f0", day_font_weight: true,
+            today_font_size: 16, today_font_color: "#ffffff", today_font_weight: true,
+            other_day_font_size: 15, other_day_font_color: "#64748b", other_day_font_weight: true,
+            dot_size: 12, dot_relief_sunken: 1, dot_relief_raised: 2, dot_3d_style: "Сфера с бликом", note_display_mode: "Цветные точки", note_font_size: 10
+        };
+
+        let savedCalendarSettings = JSON.parse(localStorage.getItem('calendar_settings'));
+        let calSettings = savedCalendarSettings && typeof savedCalendarSettings === 'object' ? savedCalendarSettings : (settings.theme === 'dark' ? darkCalDefaults : lightCalDefaults);
+
+        const lightTableDefaults = {
+            table_bg: "#ebedf0", table_header_bg: "#e1e3e7", table_header_font_size: 12, table_header_font_color: "#2d3748", table_header_font_weight: true,
+            table_month_cell_bg: "#ffffff", table_month_font_size: 12, table_month_font_color: "#1a202c", table_month_font_weight: true,
+            table_cell_bg: "#ffffff", table_cell_font_size: 12, table_cell_font_color: "#1a202c", table_cell_font_weight: false,
+            table_result_cell_bg: "#f0f2f5", table_result_font_size: 12, table_result_font_color: "#2b82fb", table_result_font_weight: true,
+            table_total_cell_bg: "#e1e3e7", table_total_font_size: 12, table_total_font_color: "#e53e3e", table_total_font_weight: true,
             table_highlight_row_bg: "#fff5f5"
         };
+
+        const darkTableDefaults = {
+            table_bg: "#1e2530", table_header_bg: "#283242", table_header_font_size: 12, table_header_font_color: "#94a3b8", table_header_font_weight: true,
+            table_month_cell_bg: "#242c38", table_month_font_size: 12, table_month_font_color: "#e2e8f0", table_month_font_weight: true,
+            table_cell_bg: "#242c38", table_cell_font_size: 12, table_cell_font_color: "#e2e8f0", table_cell_font_weight: false,
+            table_result_cell_bg: "#181f28", table_result_font_size: 12, table_result_font_color: "#60a5fa", table_result_font_weight: true,
+            table_total_cell_bg: "#283242", table_total_font_size: 12, table_total_font_color: "#fc8181", table_total_font_weight: true,
+            table_highlight_row_bg: "#3b2020"
+        };
+
+        let savedTableSettings = JSON.parse(localStorage.getItem('table_settings'));
+        let tableSettings = savedTableSettings && typeof savedTableSettings === 'object' ? savedTableSettings : (settings.theme === 'dark' ? darkTableDefaults : lightTableDefaults);
 
         function init() {
             applySettings();
@@ -2165,7 +2205,6 @@
             renderCalendar();
         }
 
-        /* УНИВЕРСАЛЬНЫЕ ФУНКЦИИ ЭКСПОРТА (ФАЙЛ И БУФЕР ОБМЕНА) */
         function openExportModal() {
             collectTableInputs();
             document.getElementById('export-modal').style.display = 'flex';
@@ -2423,7 +2462,15 @@
 
         document.getElementById('themeToggle').onclick = () => {
             settings.theme = settings.theme === 'light' ? 'dark' : 'light';
+            
+            // При переключении темы обновляем дефолтные цвета календаря и таблицы под новую тему, если пользователь не переопределял их вручную
+            calSettings = settings.theme === 'dark' ? darkCalDefaults : lightCalDefaults;
+            tableSettings = settings.theme === 'dark' ? darkTableDefaults : lightTableDefaults;
+            localStorage.setItem('calendar_settings', JSON.stringify(calSettings));
+            localStorage.setItem('table_settings', JSON.stringify(tableSettings));
+
             applySettings();
+            renderCalendar();
         };
 
         document.getElementById('settingsToggle').onclick = () => document.getElementById('modalOverlay').classList.add('open');
