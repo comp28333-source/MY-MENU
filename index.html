@@ -144,7 +144,7 @@
             overflow-x: hidden;
         }
 
-        /* ВОДЯНОЙ ЗНАК БЛiК: РАЗМЕР ШРИФТА 20px */
+        /* ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК: РАЗМЕР ШРИФТА 20px */
         .watermark {
             position: fixed;
             bottom: 20px;
@@ -1110,7 +1110,6 @@
                         <input type="range" id="hueSliderComp" min="0" max="360" value="217" class="w-full cursor-pointer">
                     </div>
 
-                    <!-- Быстрый выбор в урезанном варианте -->
                     <div class="grid grid-cols-4 gap-2 mb-3">
                         <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;">RED</button>
                         <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;">GREEN</button>
@@ -1295,7 +1294,7 @@
     </div>
 
     <script>
-        let menuItems = [
+        let menuItems = JSON.parse(localStorage.getItem('menu_items_config')) || [
             { id: 1, type: "generator", name: "1. ГЕНЕРАТОР", color: "", bg: "" },
             { id: 2, type: "calculators", name: "2. КАЛЬКУЛЯТОРЫ", color: "", bg: "" },
             { id: 3, type: "spider", name: "3. АНТЕННА «ПАУК»", color: "", bg: "" },
@@ -1568,13 +1567,46 @@
 
         function renderEditItems() {
             const container = document.getElementById('itemsEditList');
+            container.innerHtml = '';
             container.innerHTML = '';
             menuItems.forEach((item, index) => {
                 const row = document.createElement('div');
                 row.className = 'edit-item-row';
-                row.innerHTML = `<input type="text" value="${item.name}" disabled style="opacity: 0.8; cursor: not-allowed;">`;
+                row.innerHTML = `
+                    <input type="text" value="${item.name}" oninput="updateItemName(${index}, this.value)" class="modal-input" style="flex: 1;">
+                    <input type="color" value="${item.color || '#334155'}" onchange="updateItemColor(${index}, this.value)" style="width: 28px; height: 28px; padding: 0; border: none; background: none; cursor: pointer;" title="Цвет текста">
+                    <div class="move-btns">
+                        <button class="neu-btn btn-small" onclick="moveItem(${index}, -1)" ${index === 0 ? 'disabled' : ''}>▲</button>
+                        <button class="neu-btn btn-small" onclick="moveItem(${index}, 1)" ${index === menuItems.length - 1 ? 'disabled' : ''}>▼</button>
+                    </div>
+                `;
                 container.appendChild(row);
             });
+        }
+
+        function updateItemName(index, val) {
+            menuItems[index].name = val;
+            saveAndRefreshMenu();
+        }
+
+        function updateItemColor(index, val) {
+            menuItems[index].color = val;
+            saveAndRefreshMenu();
+        }
+
+        function moveItem(index, direction) {
+            const targetIndex = index + direction;
+            if (targetIndex < 0 || targetIndex >= menuItems.length) return;
+            const temp = menuItems[index];
+            menuItems[index] = menuItems[targetIndex];
+            menuItems[targetIndex] = temp;
+            saveAndRefreshMenu();
+            renderEditItems();
+        }
+
+        function saveAndRefreshMenu() {
+            localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
+            renderMenu();
         }
 
         function switchGenTab(tabId, btn) {
@@ -2545,7 +2577,6 @@
         }
 
         function initColorPicker() {
-            // Расширенный вариант
             canvas = document.getElementById('colorCanvas');
             if(!canvas) return;
             ctx = canvas.getContext('2d');
@@ -2616,7 +2647,6 @@
                 alert(`${str} скопирован!`);
             });
 
-            // Урезанный вариант (Мобильный)
             canvasComp = document.getElementById('colorCanvasComp');
             ctxComp = canvasComp.getContext('2d');
             canvasContainerComp = document.getElementById('canvasContainerComp');
