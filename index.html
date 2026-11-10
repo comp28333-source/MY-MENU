@@ -70,7 +70,7 @@
             --reset-color: #fc8181;
         }
 
-        /* ОФФЛАЙН-ДУБЛЕРЫ UTILITY-КЛАССОВ */
+        /* УТИЛИТАРНЫЕ КЛАССЫ */
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
         .grid { display: grid; }
@@ -144,7 +144,7 @@
             overflow-x: hidden;
         }
 
-        /* ВОДЯНОЙ ЗНАК БЛiК: ИЗМЕНЕН РАЗМЕР ШРИФТА С 11px НА 20px */
+        /* ВОДЯНОЙ ЗНАК БЛiК: РАЗМЕР ШРИФТА 20px */
         .watermark {
             position: fixed;
             bottom: 20px;
@@ -174,6 +174,10 @@
             position: relative;
             transition: all 0.3s ease;
             z-index: 10;
+        }
+
+        .app-card-wide {
+            max-width: 780px !important;
         }
 
         .header {
@@ -469,7 +473,7 @@
             box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
         }
 
-        /* Плоские 3D-поля в таблице */
+        /* Таблица */
         .table-container {
             background: var(--table-bg);
             padding: 10px;
@@ -592,14 +596,53 @@
         .edit-item-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
         .move-btns { display: flex; gap: 4px; }
         .btn-small { padding: 8px 10px; font-size: 12px; border-radius: calc(var(--border-radius) - 6px); }
+
+        /* Стили для 5-го пункта (Color Picker) */
+        .color-picker-box {
+            box-shadow: 
+                inset 3px 3px 8px rgba(0,0,0,0.6),
+                inset -2px -2px 6px rgba(255,255,255,0.1),
+                0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        input[type=range]::-webkit-slider-track {
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red);
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.4);
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 2px #ffffff;
+            border: 2px solid #334155;
+        }
+
+        .neu-concave {
+            background: linear-gradient(145deg, #15171d, #1e2129);
+            box-shadow: inset 3px 3px 6px #0f1115, inset -2px -2px 4px #252933;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        [data-theme="light"] .neu-concave, .dark:not(.dark) .neu-concave {
+            background: linear-gradient(145deg, #d3d9e4, #eff5ff);
+            box-shadow: inset 3px 3px 6px #b4bcc8, inset -3px -3px 6px #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
 <body>
 
-    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК В ЛЕВОМ НИЖНЕМ УГЛУ (Шрифт 20px) -->
+    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК (Шрифт 20px) -->
     <div class="watermark">БЛiК</div>
 
-    <div class="app-card">
+    <div class="app-card" id="mainAppCard">
         <div class="header">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <button class="neu-btn icon-btn" id="backBtn" style="display: none;" title="Назад" onclick="openMainMenu()">
@@ -770,7 +813,7 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 3: АНТЕННА «ПАУК» (Частота по умолчанию 0) -->
+        <!-- ПУНКТ 3: АНТЕННА «ПАУК» -->
         <div id="screenSpider" class="view-screen">
             <div class="sub-nav">
                 <button class="neu-btn sub-nav-btn active" id="spiderTabExt" onclick="switchSpiderMode('ext', this)">
@@ -925,9 +968,168 @@
             </div>
         </div>
 
-        <!-- ЗАГЛУШКА ДЛЯ ОСТАЛЬНЫХ ПУНКТОВ -->
-        <div id="screenEmptyModule" class="view-screen">
-            <div style="text-align: center; padding: 40px 20px; font-weight: 600; color: var(--text-muted);" id="emptyModuleTitle">РАЗДЕЛ В РАЗРАБОТКЕ</div>
+        <!-- ПУНКТ 5: HTML COLOR PICKER (С ВЫБОРОМ: РАСШИРЕННЫЙ / УРЕЗАННЫЙ) -->
+        <div id="screenColorPicker" class="view-screen">
+            <!-- Переключатель вариантов для 5-го пункта -->
+            <div class="sub-nav">
+                <button class="neu-btn sub-nav-btn active" id="cpTabExt" onclick="switchColorPickerMode('ext', this)">
+                    <i class="fa-solid fa-window-maximize mr-1.5"></i> Расширенный
+                </button>
+                <button class="neu-btn sub-nav-btn" id="cpTabComp" onclick="switchColorPickerMode('comp', this)">
+                    <i class="fa-solid fa-compress mr-1.5"></i> Урезанный (Телефон)
+                </button>
+            </div>
+
+            <!-- РАСШИРЕННЫЙ ВАРИАНТ -->
+            <div id="cpViewExt" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <section class="lg:col-span-7 flex flex-col gap-4">
+                    <div class="neu-convex p-4 rounded-xl relative" style="background:var(--card-bg);">
+                        <div class="flex justify-between items-center mb-3">
+                            <h2 class="text-sm font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-eye-dropper"></i> Интерактивная Палитра
+                            </h2>
+                            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full neu-concave">HTML / CSS Code</span>
+                        </div>
+
+                        <div id="selectedColorDisplay" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/20 transition-colors duration-200" style="background-color: #3b82f6;">
+                            <span id="displayHexText" class="font-mono font-bold text-base text-white drop-shadow">#3B82F6</span>
+                            <button id="quickCopyBtn" class="text-white hover:bg-black/20 p-2 rounded-lg text-sm transition" title="Копировать HEX">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="relative w-full h-44 rounded-xl overflow-hidden color-picker-box mb-3 cursor-crosshair" id="canvasContainer">
+                            <canvas id="colorCanvas" class="w-full h-full"></canvas>
+                            <div id="pickerHandle" class="absolute w-5 h-5 border-2 border-white rounded-full shadow-lg pointer-events-none transform -translate-x-1/2 -translate-y-1/2" style="top: 20%; left: 80%; background-color: #3b82f6;"></div>
+                        </div>
+
+                        <div class="mb-2">
+                            <input type="range" id="hueSlider" min="0" max="360" value="217" class="w-full cursor-pointer">
+                        </div>
+
+                        <div class="space-y-2.5 font-mono text-xs">
+                            <div class="flex items-center gap-2">
+                                <label class="w-12 font-bold opacity-70">HEX</label>
+                                <div class="flex-1 neu-concave rounded-xl px-3 py-2 flex items-center justify-between">
+                                    <span class="opacity-50">#</span>
+                                    <input type="text" id="hexInput" value="3B82F6" class="bg-transparent w-full outline-none font-semibold uppercase tracking-wider ml-1">
+                                    <button class="copy-trigger opacity-70 hover:opacity-100 transition" data-target="hexInput"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <label class="w-12 font-bold opacity-70">RGB</label>
+                                <div class="flex-1 grid grid-cols-3 gap-1.5">
+                                    <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">R</span><input type="number" id="rgbR" value="59" class="bg-transparent text-center w-full outline-none font-semibold"></div>
+                                    <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">G</span><input type="number" id="rgbG" value="130" class="bg-transparent text-center w-full outline-none font-semibold"></div>
+                                    <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">B</span><input type="number" id="rgbB" value="246" class="bg-transparent text-center w-full outline-none font-semibold"></div>
+                                </div>
+                                <button id="copyRgbBtn" class="px-1 opacity-70 hover:opacity-100 transition" title="Копировать RGB"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <label class="w-12 font-bold opacity-70">HSL</label>
+                                <div class="flex-1 grid grid-cols-3 gap-1.5">
+                                    <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">H</span><input type="number" id="hslH" value="217" class="bg-transparent text-center w-full outline-none font-semibold"></div>
+                                    <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">S</span><input type="number" id="hslS" value="91" class="bg-transparent text-center w-full outline-none font-semibold"></div>
+                                    <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">L</span><input type="number" id="hslL" value="60" class="bg-transparent text-center w-full outline-none font-semibold"></div>
+                                </div>
+                                <button id="copyHslBtn" class="px-1 opacity-70 hover:opacity-100 transition" title="Копировать HSL"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 neu-concave p-2 rounded-xl flex items-center justify-between">
+                            <span class="text-xs font-medium px-2">Рекомендуемый цвет текста:</span>
+                            <button id="contrastPreviewBtn" class="neu-btn px-4 py-1.5 rounded-lg font-bold text-xs transition-all">Белый</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="lg:col-span-5 flex flex-col gap-4">
+                    <div class="neu-convex p-4 rounded-xl" style="background:var(--card-bg);">
+                        <h3 class="text-xs font-bold mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-swatchbook"></i> Стандартные HTML Цвета
+                        </h3>
+
+                        <div class="grid grid-cols-4 gap-2 mb-2">
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;">RED</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;">GREEN</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="0000FF" style="border-left: 3px solid #0000FF;">BLUE</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FFFF00" style="border-left: 3px solid #FFFF00;">YELLOW</button>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2">
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="00FFFF" style="border-left: 3px solid #00FFFF;">CYAN</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FF00FF" style="border-left: 3px solid #FF00FF;">MAGENTA</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FFA500" style="border-left: 3px solid #FFA500;">ORANGE</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="800080" style="border-left: 3px solid #800080;">PURPLE</button>
+                        </div>
+                    </div>
+
+                    <div class="neu-convex p-4 rounded-xl" style="background:var(--card-bg);">
+                        <h3 class="text-xs font-bold mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-code"></i> Экспорт для HTML/CSS
+                        </h3>
+
+                        <div class="space-y-2.5 font-mono text-[11px]">
+                            <div class="neu-concave p-2.5 rounded-xl flex items-center justify-between">
+                                <span class="opacity-70">CSS Variable:</span>
+                                <code id="cssVarOutput" class="font-bold">--main-color: #3B82F6;</code>
+                            </div>
+                            <div class="neu-concave p-2.5 rounded-xl flex items-center justify-between">
+                                <span class="opacity-70">Tailwind Class:</span>
+                                <code id="tailwindOutput" class="font-bold">bg-[#3B82F6]</code>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- УРЕЗАННЫЙ ВАРИАНТ (ДЛЯ ТЕЛЕФОНА) -->
+            <div id="cpViewComp" style="display: none;" class="flex flex-col gap-4">
+                <div class="neu-convex p-4 rounded-xl relative" style="background:var(--card-bg);">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-sm font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-eye-dropper"></i> Палитра (Мобильная)
+                        </h2>
+                    </div>
+
+                    <div id="selectedColorDisplayComp" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/20" style="background-color: #3b82f6;">
+                        <span id="displayHexTextComp" class="font-mono font-bold text-base text-white drop-shadow">#3B82F6</span>
+                        <button id="quickCopyBtnComp" class="text-white hover:bg-black/20 p-2 rounded-lg text-sm transition" title="Копировать HEX">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+
+                    <div class="relative w-full h-36 rounded-xl overflow-hidden color-picker-box mb-3 cursor-crosshair" id="canvasContainerComp">
+                        <canvas id="colorCanvasComp" class="w-full h-full"></canvas>
+                        <div id="pickerHandleComp" class="absolute w-4 h-4 border-2 border-white rounded-full shadow-lg pointer-events-none transform -translate-x-1/2 -translate-y-1/2" style="top: 20%; left: 80%; background-color: #3b82f6;"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="range" id="hueSliderComp" min="0" max="360" value="217" class="w-full cursor-pointer">
+                    </div>
+
+                    <!-- Быстрый выбор в урезанном варианте -->
+                    <div class="grid grid-cols-4 gap-2 mb-3">
+                        <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;">RED</button>
+                        <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;">GREEN</button>
+                        <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="0000FF" style="border-left: 3px solid #0000FF;">BLUE</button>
+                        <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FFFF00" style="border-left: 3px solid #FFFF00;">YELLOW</button>
+                    </div>
+
+                    <div class="space-y-2 font-mono text-[11px]">
+                        <div class="neu-concave p-2 rounded-xl flex items-center justify-between">
+                            <span class="opacity-70">HEX:</span>
+                            <input type="text" id="hexInputComp" value="3B82F6" class="bg-transparent w-28 text-right outline-none font-semibold uppercase">
+                        </div>
+                        <div class="neu-concave p-2.5 rounded-xl flex items-center justify-between">
+                            <span class="opacity-70">Tailwind:</span>
+                            <code id="tailwindOutputComp" class="font-bold">bg-[#3B82F6]</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="watermark">БЛiК</div>
@@ -952,7 +1154,7 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК ГЛАВНОГО ПРИЛОЖЕНИЯ -->
+    <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -1015,9 +1217,8 @@
 
                 <div id="tab-items" class="tab-content">
                     <div class="setting-group">
-                        <label class="setting-label">Управление и порядок пунктов</label>
+                        <label class="setting-label">Управление и порядок пунктов (Первые 4 пункта зафиксированы)</label>
                         <div id="itemsEditList"></div>
-                        <button class="neu-btn btn-small" id="addItemBtn" style="margin-top: 8px;">+ Добавить пункт</button>
                     </div>
                 </div>
             </div>
@@ -1035,7 +1236,7 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ЗАМЕТКИ КАЛЕНДАРЯ -->
+    <!-- МОДАЛЬНОЕ ОКНО ЗАМЕТКИ -->
     <div class="modal-overlay-custom" id="note-modal">
         <div class="modal-content-custom">
             <h3 id="modal-date-title" style="font-size: 14px; color: var(--text-color); font-weight:800;">Заметка</h3>
@@ -1049,7 +1250,7 @@
         </div>
     </div>
 
-    <!-- ПОЛНОЭКРАННОЕ ОКНО ТАБЛИЦЫ УЧЕТА КАЛЕНДАРЯ -->
+    <!-- ПОЛНОЭКРАННОЕ ОКНО ТАБЛИЦЫ -->
     <div class="fullscreen-modal" id="table-modal">
         <div class="fullscreen-header">
             <div style="display:flex; gap:6px;">
@@ -1094,22 +1295,13 @@
     </div>
 
     <script>
-        let defaultMenu = [
+        let menuItems = [
             { id: 1, type: "generator", name: "1. ГЕНЕРАТОР", color: "", bg: "" },
             { id: 2, type: "calculators", name: "2. КАЛЬКУЛЯТОРЫ", color: "", bg: "" },
             { id: 3, type: "spider", name: "3. АНТЕННА «ПАУК»", color: "", bg: "" },
             { id: 4, type: "calendar", name: "4. КАЛЕНДАРЬ С ЗАМЕТКАМИ", color: "", bg: "" },
-            { id: 5, type: "custom", name: "5. ПУНКТ", color: "", bg: "" }
+            { id: 5, type: "colorpicker", name: "5. HTML COLOR PICKER", color: "", bg: "" }
         ];
-
-        let menuItems;
-        let storedMenu = JSON.parse(localStorage.getItem('menu_items'));
-        if (!storedMenu || !storedMenu.some(item => item.type === 'calendar')) {
-            menuItems = defaultMenu;
-            localStorage.setItem('menu_items', JSON.stringify(menuItems));
-        } else {
-            menuItems = storedMenu;
-        }
 
         let settings = JSON.parse(localStorage.getItem('app_settings')) || {
             theme: 'dark',
@@ -1158,7 +1350,6 @@
             dot_size: 12, dot_relief_sunken: 1, dot_relief_raised: 2, dot_3d_style: "Сфера с бликом", note_display_mode: "Цветные точки", note_font_size: 10
         };
 
-        // Раздельное хранение настроек календаря по темам для предотвращения сброса
         function getStoredCalendarSettings(theme) {
             let saved = localStorage.getItem('calendar_settings_' + theme);
             if (saved) {
@@ -1187,7 +1378,6 @@
             table_highlight_row_bg: "#3b2020"
         };
 
-        // Раздельное хранение настроек таблицы по темам для предотвращения сброса
         function getStoredTableSettings(theme) {
             let saved = localStorage.getItem('table_settings_' + theme);
             if (saved) {
@@ -1220,6 +1410,7 @@
             initTable();
             renderCalendar();
             calcAllTime();
+            initColorPicker();
         }
 
         function applySettings() {
@@ -1324,23 +1515,28 @@
             document.getElementById('screenCalculators').classList.remove('active');
             document.getElementById('screenSpider').classList.remove('active');
             document.getElementById('screenCalendar').classList.remove('active');
-            document.getElementById('screenEmptyModule').classList.remove('active');
+            document.getElementById('screenColorPicker').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('screenTitle').innerText = item.name;
 
-            if (item.type === 'generator') {
-                document.getElementById('screenGenerator').classList.add('active');
-            } else if (item.type === 'calculators') {
-                document.getElementById('screenCalculators').classList.add('active');
-            } else if (item.type === 'spider') {
-                document.getElementById('screenSpider').classList.add('active');
-            } else if (item.type === 'calendar') {
-                document.getElementById('screenCalendar').classList.add('active');
-                renderCalendar();
+            const card = document.getElementById('mainAppCard');
+            if (item.type === 'colorpicker') {
+                card.classList.add('app-card-wide');
+                document.getElementById('screenColorPicker').classList.add('active');
+                setTimeout(() => { resizeCanvas(); resizeCanvasComp(); }, 50);
             } else {
-                document.getElementById('emptyModuleTitle').innerText = `${item.name} В РАЗРАБОТКЕ`;
-                document.getElementById('screenEmptyModule').classList.add('active');
+                card.classList.remove('app-card-wide');
+                if (item.type === 'generator') {
+                    document.getElementById('screenGenerator').classList.add('active');
+                } else if (item.type === 'calculators') {
+                    document.getElementById('screenCalculators').classList.add('active');
+                } else if (item.type === 'spider') {
+                    document.getElementById('screenSpider').classList.add('active');
+                } else if (item.type === 'calendar') {
+                    document.getElementById('screenCalendar').classList.add('active');
+                    renderCalendar();
+                }
             }
         }
 
@@ -1349,10 +1545,11 @@
             document.getElementById('screenCalculators').classList.remove('active');
             document.getElementById('screenSpider').classList.remove('active');
             document.getElementById('screenCalendar').classList.remove('active');
-            document.getElementById('screenEmptyModule').classList.remove('active');
+            document.getElementById('screenColorPicker').classList.remove('active');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
             document.getElementById('screenTitle').innerText = "МЕНЮ";
+            document.getElementById('mainAppCard').classList.remove('app-card-wide');
         }
 
         function renderMenu() {
@@ -1367,7 +1564,6 @@
                 btn.onclick = () => openModule(item);
                 menuContainer.appendChild(btn);
             });
-            localStorage.setItem('menu_items', JSON.stringify(menuItems));
         }
 
         function renderEditItems() {
@@ -1376,56 +1572,10 @@
             menuItems.forEach((item, index) => {
                 const row = document.createElement('div');
                 row.className = 'edit-item-row';
-                
-                const isFirst = index === 0;
-                const isLast = index === menuItems.length - 1;
-
-                row.innerHTML = `
-                    <div class="move-btns">
-                        <button class="neu-btn btn-small" ${isFirst ? 'disabled' : ''} onclick="moveItem(${index}, -1)" title="Вверх">▲</button>
-                        <button class="neu-btn btn-small" ${isLast ? 'disabled' : ''} onclick="moveItem(${index}, 1)" title="Вниз">▼</button>
-                    </div>
-                    <input type="text" value="${item.name}" oninput="updateItemName(${index}, this.value)">
-                    <input type="color" value="${item.color || '#334155'}" title="Цвет текста" onchange="updateItemColor(${index}, this.value)">
-                    <button class="neu-btn btn-small" onclick="removeItem(${index})">✕</button>
-                `;
+                row.innerHTML = `<input type="text" value="${item.name}" disabled style="opacity: 0.8; cursor: not-allowed;">`;
                 container.appendChild(row);
             });
         }
-
-        function moveItem(index, direction) {
-            const targetIndex = index + direction;
-            if (targetIndex < 0 || targetIndex >= menuItems.length) return;
-
-            const temp = menuItems[index];
-            menuItems[index] = menuItems[targetIndex];
-            menuItems[targetIndex] = temp;
-
-            renderMenu();
-            renderEditItems();
-        }
-
-        function updateItemName(index, val) {
-            menuItems[index].name = val;
-            renderMenu();
-        }
-
-        function updateItemColor(index, val) {
-            menuItems[index].color = val;
-            renderMenu();
-        }
-
-        function removeItem(index) {
-            menuItems.splice(index, 1);
-            renderMenu();
-            renderEditItems();
-        }
-
-        document.getElementById('addItemBtn').onclick = () => {
-            menuItems.push({ id: Date.now(), type: 'custom', name: `${menuItems.length + 1}. ПУНКТ`, color: '', bg: '' });
-            renderMenu();
-            renderEditItems();
-        };
 
         function switchGenTab(tabId, btn) {
             document.getElementById('genTabHours').style.display = tabId === 'tabHours' ? 'block' : 'none';
@@ -1461,7 +1611,7 @@
             const dailyMinutes = (hours * 60) + minutes;
             const banner = document.getElementById('alertBanner');
 
-            if (dailyMinutes === 0 || hours > 24 || minutes >= 60 || targetHours <= 0) {
+            if (dailyMinutes === 0 || hours > 24 || minutes >= 59 || targetHours <= 0) {
                 document.getElementById('result').style.display = 'none';
                 banner.style.display = 'none';
                 saveGenData();
@@ -1534,28 +1684,17 @@
                 banner.style.display = "none";
             }
 
-            document.getElementById('lastServiceDisplay').innerHTML = 
-                `ДАТА ПОСЛЕДНЕГО ТО: <span class="highlight">${formatDate(startDate)}</span>`;
-
-            document.getElementById('daysPassed').innerHTML = 
-                `ПРОШЛО ДНЕЙ: <span class="highlight">${totalDays} ДН.</span>`;
-
-            document.getElementById('totalTime').innerHTML = 
-                `ОБЩАЯ НАРАБОТКА: <span class="highlight">${resHours} Ч ${resMinutes} МИН</span>`;
-            
-            document.getElementById('totalDecimal').innerHTML = 
-                `В ДЕСЯТИЧНОМ ВИДЕ: <span class="highlight">${decimalHours} МОТОЧАСОВ</span>`;
-
-            document.getElementById('equivalentDays').innerHTML = 
-                `НЕПРЕРЫВНАЯ РАБОТА: <span class="highlight">${continuousDays} ДН. ${remainingHours} Ч ${resMinutes} МИН</span>`;
+            document.getElementById('lastServiceDisplay').innerHTML = `ДАТА ПОСЛЕДНЕГО ТО: <span class="highlight">${formatDate(startDate)}</span>`;
+            document.getElementById('daysPassed').innerHTML = `ПРОШЛО ДНЕЙ: <span class="highlight">${totalDays} ДН.</span>`;
+            document.getElementById('totalTime').innerHTML = `ОБЩАЯ НАРАБОТКА: <span class="highlight">${resHours} Ч ${resMinutes} МИН</span>`;
+            document.getElementById('totalDecimal').innerHTML = `В ДЕСЯТИЧНОМ ВИДЕ: <span class="highlight">${decimalHours} МОТОЧАСОВ</span>`;
+            document.getElementById('equivalentDays').innerHTML = `НЕПРЕРЫВНАЯ РАБОТА: <span class="highlight">${continuousDays} ДН. ${remainingHours} Ч ${resMinutes} МИН</span>`;
 
             const isOverdue = resHours >= targetHours;
             const nextServiceClass = isOverdue ? 'highlight-alert' : 'highlight';
             const statusText = isOverdue ? ' (ТРЕБУЕТСЯ ТО!)' : '';
 
-            document.getElementById('nextServiceDate').innerHTML = 
-                `СЛЕДУЮЩЕЕ ТО (${targetHours} Ч): <span class="${nextServiceClass}">${formatDate(nextServiceDateObj)}${statusText}</span>`;
-
+            document.getElementById('nextServiceDate').innerHTML = `СЛЕДУЮЩЕЕ ТО (${targetHours} Ч): <span class="${nextServiceClass}">${formatDate(nextServiceDateObj)}${statusText}</span>`;
             document.getElementById('result').style.display = 'flex';
             saveGenData();
         }
@@ -1678,20 +1817,14 @@
 
             let startTotalMinutes = sh * 60 + sm;
             let endTotalMinutes = eh * 60 + em;
-
             let diffMinutes = endTotalMinutes - startTotalMinutes;
 
-            if (diffMinutes < 0) {
-                diffMinutes += 24 * 60;
-            }
+            if (diffMinutes < 0) diffMinutes += 24 * 60;
 
             let hours = Math.floor(diffMinutes / 60);
             let minutes = diffMinutes % 60;
 
-            let formattedH = String(hours).padStart(2, '0');
-            let formattedM = String(minutes).padStart(2, '0');
-
-            resultTimeDiv.textContent = `${formattedH} ч ${formattedM} м`;
+            resultTimeDiv.textContent = `${String(hours).padStart(2, '0')} ч ${String(minutes).padStart(2, '0')} м`;
             
             localStorage.setItem('calc_time_data', JSON.stringify({
                 sh: startHInput.value, sm: startMInput.value,
@@ -1730,12 +1863,7 @@
             else extInput.value = val;
 
             const freq = parseFloat(val);
-            if (isNaN(freq) || freq <= 0) {
-                calcSpider(0);
-                return;
-            }
-
-            calcSpider(freq);
+            calcSpider(isNaN(freq) || freq <= 0 ? 0 : freq);
         }
 
         function setSpiderFreq(val) {
@@ -2391,16 +2519,309 @@
             document.getElementById(tabId).classList.add('active');
         }
 
+        // ЛОГИКА 5-ГО ПУНКТА (ЦВЕТОВАЯ ПАЛИТРА: РАСШИРЕННЫЙ И УРЕЗАННЫЙ РЕЖИМЫ)
+        let canvas, ctx, canvasContainer, pickerHandle, hueSlider, displayBar, displayHexText;
+        let hexInput, rgbR, rgbG, rgbB, hslH, hslS, hslL, contrastPreviewBtn;
+        let canvasComp, ctxComp, canvasContainerComp, pickerHandleComp, hueSliderComp, displayBarComp, displayHexTextComp, hexInputComp, tailwindOutputComp;
+        let currentHue = 217;
+        let pickerPos = { x: 0.8, y: 0.2 };
+        let isDragging = false;
+        let isDraggingComp = false;
+
+        function switchColorPickerMode(mode, btn) {
+            document.getElementById('cpViewExt').style.display = mode === 'ext' ? 'grid' : 'none';
+            document.getElementById('cpViewComp').style.display = mode === 'comp' ? 'flex' : 'none';
+            document.querySelectorAll('#screenColorPicker > .sub-nav .sub-nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const card = document.getElementById('mainAppCard');
+            if (mode === 'comp') {
+                card.classList.remove('app-card-wide');
+                setTimeout(() => resizeCanvasComp(), 50);
+            } else {
+                card.classList.add('app-card-wide');
+                setTimeout(() => resizeCanvas(), 50);
+            }
+        }
+
+        function initColorPicker() {
+            // Расширенный вариант
+            canvas = document.getElementById('colorCanvas');
+            if(!canvas) return;
+            ctx = canvas.getContext('2d');
+            canvasContainer = document.getElementById('canvasContainer');
+            pickerHandle = document.getElementById('pickerHandle');
+            hueSlider = document.getElementById('hueSlider');
+            displayBar = document.getElementById('selectedColorDisplay');
+            displayHexText = document.getElementById('displayHexText');
+
+            hexInput = document.getElementById('hexInput');
+            rgbR = document.getElementById('rgbR');
+            rgbG = document.getElementById('rgbG');
+            rgbB = document.getElementById('rgbB');
+            hslH = document.getElementById('hslH');
+            hslS = document.getElementById('hslS');
+            hslL = document.getElementById('hslL');
+            contrastPreviewBtn = document.getElementById('contrastPreviewBtn');
+
+            canvasContainer.addEventListener('mousedown', (e) => { isDragging = true; pickColorFromCanvas(e); });
+            window.addEventListener('mousemove', (e) => { if (isDragging) pickColorFromCanvas(e); });
+            window.addEventListener('mouseup', () => isDragging = false);
+
+            canvasContainer.addEventListener('touchstart', (e) => { isDragging = true; if(e.touches[0]) pickColorFromCanvas(e.touches[0]); });
+            window.addEventListener('touchmove', (e) => { if (isDragging && e.touches[0]) pickColorFromCanvas(e.touches[0]); });
+            window.addEventListener('touchend', () => isDragging = false);
+
+            hueSlider.addEventListener('input', (e) => {
+                currentHue = e.target.value;
+                drawGradient(ctx, canvas, currentHue);
+                const x = pickerPos.x * canvas.width;
+                const y = pickerPos.y * canvas.height;
+                const imgData = ctx.getImageData(x, y, 1, 1).data;
+                updateColorUI(imgData[0], imgData[1], imgData[2]);
+            });
+
+            hexInput.addEventListener('input', (e) => {
+                const rgb = hexToRgb(e.target.value);
+                if (rgb) updateColorUI(rgb.r, rgb.g, rgb.b);
+            });
+
+            document.querySelectorAll('.preset-card').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const hex = this.getAttribute('data-hex');
+                    const rgb = hexToRgb(hex);
+                    if (rgb) updateColorUI(rgb.r, rgb.g, rgb.b);
+                });
+            });
+
+            document.querySelector('.copy-trigger')?.addEventListener('click', () => {
+                navigator.clipboard.writeText(`#${hexInput.value}`);
+                alert(`HEX #${hexInput.value} скопирован!`);
+            });
+
+            document.getElementById('quickCopyBtn')?.addEventListener('click', () => {
+                navigator.clipboard.writeText(`#${hexInput.value}`);
+                alert(`HEX #${hexInput.value} скопирован!`);
+            });
+
+            document.getElementById('copyRgbBtn')?.addEventListener('click', () => {
+                const str = `rgb(${rgbR.value}, ${rgbG.value}, ${rgbB.value})`;
+                navigator.clipboard.writeText(str);
+                alert(`${str} скопирован!`);
+            });
+
+            document.getElementById('copyHslBtn')?.addEventListener('click', () => {
+                const str = `hsl(${hslH.value}, ${hslS.value}%, ${hslL.value}%)`;
+                navigator.clipboard.writeText(str);
+                alert(`${str} скопирован!`);
+            });
+
+            // Урезанный вариант (Мобильный)
+            canvasComp = document.getElementById('colorCanvasComp');
+            ctxComp = canvasComp.getContext('2d');
+            canvasContainerComp = document.getElementById('canvasContainerComp');
+            pickerHandleComp = document.getElementById('pickerHandleComp');
+            hueSliderComp = document.getElementById('hueSliderComp');
+            displayBarComp = document.getElementById('selectedColorDisplayComp');
+            displayHexTextComp = document.getElementById('displayHexTextComp');
+            hexInputComp = document.getElementById('hexInputComp');
+            tailwindOutputComp = document.getElementById('tailwindOutputComp');
+
+            canvasContainerComp.addEventListener('mousedown', (e) => { isDraggingComp = true; pickColorFromCanvasComp(e); });
+            window.addEventListener('mousemove', (e) => { if (isDraggingComp) pickColorFromCanvasComp(e); });
+            window.addEventListener('mouseup', () => isDraggingComp = false);
+
+            canvasContainerComp.addEventListener('touchstart', (e) => { isDraggingComp = true; if(e.touches[0]) pickColorFromCanvasComp(e.touches[0]); });
+            window.addEventListener('touchmove', (e) => { if (isDraggingComp && e.touches[0]) pickColorFromCanvasComp(e.touches[0]); });
+            window.addEventListener('touchend', () => isDraggingComp = false);
+
+            hueSliderComp.addEventListener('input', (e) => {
+                currentHue = e.target.value;
+                drawGradient(ctxComp, canvasComp, currentHue);
+                const x = pickerPos.x * canvasComp.width;
+                const y = pickerPos.y * canvasComp.height;
+                const imgData = ctxComp.getImageData(x, y, 1, 1).data;
+                updateColorUIComp(imgData[0], imgData[1], imgData[2]);
+            });
+
+            hexInputComp.addEventListener('input', (e) => {
+                const rgb = hexToRgb(e.target.value);
+                if (rgb) updateColorUIComp(rgb.r, rgb.g, rgb.b);
+            });
+
+            document.querySelectorAll('.preset-card-comp').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const hex = this.getAttribute('data-hex');
+                    const rgb = hexToRgb(hex);
+                    if (rgb) updateColorUIComp(rgb.r, rgb.g, rgb.b);
+                });
+            });
+
+            document.getElementById('quickCopyBtnComp')?.addEventListener('click', () => {
+                navigator.clipboard.writeText(`#${hexInputComp.value}`);
+                alert(`HEX #${hexInputComp.value} скопирован!`);
+            });
+
+            resizeCanvas();
+            resizeCanvasComp();
+            const rgb = hexToRgb("3B82F6");
+            updateColorUI(rgb.r, rgb.g, rgb.b);
+            updateColorUIComp(rgb.r, rgb.g, rgb.b);
+        }
+
+        function resizeCanvas() {
+            if (!canvas || !canvasContainer) return;
+            canvas.width = canvasContainer.clientWidth;
+            canvas.height = canvasContainer.clientHeight;
+            drawGradient(ctx, canvas, currentHue);
+        }
+
+        function resizeCanvasComp() {
+            if (!canvasComp || !canvasContainerComp) return;
+            canvasComp.width = canvasContainerComp.clientWidth;
+            canvasComp.height = canvasContainerComp.clientHeight;
+            drawGradient(ctxComp, canvasComp, currentHue);
+        }
+
+        function drawGradient(targetCtx, targetCanvas, hue) {
+            if (!targetCtx || !targetCanvas) return;
+            targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
+
+            targetCtx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+            targetCtx.fillRect(0, 0, targetCanvas.width, targetCanvas.height);
+
+            const whiteGrad = targetCtx.createLinearGradient(0, 0, targetCanvas.width, 0);
+            whiteGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            whiteGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            targetCtx.fillStyle = whiteGrad;
+            targetCtx.fillRect(0, 0, targetCanvas.width, targetCanvas.height);
+
+            const blackGrad = targetCtx.createLinearGradient(0, 0, 0, targetCanvas.height);
+            blackGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            blackGrad.addColorStop(1, 'rgba(0, 0, 0, 1)');
+            targetCtx.fillStyle = blackGrad;
+            targetCtx.fillRect(0, 0, targetCanvas.width, targetCanvas.height);
+        }
+
+        function rgbToHex(r, g, b) {
+            return [r, g, b].map(x => {
+                const hex = Math.min(255, Math.max(0, Math.round(x))).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('').toUpperCase();
+        }
+
+        function hexToRgb(hex) {
+            let cleanHex = hex.replace('#', '');
+            if (cleanHex.length === 3) {
+                cleanHex = cleanHex.split('').map(c => c + c).join('');
+            }
+            const num = parseInt(cleanHex, 16);
+            return isNaN(num) ? null : {
+                r: (num >> 16) & 255,
+                g: (num >> 8) & 255,
+                b: num & 255
+            };
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+        }
+
+        function updateColorUI(r, g, b) {
+            if (!hexInput) return;
+            const hex = rgbToHex(r, g, b);
+            const hsl = rgbToHsl(r, g, b);
+
+            hexInput.value = hex;
+            rgbR.value = r;
+            rgbG.value = g;
+            rgbB.value = b;
+
+            hslH.value = hsl.h;
+            hslS.value = hsl.s;
+            hslL.value = hsl.l;
+
+            displayHexText.textContent = `#${hex}`;
+            displayBar.style.backgroundColor = `#${hex}`;
+            pickerHandle.style.backgroundColor = `#${hex}`;
+
+            document.getElementById('cssVarOutput').textContent = `--main-color: #${hex};`;
+            document.getElementById('tailwindOutput').textContent = `bg-[#${hex}]`;
+
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            if (brightness > 128) {
+                contrastPreviewBtn.textContent = "Чёрный текст";
+                contrastPreviewBtn.style.color = "#000000";
+                contrastPreviewBtn.style.backgroundColor = "#ffffff";
+            } else {
+                contrastPreviewBtn.textContent = "Белый текст";
+                contrastPreviewBtn.style.color = "#FFFFFF";
+                contrastPreviewBtn.style.backgroundColor = "#000000";
+            }
+        }
+
+        function updateColorUIComp(r, g, b) {
+            if (!hexInputComp) return;
+            const hex = rgbToHex(r, g, b);
+            hexInputComp.value = hex;
+            displayHexTextComp.textContent = `#${hex}`;
+            displayBarComp.style.backgroundColor = `#${hex}`;
+            pickerHandleComp.style.backgroundColor = `#${hex}`;
+            tailwindOutputComp.textContent = `bg-[#${hex}]`;
+        }
+
+        function pickColorFromCanvas(e) {
+            const rect = canvas.getBoundingClientRect();
+            let x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+            let y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
+
+            pickerPos = { x: x / rect.width, y: y / rect.height };
+            pickerHandle.style.left = `${x}px`;
+            pickerHandle.style.top = `${y}px`;
+
+            const imgData = ctx.getImageData(x, y, 1, 1).data;
+            updateColorUI(imgData[0], imgData[1], imgData[2]);
+        }
+
+        function pickColorFromCanvasComp(e) {
+            const rect = canvasComp.getBoundingClientRect();
+            let x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+            let y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
+
+            pickerPos = { x: x / rect.width, y: y / rect.height };
+            pickerHandleComp.style.left = `${x}px`;
+            pickerHandleComp.style.top = `${y}px`;
+
+            const imgData = ctxComp.getImageData(x, y, 1, 1).data;
+            updateColorUIComp(imgData[0], imgData[1], imgData[2]);
+        }
+
         document.getElementById('themeToggle').onclick = () => {
             let newTheme = settings.theme === 'light' ? 'dark' : 'light';
             settings.theme = newTheme;
             
-            // Подгружаем изолированные настройки для выбранной темы
             calSettings = getStoredCalendarSettings(newTheme);
             tableSettings = getStoredTableSettings(newTheme);
 
             applySettings();
             renderCalendar();
+            setTimeout(() => { resizeCanvas(); resizeCanvasComp(); }, 50);
         };
 
         document.getElementById('settingsToggle').onclick = () => document.getElementById('modalOverlay').classList.add('open');
@@ -2414,10 +2835,7 @@
         document.getElementById('letterSpacingInput').oninput = (e) => { settings.letterSpacing = e.target.value; applySettings(); };
         document.getElementById('textShadowToggle').onchange = (e) => { settings.textShadow = e.target.checked; applySettings(); };
 
-        window.addEventListener('beforeunload', () => {
-            collectTableInputs();
-            localStorage.setItem('menu_items', JSON.stringify(menuItems));
-        });
+        window.addEventListener('beforeunload', () => { collectTableInputs(); });
 
         init();
     </script>
