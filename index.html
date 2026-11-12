@@ -4,585 +4,246 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3D Neumorphic App — БЛiК</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: 'var(--color-brand-50, #eff6ff)',
-                            100: 'var(--color-brand-100, #dbeafe)',
-                            500: 'var(--color-brand-500, #3b82f6)',
-                            600: 'var(--color-brand-600, #2563eb)',
-                            700: 'var(--color-brand-700, #1d4ed8)',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons & Google Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <!-- Tailwind CSS (Offline Embedded) & FontAwesome Fallbacks -->
     <style>
+        /* Embedded Tailwind Utility Subset & Neumorphic Styles */
+        *, ::before, ::after { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; font-family: var(--font-family); }
         :root {
-            --bg-color: #e0e5ec;
-            --card-bg: #e0e5ec;
-            --text-color: #334155;
-            --text-muted: #64748b;
-            --shadow-light: #ffffff;
-            --shadow-dark: #a3b1c6;
-            
-            --accent-color: #007aff;
-            --accent-text: #ffffff;
-            --border-radius: 18px;
-            --shadow-blur: 10px;
-            --shadow-dist: 5px;
-
-            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --font-size: 15px;
-            --letter-spacing: 0.5px;
-            --text-shadow-style: none;
-
-            --alert-bg: #fff5f5;
-            --alert-text: #e53e3e;
-            --reset-color: #e53e3e;
+            --bg-color: #e0e5ec; --card-bg: #e0e5ec; --text-color: #334155; --text-muted: #64748b;
+            --shadow-light: #ffffff; --shadow-dark: #a3b1c6; --accent-color: #007aff; --accent-text: #ffffff;
+            --border-radius: 18px; --shadow-blur: 10px; --shadow-dist: 5px;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; --font-size: 15px; --letter-spacing: 0.5px; --text-shadow-style: none;
+            --alert-bg: #fff5f5; --alert-text: #e53e3e; --reset-color: #e53e3e;
         }
-
         [data-theme="dark"], .dark {
-            --bg-color: #1e2530;
-            --card-bg: #1e2530;
-            --text-color: #e2e8f0;
-            --text-muted: #94a3b8;
-            --shadow-light: #283242;
-            --shadow-dark: #14181e;
-
-            --alert-bg: #2d3748;
-            --alert-text: #fc8181;
-            --reset-color: #fc8181;
+            --bg-color: #1e2530; --card-bg: #1e2530; --text-color: #e2e8f0; --text-muted: #94a3b8;
+            --shadow-light: #283242; --shadow-dark: #14181e; --alert-bg: #2d3748; --alert-text: #fc8181; --reset-color: #fc8181;
         }
-
-        /* УТИЛИТАРНЫЕ КЛАССЫ */
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .grid { display: grid; }
+        .flex { display: flex; } .flex-col { flex-direction: column; } .grid { display: grid; }
         .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
         .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        .gap-2 { gap: 8px; }
-        .gap-3 { gap: 12px; }
-        .gap-4 { gap: 16px; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .relative { position: relative; }
-        .absolute { position: absolute; }
-        .right-4 { right: 16px; }
-        .top-2 { top: 8px; }
-        .left-3 { left: 12px; }
-        .w-full { width: 100%; }
-        .h-full { height: 100%; }
-        .h-32 { height: 128px; }
-        .h-36 { height: 144px; }
-        .min-h-\[160px\] { min-height: 160px; }
-        .overflow-hidden { overflow: hidden; }
-        .overflow-visible { overflow: visible; }
-        .cursor-pointer { cursor: pointer; }
-        .font-mono { font-family: var(--font-mono); }
-        .font-bold { font-weight: 700; }
-        .font-extrabold { font-weight: 800; }
-        .text-xs { font-size: 12px; }
-        .text-sm { font-size: 14px; }
-        .text-lg { font-size: 18px; }
-        .text-2xl { font-size: 24px; }
-        .uppercase { text-transform: uppercase; }
-        .tracking-widest { letter-spacing: 0.1em; }
-        .tracking-wider { letter-spacing: 0.05em; }
-        .text-slate-400 { color: #94a3b8; }
-        .pointer-events-none { pointer-events: none; }
-        .pr-16 { padding-right: 64px; }
-        .p-2\.5 { padding: 10px; }
-        .p-3 { padding: 12px; }
-        .p-4 { padding: 16px; }
-        .mt-0\.5 { margin-top: 2px; }
-        .mt-1 { margin-top: 4px; }
-        .mb-1 { margin-top: 4px; }
-        .mb-2 { margin-bottom: 8px; }
-        .mr-1\.5 { margin-right: 6px; }
-        .text-center { text-align: center; }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            font-family: var(--font-family);
-        }
+        .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-5 { gap: 20px; }
+        .items-center { align-items: center; } .justify-center { justify-content: center; } .justify-between { justify-content: space-between; }
+        .relative { position: relative; } .absolute { position: absolute; }
+        .right-4 { right: 16px; } .top-2 { top: 8px; } .left-3 { left: 12px; }
+        .w-full { width: 100%; } .h-full { height: 100%; } .h-12 { height: 48px; } .h-32 { height: 128px; } .h-36 { height: 144px; } .h-44 { height: 176px; }
+        .min-h-\[160px\] { min-height: 160px; } .overflow-hidden { overflow: hidden; } .overflow-visible { overflow: visible; }
+        .cursor-pointer { cursor: pointer; } .cursor-crosshair { cursor: crosshair; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-bold { font-weight: 700; } .font-extrabold { font-weight: 800; } .font-semibold { font-weight: 600; }
+        .text-xs { font-size: 12px; } .text-sm { font-size: 14px; } .text-base { font-size: 16px; } .text-lg { font-size: 18px; } .text-2xl { font-size: 24px; }
+        .uppercase { text-transform: uppercase; } .tracking-widest { letter-spacing: 0.1em; } .tracking-wider { letter-spacing: 0.05em; }
+        .text-slate-400 { color: #94a3b8; } .text-slate-800 { color: #1e293b; } .text-slate-100 { color: #f1f5f9; }
+        .pointer-events-none { pointer-events: none; } .pr-16 { padding-right: 64px; }
+        .p-2 { padding: 8px; } .p-2\.5 { padding: 10px; } .p-3 { padding: 12px; } .p-4 { padding: 16px; }
+        .mt-0\.5 { margin-top: 2px; } .mt-1 { margin-top: 4px; } .mb-1 { margin-bottom: 4px; } .mb-2 { margin-bottom: 8px; } .mb-3 { margin-bottom: 12px; } .mb-4 { margin-bottom: 16px; } .mr-1\.5 { margin-right: 6px; }
+        .text-center { text-align: center; } .space-y-2 > * + * { margin-top: 8px; } .space-y-2\.5 > * + * { margin-top: 10px; }
+        .rounded-xl { border-radius: 12px; } .rounded-lg { border-radius: 8px; } .rounded-full { border-radius: 9999px; }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .transform { transform: var(--tw-transform); } .-translate-x-1/2 { --tw-translate-x: -50%; transform: translateX(var(--tw-translate-x)); } .-translate-y-1/2 { --tw-translate-y: -50%; transform: translateY(var(--tw-translate-y)); }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: var(--font-size);
-            letter-spacing: var(--letter-spacing);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            text-transform: uppercase;
-            overflow-x: hidden;
+            background-color: var(--bg-color); color: var(--text-color); font-size: var(--font-size);
+            letter-spacing: var(--letter-spacing); min-height: 100vh; display: flex; justify-content: center;
+            align-items: center; padding: 16px; transition: background-color 0.3s ease, color 0.3s ease;
+            text-transform: uppercase; overflow-x: hidden;
         }
 
-        /* ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК: РАЗМЕР ШРИФТА 20px */
         .watermark {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: var(--text-muted);
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 50;
-            user-select: none;
+            position: fixed; bottom: 20px; left: 20px; font-size: 20px; font-weight: 900;
+            letter-spacing: 3px; color: var(--text-muted); opacity: 0.4; pointer-events: none; z-index: 50; user-select: none;
         }
 
         .app-card {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 440px;
-            padding: 24px 20px 20px 20px;
+            background: var(--card-bg); width: 100%; max-width: 440px; padding: 24px 20px 20px 20px;
             border-radius: calc(var(--border-radius) + 8px);
-            box-shadow: 
-                calc(var(--shadow-dist) * 2) calc(var(--shadow-dist) * 2) calc(var(--shadow-blur) * 2) var(--shadow-dark),
-                calc(var(--shadow-dist) * -2) calc(var(--shadow-dist) * -2) calc(var(--shadow-blur) * 2) var(--shadow-light);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            position: relative;
-            transition: all 0.3s ease;
-            z-index: 10;
+            box-shadow: calc(var(--shadow-dist) * 2) calc(var(--shadow-dist) * 2) calc(var(--shadow-blur) * 2) var(--shadow-dark),
+                        calc(var(--shadow-dist) * -2) calc(var(--shadow-dist) * -2) calc(var(--shadow-blur) * 2) var(--shadow-light);
+            display: flex; flex-direction: column; gap: 20px; position: relative; transition: all 0.3s ease; z-index: 10;
         }
 
-        .app-card-wide {
-            max-width: 780px !important;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-title {
-            font-size: calc(var(--font-size) * 1.2);
-            font-weight: 700;
-            color: var(--text-color);
-            text-shadow: var(--text-shadow-style);
-        }
-
-        .header-controls {
-            display: flex;
-            gap: 12px;
-        }
+        .app-card-wide { max-width: 780px !important; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .header-title { font-size: calc(var(--font-size) * 1.2); font-weight: 700; color: var(--text-color); text-shadow: var(--text-shadow-style); }
+        .header-controls { display: flex; gap: 12px; }
 
         .neu-btn {
-            background: var(--card-bg);
-            border: none;
-            outline: none;
-            border-radius: var(--border-radius);
-            box-shadow: 
-                var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
-                calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-color);
-            font-weight: 700;
-            font-size: var(--font-size);
-            letter-spacing: var(--letter-spacing);
+            background: var(--card-bg); border: none; outline: none; border-radius: var(--border-radius);
+            box-shadow: var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
+                        calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
+            cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center;
+            color: var(--text-color); font-weight: 700; font-size: var(--font-size); letter-spacing: var(--letter-spacing);
         }
-
         .neu-btn:active, .neu-btn.active {
-            box-shadow: 
-                inset var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
-                inset calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
+            box-shadow: inset var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
             color: var(--accent-color);
         }
+        .neu-btn:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
 
-        .neu-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
+        .icon-btn { width: 44px; height: 44px; border-radius: 50%; }
+        .icon-btn svg, .icon-btn i { width: 20px; height: 20px; font-size: 18px; line-height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        .icon-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-        }
+        .view-screen { display: none; flex-direction: column; gap: 16px; }
+        .view-screen.active { display: flex; }
+        .menu-list { display: flex; flex-direction: column; gap: 14px; }
+        .menu-item { width: 100%; padding: 16px 20px; text-align: left; justify-content: flex-start; text-shadow: var(--text-shadow-style); color: var(--item-color, var(--text-color)); background: var(--item-bg, var(--card-bg)); }
+        .sub-nav { display: flex; gap: 10px; }
+        .sub-nav-btn { flex: 1; padding: 12px 8px; font-size: calc(var(--font-size) * 0.8); }
 
-        .icon-btn svg, .icon-btn i {
-            width: 20px;
-            height: 20px;
-            font-size: 18px;
-            line-height: 20px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .view-screen {
-            display: none;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .view-screen.active {
-            display: flex;
-        }
-
-        .menu-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .menu-item {
-            width: 100%;
-            padding: 16px 20px;
-            text-align: left;
-            justify-content: flex-start;
-            text-shadow: var(--text-shadow-style);
-            color: var(--item-color, var(--text-color));
-            background: var(--item-bg, var(--card-bg));
-        }
-
-        .sub-nav {
-            display: flex;
-            gap: 10px;
-        }
-
-        .sub-nav-btn {
-            flex: 1;
-            padding: 12px 8px;
-            font-size: calc(var(--font-size) * 0.8);
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        label {
-            font-size: calc(var(--font-size) * 0.75);
-            font-weight: 700;
-            opacity: 0.8;
-        }
-
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: calc(var(--font-size) * 0.75); font-weight: 700; opacity: 0.8; }
         input[type="number"], input[type="date"], input[type="text"], select {
-            width: 100%;
-            padding: 12px 14px;
-            border: none;
-            border-radius: calc(var(--border-radius) - 4px);
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            font-size: var(--font-size);
-            box-shadow: 
-                inset calc(var(--shadow-dist) * 0.7) calc(var(--shadow-dist) * 0.7) var(--shadow-blur) var(--shadow-dark),
-                inset calc(var(--shadow-dist) * -0.7) calc(var(--shadow-dist) * -0.7) var(--shadow-blur) var(--shadow-light);
-            outline: none;
-            text-transform: uppercase;
+            width: 100%; padding: 12px 14px; border: none; border-radius: calc(var(--border-radius) - 4px);
+            background-color: var(--card-bg); color: var(--text-color); font-size: var(--font-size);
+            box-shadow: inset calc(var(--shadow-dist) * 0.7) calc(var(--shadow-dist) * 0.7) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.7) calc(var(--shadow-dist) * -0.7) var(--shadow-blur) var(--shadow-light);
+            outline: none; text-transform: uppercase;
         }
 
-        .time-inputs {
-            display: flex;
-            gap: 10px;
-        }
-
+        .time-inputs { display: flex; gap: 10px; }
         .alert-banner {
-            padding: 12px;
-            border-radius: calc(var(--border-radius) - 4px);
-            font-weight: bold;
-            font-size: calc(var(--font-size) * 0.85);
-            text-align: center;
-            background-color: var(--alert-bg);
-            color: var(--alert-text);
-            box-shadow: 
-                inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
-                inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            padding: 12px; border-radius: calc(var(--border-radius) - 4px); font-weight: bold;
+            font-size: calc(var(--font-size) * 0.85); text-align: center; background-color: var(--alert-bg); color: var(--alert-text);
+            box-shadow: inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
             display: none;
         }
-
         .result-box {
-            padding: 15px;
-            border-radius: calc(var(--border-radius) - 4px);
-            box-shadow: 
-                inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
-                inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
-            display: none;
-            flex-direction: column;
-            gap: 8px;
+            padding: 15px; border-radius: calc(var(--border-radius) - 4px);
+            box-shadow: inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            display: none; flex-direction: column; gap: 8px;
         }
-
-        .result-box h3 {
-            font-size: calc(var(--font-size) * 0.95);
-            color: var(--accent-color);
-            margin-bottom: 4px;
-        }
-
-        .result-item {
-            font-size: calc(var(--font-size) * 0.85);
-            line-height: 1.4;
-        }
-
-        .highlight {
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-
-        .highlight-alert {
-            font-weight: bold;
-            color: var(--reset-color);
-        }
-
+        .result-box h3 { font-size: calc(var(--font-size) * 0.95); color: var(--accent-color); margin-bottom: 4px; }
+        .result-item { font-size: calc(var(--font-size) * 0.85); line-height: 1.4; }
+        .highlight { font-weight: bold; color: var(--accent-color); }
+        .highlight-alert { font-weight: bold; color: var(--reset-color); }
         .calc-result-box {
-            padding: 15px;
-            border-radius: calc(var(--border-radius) - 4px);
-            box-shadow: 
-                inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
-                inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
-            text-align: center;
-            font-weight: bold;
-            color: var(--accent-color);
-            font-size: calc(var(--font-size) * 1.05);
-            margin-top: 5px;
+            padding: 15px; border-radius: calc(var(--border-radius) - 4px);
+            box-shadow: inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            text-align: center; font-weight: bold; color: var(--accent-color); font-size: calc(var(--font-size) * 1.05); margin-top: 5px;
         }
-
         .grid-3d-box {
             background: var(--card-bg);
             box-shadow: inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
                         inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
-            border-radius: calc(var(--border-radius) - 4px);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease;
+            border-radius: calc(var(--border-radius) - 4px); position: relative; overflow: hidden; transition: transform 0.2s ease;
         }
 
-        /* Стили календаря */
+        /* Calendar & Table custom styling */
         .cal-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .cal-nav-frame {
-            background-color: var(--month-cell-color);
-            color: var(--month-font-color);
-            padding: 4px 8px 12px 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 14px;
+            background-color: var(--month-cell-color); color: var(--month-font-color); padding: 4px 8px 12px 8px;
+            display: flex; justify-content: space-between; align-items: center; border-radius: 14px;
             box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
         }
         .cal-center-nav { display: flex; align-items: center; gap: 12px; flex-grow: 1; justify-content: space-between; }
-        #cal-header-label {
-            font-size: var(--month-font-size);
-            color: var(--month-font-color);
-            font-weight: var(--month-font-weight);
-            text-align: center;
-            letter-spacing: -0.5px;
-        }
+        #cal-header-label { font-size: var(--month-font-size); color: var(--month-font-color); font-weight: var(--month-font-weight); text-align: center; letter-spacing: -0.5px; }
         .cal-grid-frame { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
         .cal-header-cell {
-            background: var(--weekday-cell-color);
-            color: var(--weekday-font-color);
-            font-size: var(--weekday-font-size);
-            font-weight: var(--weekday-font-weight);
-            text-align: center;
-            padding: 8px 0;
-            border-radius: 10px;
+            background: var(--weekday-cell-color); color: var(--weekday-font-color); font-size: var(--weekday-font-size);
+            font-weight: var(--weekday-font-weight); text-align: center; padding: 8px 0; border-radius: 10px;
             box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
         }
         .cal-day-cell {
-            background: var(--day-cell-color);
-            color: var(--day-font-color);
-            font-size: var(--day-font-size);
-            font-weight: var(--day-font-weight);
-            aspect-ratio: 1.05;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
-            transition: all 0.1s ease;
+            background: var(--day-cell-color); color: var(--day-font-color); font-size: var(--day-font-size);
+            font-weight: var(--day-font-weight); aspect-ratio: 1.05; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; border-radius: 12px; cursor: pointer; position: relative;
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light); transition: all 0.1s ease;
         }
-        .cal-day-cell:active {
-            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
-        }
-        .cal-day-cell.weekend {
-            background: var(--weekend-cell-color) !important;
-            color: var(--weekend-font-color) !important;
-        }
+        .cal-day-cell:active { box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light); }
+        .cal-day-cell.weekend { background: var(--weekend-cell-color) !important; color: var(--weekend-font-color) !important; }
         .cal-day-cell.other-month {
-            background: var(--other-cell-color);
-            color: var(--other-day-font-color);
-            font-size: var(--other-day-font-size);
-            font-weight: var(--other-day-font-weight);
-            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+            background: var(--other-cell-color); color: var(--other-day-font-color); font-size: var(--other-day-font-size);
+            font-weight: var(--other-day-font-weight); box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
         }
-        .cal-day-cell.today { 
-            background: var(--today-cell-color) !important; 
-            color: var(--today-font-color) !important; 
-            font-size: var(--today-font-size) !important;
-            font-weight: var(--today-font-weight) !important;
+        .cal-day-cell.today {
+            background: var(--today-cell-color) !important; color: var(--today-font-color) !important;
+            font-size: var(--today-font-size) !important; font-weight: var(--today-font-weight) !important;
             box-shadow: 3px 3px 8px rgba(43, 130, 251, 0.4), -2px -2px 5px var(--shadow-light) !important;
         }
 
         .cal-ctrl-frame { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; gap: 4px; flex-wrap: wrap; }
         .cal-left-actions { display: flex; gap: 6px; flex-wrap: wrap; width: 100%; justify-content: space-between; }
         .cal-action-btn {
-            background: var(--card-bg);
-            border: none;
-            border-radius: 10px;
-            padding: 8px 10px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 11px;
-            color: var(--text-color);
-            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
-            transition: all 0.1s ease;
+            background: var(--card-bg); border: none; border-radius: 10px; padding: 8px 10px; cursor: pointer;
+            font-weight: 700; font-size: 11px; color: var(--text-color);
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light); transition: all 0.1s ease;
         }
-        .cal-action-btn:active {
-            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
-        }
+        .cal-action-btn:active { box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light); }
 
-        /* Таблица */
         .table-container {
-            background: var(--table-bg);
-            padding: 10px;
-            border-radius: 14px;
-            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
-            overflow-x: auto;
+            background: var(--table-bg); padding: 10px; border-radius: 14px;
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light); overflow-x: auto;
         }
         .table-frame { border-collapse: separate; border-spacing: 5px; width: 100%; }
         .table-frame th, .table-frame td { border: none; padding: 6px 4px; text-align: center; border-radius: 8px; }
-        .table-frame th { 
-            background: var(--table-header-bg); 
-            font-size: var(--table-header-font-size); 
-            color: var(--table-header-font-color); 
-            font-weight: var(--table-header-font-weight); 
-            box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
+        .table-frame th {
+            background: var(--table-header-bg); font-size: var(--table-header-font-size); color: var(--table-header-font-color);
+            font-weight: var(--table-header-font-weight); box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
         .table-month-name {
-            background: var(--table-month-cell-bg);
-            font-size: var(--table-month-font-size);
-            color: var(--table-month-font-color);
-            font-weight: var(--table-month-font-weight);
-            text-align: left;
-            padding-left: 8px;
+            background: var(--table-month-cell-bg); font-size: var(--table-month-font-size); color: var(--table-month-font-color);
+            font-weight: var(--table-month-font-weight); text-align: left; padding-left: 8px;
             box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
-        .table-data-cell {
-            background: var(--table-cell-bg);
-            box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
-            padding: 2px;
-        }
+        .table-data-cell { background: var(--table-cell-bg); box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light); padding: 2px; }
         .table-result-cell {
-            background: var(--table-result-cell-bg);
-            font-size: var(--table-result-font-size);
-            color: var(--table-result-font-color);
-            font-weight: var(--table-result-font-weight);
-            box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
+            background: var(--table-result-cell-bg); font-size: var(--table-result-font-size); color: var(--table-result-font-color);
+            font-weight: var(--table-result-font-weight); box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
         .table-total-cell {
-            background: var(--table-total-cell-bg);
-            font-size: var(--table-total-font-size);
-            color: var(--table-total-font-color);
-            font-weight: var(--table-total-font-weight);
-            box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
+            background: var(--table-total-cell-bg); font-size: var(--table-total-font-size); color: var(--table-total-font-color);
+            font-weight: var(--table-total-font-weight); box-shadow: 1px 1px 3px var(--shadow-dark), -1px -1px 3px var(--shadow-light);
         }
-        .table-frame input { 
-            width: 100%; height: 100%; text-align: center; border: none; outline: none; border-radius: 6px; 
-            font-size: var(--table-cell-font-size); font-weight: var(--table-cell-font-weight); color: var(--table-cell-font-color); 
-            padding: 6px 2px; background: var(--table-cell-bg); 
-            box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
-            text-transform: uppercase;
-            transition: box-shadow 0.2s ease, color 0.2s ease;
+        .table-frame input {
+            width: 100%; height: 100%; text-align: center; border: none; outline: none; border-radius: 6px;
+            font-size: var(--table-cell-font-size); font-weight: var(--table-cell-font-weight); color: var(--table-cell-font-color);
+            padding: 6px 2px; background: var(--table-cell-bg);
+            box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light); text-transform: uppercase;
         }
-        .table-frame input:focus {
-            color: var(--accent-color);
-            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
-        }
-        .highlight-row td { 
-            background-color: var(--table-highlight-row-bg) !important;
-            box-shadow: 0 0 0 2px #2b82fb inset, 1px 1px 3px var(--shadow-dark) !important; 
-        }
+        .table-frame input:focus { color: var(--accent-color); box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light); }
+        .highlight-row td { background-color: var(--table-highlight-row-bg) !important; box-shadow: 0 0 0 2px #2b82fb inset, 1px 1px 3px var(--shadow-dark) !important; }
 
-        /* Модальные окна */
         .modal-overlay-custom { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 3000; }
-        .modal-content-custom { 
-            background: var(--card-bg); color: var(--text-color); padding: 18px; border-radius: 18px; width: 92%; max-width: 440px; max-height: 85vh; overflow-y: auto; 
-            display: flex; flex-direction: column; gap: 10px; box-shadow: 10px 10px 30px rgba(0,0,0,0.25), -6px -6px 20px var(--shadow-light); 
+        .modal-content-custom {
+            background: var(--card-bg); color: var(--text-color); padding: 18px; border-radius: 18px; width: 92%; max-width: 440px; max-height: 85vh; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 10px; box-shadow: 10px 10px 30px rgba(0,0,0,0.25), -6px -6px 20px var(--shadow-light);
         }
         .modal-item-card {
             background: var(--card-bg); color: var(--text-color); padding: 8px; border-radius: 10px;
-            box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
-            display: flex; flex-direction: column; gap: 4px;
+            box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light); display: flex; flex-direction: column; gap: 4px;
         }
         .modal-input {
             border: none; outline: none; background: var(--card-bg); padding: 5px 8px; border-radius: 6px;
-            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
-            font-size: 11px; color: var(--text-color);
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light); font-size: 11px; color: var(--text-color);
         }
         .palette { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 6px; }
         .color-btn { width: 100%; aspect-ratio: 1.4; border-radius: 6px; border: none; cursor: pointer; box-shadow: 2px 2px 4px rgba(0,0,0,0.15), -1px -1px 3px var(--shadow-light); }
         .color-btn.selected { border: 2px solid var(--accent-color); transform: scale(1.08); }
         textarea.cal-textarea { width: 100%; height: 85px; padding: 8px; font-size: 12px; border: none; border-radius: 10px; background: var(--card-bg); box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light); resize: none; outline: none; color: var(--text-color); }
 
-        /* Полноэкранная таблица */
         .fullscreen-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 2000; flex-direction: column; padding: 12px; overflow: hidden; }
         .fullscreen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: var(--card-bg); padding: 8px 12px; border-radius: 14px; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); }
         .fullscreen-body { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
 
-        /* Модальное окно настроек */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
-            display: flex; justify-content: center; align-items: center; padding: 16px;
-            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center; padding: 16px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
         .modal {
             background: var(--card-bg); color: var(--text-color); width: 100%; max-width: 440px; max-height: 85vh;
-            border-radius: calc(var(--border-radius) + 8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; overflow: hidden;
+            border-radius: calc(var(--border-radius) + 8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden;
         }
-        .modal-header {
-            padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(100, 100, 100, 0.1);
-        }
+        .modal-header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(100, 100, 100, 0.1); }
         .tab-nav { display: flex; background: rgba(0,0,0,0.05); padding: 4px; gap: 4px; }
         .tab-btn {
-            flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted);
-            font-weight: 700; font-size: 13px; cursor: pointer; border-radius: calc(var(--border-radius) - 6px);
-            transition: all 0.2s ease;
+            flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 700; font-size: 13px; cursor: pointer;
+            border-radius: calc(var(--border-radius) - 6px); transition: all 0.2s ease;
         }
         .tab-btn.active { background: var(--card-bg); color: var(--text-color); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; }
@@ -597,49 +258,26 @@
         .move-btns { display: flex; gap: 4px; }
         .btn-small { padding: 8px 10px; font-size: 12px; border-radius: calc(var(--border-radius) - 6px); }
 
-        /* Стили для 5-го пункта (Color Picker) */
         .color-picker-box {
-            box-shadow: 
-                inset 3px 3px 8px rgba(0,0,0,0.6),
-                inset -2px -2px 6px rgba(255,255,255,0.1),
-                0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: inset 3px 3px 8px rgba(0,0,0,0.6), inset -2px -2px 6px rgba(255,255,255,0.1), 0 4px 10px rgba(0,0,0,0.3);
         }
-
         input[type=range]::-webkit-slider-track {
-            height: 10px;
-            border-radius: 5px;
-            background: linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red);
-            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.4);
+            height: 10px; border-radius: 5px; background: linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red); box-shadow: inset 2px 2px 4px rgba(0,0,0,0.4);
         }
-
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            margin-top: -5px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 2px #ffffff;
-            border: 2px solid #334155;
+            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: #ffffff; cursor: pointer; margin-top: -5px; box-shadow: 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 2px #ffffff; border: 2px solid #334155;
         }
-
         .neu-concave {
-            background: linear-gradient(145deg, #15171d, #1e2129);
-            box-shadow: inset 3px 3px 6px #0f1115, inset -2px -2px 4px #252933;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: linear-gradient(145deg, #15171d, #1e2129); box-shadow: inset 3px 3px 6px #0f1115, inset -2px -2px 4px #252933; border: 1px solid rgba(255, 255, 255, 0.03);
         }
-        
         [data-theme="light"] .neu-concave, .dark:not(.dark) .neu-concave {
-            background: linear-gradient(145deg, #d3d9e4, #eff5ff);
-            box-shadow: inset 3px 3px 6px #b4bcc8, inset -3px -3px 6px #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: linear-gradient(145deg, #d3d9e4, #eff5ff); box-shadow: inset 3px 3px 6px #b4bcc8, inset -3px -3px 6px #ffffff; border: 1px solid rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
 <body>
 
-    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК (Шрифт 20px) -->
+    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК -->
     <div class="watermark">БЛiК</div>
 
     <div class="app-card" id="mainAppCard">
@@ -816,12 +454,8 @@
         <!-- ПУНКТ 3: АНТЕННА «ПАУК» -->
         <div id="screenSpider" class="view-screen">
             <div class="sub-nav">
-                <button class="neu-btn sub-nav-btn active" id="spiderTabExt" onclick="switchSpiderMode('ext', this)">
-                    <i class="fa-solid fa-window-maximize mr-1.5"></i> Расширенная
-                </button>
-                <button class="neu-btn sub-nav-btn" id="spiderTabComp" onclick="switchSpiderMode('comp', this)">
-                    <i class="fa-solid fa-compress mr-1.5"></i> Урезанная
-                </button>
+                <button class="neu-btn sub-nav-btn active" id="spiderTabExt" onclick="switchSpiderMode('ext', this)">Расширенная</button>
+                <button class="neu-btn sub-nav-btn" id="spiderTabComp" onclick="switchSpiderMode('comp', this)">Урезанная</button>
             </div>
 
             <div id="spiderViewExt" class="flex flex-col gap-4">
@@ -845,7 +479,7 @@
 
                 <div class="grid-3d-box p-3 flex flex-col items-center justify-center relative min-h-[160px]">
                     <span class="absolute top-2 left-3 text-[10px] font-mono text-slate-400 uppercase font-bold">GP 1/4 &lambda; (4 Луча)</span>
-                    <svg viewBox="0 0 300 160" class="w-full h-32 drop-shadow-md overflow-visible">
+                    <svg viewBox="0 0 300 160" class="w-full h-32 overflow-visible">
                         <line x1="150" y1="10" x2="150" y2="30" stroke="#94a3b8" stroke-width="2" stroke-dasharray="3 3"/>
                         <g class="cursor-pointer" onclick="highlightSpiderCard(2)">
                             <line x1="150" y1="30" x2="150" y2="105" stroke="var(--accent-color)" stroke-width="5" stroke-linecap="round"/>
@@ -865,12 +499,8 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="calcSpiderAction()" class="neu-btn py-3 text-xs font-bold uppercase text-brand-600 dark:text-brand-500">
-                        <i class="fa-solid fa-calculator mr-1.5"></i> РАССЧИТАТЬ
-                    </button>
-                    <button onclick="clearSpider()" class="neu-btn py-3 text-xs font-bold uppercase text-red-500">
-                        <i class="fa-solid fa-rotate-left mr-1.5"></i> ОЧИСТИТЬ
-                    </button>
+                    <button onclick="calcSpiderAction()" class="neu-btn py-3 text-xs font-bold uppercase" style="color: var(--accent-color);">РАССЧИТАТЬ</button>
+                    <button onclick="clearSpider()" class="neu-btn py-3 text-xs font-bold uppercase" style="color: var(--reset-color);">ОЧИСТИТЬ</button>
                 </div>
 
                 <div class="result-box" id="spiderResultBox" style="display: flex;">
@@ -923,19 +553,19 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <button onclick="calcSpiderAction()" class="neu-btn py-3 text-xs font-bold uppercase text-brand-600 dark:text-brand-500">РАССЧИТАТЬ</button>
-                    <button onclick="clearSpider()" class="neu-btn py-3 text-xs font-bold uppercase text-red-500">ОЧИСТИТЬ</button>
+                    <button onclick="calcSpiderAction()" class="neu-btn py-3 text-xs font-bold uppercase" style="color: var(--accent-color);">РАССЧИТАТЬ</button>
+                    <button onclick="clearSpider()" class="neu-btn py-3 text-xs font-bold uppercase" style="color: var(--reset-color);">ОЧИСТИТЬ</button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="grid-3d-box p-4 text-center">
                         <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">ШТЫРЬ:</div>
-                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes2">0.00</span>
+                        <span class="text-2xl font-extrabold font-mono highlight" id="compRes2">0.00</span>
                         <div class="text-xs text-slate-400 mt-0.5">см</div>
                     </div>
                     <div class="grid-3d-box p-4 text-center">
                         <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">ЛУЧИ (4 ШТ):</div>
-                        <span class="text-2xl font-extrabold font-mono text-brand-600 dark:text-brand-500" id="compRes7">0.00</span>
+                        <span class="text-2xl font-extrabold font-mono highlight" id="compRes7">0.00</span>
                         <div class="text-xs text-slate-400 mt-0.5">см</div>
                     </div>
                 </div>
@@ -968,34 +598,24 @@
             </div>
         </div>
 
-        <!-- ПУНКТ 5: HTML COLOR PICKER (С ВЫБОРОМ: РАСШИРЕННЫЙ / УРЕЗАННЫЙ) -->
+        <!-- ПУНКТ 5: HTML COLOR PICKER -->
         <div id="screenColorPicker" class="view-screen">
-            <!-- Переключатель вариантов для 5-го пункта -->
             <div class="sub-nav">
-                <button class="neu-btn sub-nav-btn active" id="cpTabExt" onclick="switchColorPickerMode('ext', this)">
-                    <i class="fa-solid fa-window-maximize mr-1.5"></i> Расширенный
-                </button>
-                <button class="neu-btn sub-nav-btn" id="cpTabComp" onclick="switchColorPickerMode('comp', this)">
-                    <i class="fa-solid fa-compress mr-1.5"></i> Урезанный (Телефон)
-                </button>
+                <button class="neu-btn sub-nav-btn active" id="cpTabExt" onclick="switchColorPickerMode('ext', this)">Расширенный</button>
+                <button class="neu-btn sub-nav-btn" id="cpTabComp" onclick="switchColorPickerMode('comp', this)">Урезанный (Телефон)</button>
             </div>
 
-            <!-- РАСШИРЕННЫЙ ВАРИАНТ -->
-            <div id="cpViewExt" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-                <section class="lg:col-span-7 flex flex-col gap-4">
-                    <div class="neu-convex p-4 rounded-xl relative" style="background:var(--card-bg);">
+            <div id="cpViewExt" class="grid grid-cols-1 lg:grid-cols-12 gap-5" style="grid-template-columns: repeat(12, minmax(0, 1fr));">
+                <section style="grid-column: span 7 / span 7;" class="flex flex-col gap-4">
+                    <div class="p-4 rounded-xl relative" style="background:var(--card-bg);">
                         <div class="flex justify-between items-center mb-3">
-                            <h2 class="text-sm font-bold flex items-center gap-2">
-                                <i class="fa-solid fa-eye-dropper"></i> Интерактивная Палитра
-                            </h2>
+                            <h2 class="text-sm font-bold flex items-center gap-2">Интерактивная Палитра</h2>
                             <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full neu-concave">HTML / CSS Code</span>
                         </div>
 
                         <div id="selectedColorDisplay" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/20 transition-colors duration-200" style="background-color: #3b82f6;">
-                            <span id="displayHexText" class="font-mono font-bold text-base text-white drop-shadow">#3B82F6</span>
-                            <button id="quickCopyBtn" class="text-white hover:bg-black/20 p-2 rounded-lg text-sm transition" title="Копировать HEX">
-                                <i class="fa-regular fa-copy"></i>
-                            </button>
+                            <span id="displayHexText" class="font-mono font-bold text-base text-white">#3B82F6</span>
+                            <button id="quickCopyBtn" class="text-white p-2 rounded-lg text-sm" title="Копировать HEX">📋</button>
                         </div>
 
                         <div class="relative w-full h-44 rounded-xl overflow-hidden color-picker-box mb-3 cursor-crosshair" id="canvasContainer">
@@ -1013,64 +633,57 @@
                                 <div class="flex-1 neu-concave rounded-xl px-3 py-2 flex items-center justify-between">
                                     <span class="opacity-50">#</span>
                                     <input type="text" id="hexInput" value="3B82F6" class="bg-transparent w-full outline-none font-semibold uppercase tracking-wider ml-1">
-                                    <button class="copy-trigger opacity-70 hover:opacity-100 transition" data-target="hexInput"><i class="fa-regular fa-copy"></i></button>
+                                    <button class="copy-trigger opacity-70" data-target="hexInput">📋</button>
                                 </div>
                             </div>
 
                             <div class="flex items-center gap-2">
                                 <label class="w-12 font-bold opacity-70">RGB</label>
-                                <div class="flex-1 grid grid-cols-3 gap-1.5">
+                                <div class="flex-1 grid grid-cols-3 gap-1.5" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr));">
                                     <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">R</span><input type="number" id="rgbR" value="59" class="bg-transparent text-center w-full outline-none font-semibold"></div>
                                     <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">G</span><input type="number" id="rgbG" value="130" class="bg-transparent text-center w-full outline-none font-semibold"></div>
                                     <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">B</span><input type="number" id="rgbB" value="246" class="bg-transparent text-center w-full outline-none font-semibold"></div>
                                 </div>
-                                <button id="copyRgbBtn" class="px-1 opacity-70 hover:opacity-100 transition" title="Копировать RGB"><i class="fa-regular fa-copy"></i></button>
+                                <button id="copyRgbBtn" class="px-1 opacity-70" title="Копировать RGB">📋</button>
                             </div>
 
                             <div class="flex items-center gap-2">
                                 <label class="w-12 font-bold opacity-70">HSL</label>
-                                <div class="flex-1 grid grid-cols-3 gap-1.5">
+                                <div class="flex-1 grid grid-cols-3 gap-1.5" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr));">
                                     <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">H</span><input type="number" id="hslH" value="217" class="bg-transparent text-center w-full outline-none font-semibold"></div>
                                     <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">S</span><input type="number" id="hslS" value="91" class="bg-transparent text-center w-full outline-none font-semibold"></div>
                                     <div class="neu-concave rounded-xl px-2 py-1.5 text-center"><span class="text-[10px] opacity-50 block">L</span><input type="number" id="hslL" value="60" class="bg-transparent text-center w-full outline-none font-semibold"></div>
                                 </div>
-                                <button id="copyHslBtn" class="px-1 opacity-70 hover:opacity-100 transition" title="Копировать HSL"><i class="fa-regular fa-copy"></i></button>
+                                <button id="copyHslBtn" class="px-1 opacity-70" title="Копировать HSL">📋</button>
                             </div>
                         </div>
 
                         <div class="mt-4 neu-concave p-2 rounded-xl flex items-center justify-between">
                             <span class="text-xs font-medium px-2">Рекомендуемый цвет текста:</span>
-                            <button id="contrastPreviewBtn" class="neu-btn px-4 py-1.5 rounded-lg font-bold text-xs transition-all">Белый</button>
+                            <button id="contrastPreviewBtn" class="neu-btn px-4 py-1.5 rounded-lg font-bold text-xs">Белый</button>
                         </div>
                     </div>
                 </section>
 
-                <section class="lg:col-span-5 flex flex-col gap-4">
-                    <div class="neu-convex p-4 rounded-xl" style="background:var(--card-bg);">
-                        <h3 class="text-xs font-bold mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-swatchbook"></i> Стандартные HTML Цвета
-                        </h3>
-
-                        <div class="grid grid-cols-4 gap-2 mb-2">
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;">RED</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;">GREEN</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="0000FF" style="border-left: 3px solid #0000FF;">BLUE</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FFFF00" style="border-left: 3px solid #FFFF00;">YELLOW</button>
+                <section style="grid-column: span 5 / span 5;" class="flex flex-col gap-4">
+                    <div class="p-4 rounded-xl" style="background:var(--card-bg);">
+                        <h3 class="text-xs font-bold mb-3">Стандартные HTML Цвета</h3>
+                        <div class="grid grid-cols-4 gap-2 mb-2" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;">RED</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;">GREEN</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="0000FF" style="border-left: 3px solid #0000FF;">BLUE</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FFFF00" style="border-left: 3px solid #FFFF00;">YELLOW</button>
                         </div>
-
-                        <div class="grid grid-cols-4 gap-2">
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="00FFFF" style="border-left: 3px solid #00FFFF;">CYAN</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FF00FF" style="border-left: 3px solid #FF00FF;">MAGENTA</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="FFA500" style="border-left: 3px solid #FFA500;">ORANGE</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn flex flex-col items-center justify-center font-mono text-[10px] font-bold" data-hex="800080" style="border-left: 3px solid #800080;">PURPLE</button>
+                        <div class="grid grid-cols-4 gap-2" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FFFF" style="border-left: 3px solid #00FFFF;">CYAN</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF00FF" style="border-left: 3px solid #FF00FF;">MAGENTA</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FFA500" style="border-left: 3px solid #FFA500;">ORANGE</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="800080" style="border-left: 3px solid #800080;">PURPLE</button>
                         </div>
                     </div>
 
-                    <div class="neu-convex p-4 rounded-xl" style="background:var(--card-bg);">
-                        <h3 class="text-xs font-bold mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-code"></i> Экспорт для HTML/CSS
-                        </h3>
-
+                    <div class="p-4 rounded-xl" style="background:var(--card-bg);">
+                        <h3 class="text-xs font-bold mb-3">Экспорт для HTML/CSS</h3>
                         <div class="space-y-2.5 font-mono text-[11px]">
                             <div class="neu-concave p-2.5 rounded-xl flex items-center justify-between">
                                 <span class="opacity-70">CSS Variable:</span>
@@ -1085,20 +698,15 @@
                 </section>
             </div>
 
-            <!-- УРЕЗАННЫЙ ВАРИАНТ (ДЛЯ ТЕЛЕФОНА) -->
             <div id="cpViewComp" style="display: none;" class="flex flex-col gap-4">
-                <div class="neu-convex p-4 rounded-xl relative" style="background:var(--card-bg);">
+                <div class="p-4 rounded-xl relative" style="background:var(--card-bg);">
                     <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-sm font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-eye-dropper"></i> Палитра (Мобильная)
-                        </h2>
+                        <h2 class="text-sm font-bold">Палитра (Мобильная)</h2>
                     </div>
 
                     <div id="selectedColorDisplayComp" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/20" style="background-color: #3b82f6;">
-                        <span id="displayHexTextComp" class="font-mono font-bold text-base text-white drop-shadow">#3B82F6</span>
-                        <button id="quickCopyBtnComp" class="text-white hover:bg-black/20 p-2 rounded-lg text-sm transition" title="Копировать HEX">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
+                        <span id="displayHexTextComp" class="font-mono font-bold text-base text-white">#3B82F6</span>
+                        <button id="quickCopyBtnComp" class="text-white p-2 rounded-lg text-sm" title="Копировать HEX">📋</button>
                     </div>
 
                     <div class="relative w-full h-36 rounded-xl overflow-hidden color-picker-box mb-3 cursor-crosshair" id="canvasContainerComp">
@@ -1110,7 +718,7 @@
                         <input type="range" id="hueSliderComp" min="0" max="360" value="217" class="w-full cursor-pointer">
                     </div>
 
-                    <div class="grid grid-cols-4 gap-2 mb-3">
+                    <div class="grid grid-cols-4 gap-2 mb-3" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">
                         <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;">RED</button>
                         <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;">GREEN</button>
                         <button class="preset-card-comp h-9 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="0000FF" style="border-left: 3px solid #0000FF;">BLUE</button>
@@ -1141,12 +749,8 @@
             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Выберите удобный способ сохранения:</div>
             
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportAsFile()">
-                    <i class="fa-solid fa-download mr-1.5"></i> СКАЧАТЬ ФАЙЛ JSON
-                </button>
-                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportAsClipboard()">
-                    <i class="fa-solid fa-copy mr-1.5"></i> КОПИРОВАТЬ В БУФЕР ОБМЕНА
-                </button>
+                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportAsFile()">СКАЧАТЬ ФАЙЛ JSON</button>
+                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportAsClipboard()">КОПИРОВАТЬ В БУФЕР ОБМЕНА</button>
             </div>
             
             <button class="cal-action-btn" style="margin-top: 6px; height: 34px;" onclick="closeExportModal()">ЗАКРЫТЬ</button>
@@ -1216,7 +820,7 @@
 
                 <div id="tab-items" class="tab-content">
                     <div class="setting-group">
-                        <label class="setting-label">Управление и порядок пунктов (Первые 4 пункта зафиксированы)</label>
+                        <label class="setting-label">Управление и порядок пунктов</label>
                         <div id="itemsEditList"></div>
                     </div>
                 </div>
@@ -1351,9 +955,7 @@
 
         function getStoredCalendarSettings(theme) {
             let saved = localStorage.getItem('calendar_settings_' + theme);
-            if (saved) {
-                try { return JSON.parse(saved); } catch(e) {}
-            }
+            if (saved) { try { return JSON.parse(saved); } catch(e) {} }
             return theme === 'dark' ? darkCalDefaults : lightCalDefaults;
         }
 
@@ -1379,9 +981,7 @@
 
         function getStoredTableSettings(theme) {
             let saved = localStorage.getItem('table_settings_' + theme);
-            if (saved) {
-                try { return JSON.parse(saved); } catch(e) {}
-            }
+            if (saved) { try { return JSON.parse(saved); } catch(e) {} }
             return theme === 'dark' ? darkTableDefaults : lightTableDefaults;
         }
 
@@ -1391,7 +991,6 @@
             applySettings();
             renderMenu();
             renderEditItems();
-
             loadSavedGenData();
             autoCalculateGen();
 
@@ -1403,9 +1002,7 @@
             calcFuel();
             calcPercent();
             calcSpider(0);
-
             loadTimeCalcData();
-
             initTable();
             renderCalendar();
             calcAllTime();
@@ -1567,7 +1164,6 @@
 
         function renderEditItems() {
             const container = document.getElementById('itemsEditList');
-            container.innerHtml = '';
             container.innerHTML = '';
             menuItems.forEach((item, index) => {
                 const row = document.createElement('div');
@@ -1584,16 +1180,8 @@
             });
         }
 
-        function updateItemName(index, val) {
-            menuItems[index].name = val;
-            saveAndRefreshMenu();
-        }
-
-        function updateItemColor(index, val) {
-            menuItems[index].color = val;
-            saveAndRefreshMenu();
-        }
-
+        function updateItemName(index, val) { menuItems[index].name = val; saveAndRefreshMenu(); }
+        function updateItemColor(index, val) { menuItems[index].color = val; saveAndRefreshMenu(); }
         function moveItem(index, direction) {
             const targetIndex = index + direction;
             if (targetIndex < 0 || targetIndex >= menuItems.length) return;
@@ -1603,7 +1191,6 @@
             saveAndRefreshMenu();
             renderEditItems();
         }
-
         function saveAndRefreshMenu() {
             localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
             renderMenu();
@@ -1664,7 +1251,6 @@
                 }
                 startDate = new Date(dateVal);
                 const today = new Date();
-                
                 startDate.setHours(0, 0, 0, 0);
                 today.setHours(0, 0, 0, 0);
 
@@ -1953,13 +1539,11 @@
             if(!card2 || !card7) return;
 
             if(elemId === 2) {
-                card2.classList.add('ring-2', 'ring-brand-500', 'scale-[1.02]');
-                card7.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]');
-                setTimeout(() => card2.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]'), 1500);
+                card2.style.outline = "2px solid var(--accent-color)";
+                setTimeout(() => card2.style.outline = "none", 1500);
             } else if(elemId === 7) {
-                card7.classList.add('ring-2', 'ring-brand-500', 'scale-[1.02]');
-                card2.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]');
-                setTimeout(() => card7.classList.remove('ring-2', 'ring-brand-500', 'scale-[1.02]'), 1500);
+                card7.style.outline = "2px solid var(--accent-color)";
+                setTimeout(() => card7.style.outline = "none", 1500);
             }
         }
 
@@ -2301,9 +1885,7 @@
             document.getElementById('export-modal').style.display = 'flex';
         }
 
-        function closeExportModal() {
-            document.getElementById('export-modal').style.display = 'none';
-        }
+        function closeExportModal() { document.getElementById('export-modal').style.display = 'none'; }
 
         function getExportPayloadString() {
             let payload = { calendar_db: calDb, calendar_settings: calSettings, table_settings: tableSettings };
@@ -2320,13 +1902,10 @@
                 dlAnchor.download = `calendar_backup_${calYear}.json`;
                 document.body.appendChild(dlAnchor);
                 dlAnchor.click();
-                setTimeout(() => { 
-                    document.body.removeChild(dlAnchor); 
-                    URL.revokeObjectURL(url); 
-                }, 500);
+                setTimeout(() => { document.body.removeChild(dlAnchor); URL.revokeObjectURL(url); }, 500);
                 closeExportModal();
             } catch(e) {
-                alert("Ошибка сохранения файла. Используйте кнопку копирования в буфер обмена!");
+                alert("Ошибка сохранения файла.");
             }
         }
 
@@ -2336,9 +1915,7 @@
                 navigator.clipboard.writeText(jsonStr).then(() => {
                     alert("Все данные успешно скопированы в буфер обмена!");
                     closeExportModal();
-                }).catch(err => {
-                    fallbackCopyTextToClipboard(jsonStr);
-                });
+                }).catch(err => { fallbackCopyTextToClipboard(jsonStr); });
             } else {
                 fallbackCopyTextToClipboard(jsonStr);
             }
@@ -2356,14 +1933,9 @@
             textArea.select();
             try {
                 let successful = document.execCommand('copy');
-                if (successful) {
-                    alert("Все данные успешно скопированы в буфер обмена!");
-                } else {
-                    alert("Не удалось скопировать автоматически.");
-                }
-            } catch (err) {
-                alert("Ошибка копирования в буфер обмена.");
-            }
+                if (successful) alert("Данные скопированы в буфер обмена!");
+                else alert("Не удалось скопировать.");
+            } catch (err) { alert("Ошибка копирования."); }
             document.body.removeChild(textArea);
             closeExportModal();
         }
@@ -2551,7 +2123,7 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // ЛОГИКА 5-ГО ПУНКТА (ЦВЕТОВАЯ ПАЛИТРА: РАСШИРЕННЫЙ И УРЕЗАННЫЙ РЕЖИМЫ)
+        // Логика 5-го пункта
         let canvas, ctx, canvasContainer, pickerHandle, hueSlider, displayBar, displayHexText;
         let hexInput, rgbR, rgbG, rgbB, hslH, hslS, hslL, contrastPreviewBtn;
         let canvasComp, ctxComp, canvasContainerComp, pickerHandleComp, hueSliderComp, displayBarComp, displayHexTextComp, hexInputComp, tailwindOutputComp;
@@ -2716,7 +2288,6 @@
         function drawGradient(targetCtx, targetCanvas, hue) {
             if (!targetCtx || !targetCanvas) return;
             targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
-
             targetCtx.fillStyle = `hsl(${hue}, 100%, 50%)`;
             targetCtx.fillRect(0, 0, targetCanvas.width, targetCanvas.height);
 
@@ -2742,22 +2313,15 @@
 
         function hexToRgb(hex) {
             let cleanHex = hex.replace('#', '');
-            if (cleanHex.length === 3) {
-                cleanHex = cleanHex.split('').map(c => c + c).join('');
-            }
+            if (cleanHex.length === 3) cleanHex = cleanHex.split('').map(c => c + c).join('');
             const num = parseInt(cleanHex, 16);
-            return isNaN(num) ? null : {
-                r: (num >> 16) & 255,
-                g: (num >> 8) & 255,
-                b: num & 255
-            };
+            return isNaN(num) ? null : { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
         }
 
         function rgbToHsl(r, g, b) {
             r /= 255; g /= 255; b /= 255;
             const max = Math.max(r, g, b), min = Math.min(r, g, b);
             let h, s, l = (max + min) / 2;
-
             if (max === min) {
                 h = s = 0;
             } else {
@@ -2782,7 +2346,6 @@
             rgbR.value = r;
             rgbG.value = g;
             rgbB.value = b;
-
             hslH.value = hsl.h;
             hslS.value = hsl.s;
             hslL.value = hsl.l;
@@ -2845,10 +2408,8 @@
         document.getElementById('themeToggle').onclick = () => {
             let newTheme = settings.theme === 'light' ? 'dark' : 'light';
             settings.theme = newTheme;
-            
             calSettings = getStoredCalendarSettings(newTheme);
             tableSettings = getStoredTableSettings(newTheme);
-
             applySettings();
             renderCalendar();
             setTimeout(() => { resizeCanvas(); resizeCanvasComp(); }, 50);
