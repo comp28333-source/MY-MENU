@@ -275,7 +275,6 @@
             background: linear-gradient(145deg, #d3d9e4, #eff5ff); box-shadow: inset 3px 3px 6px #b4bcc8, inset -3px -3px 6px #ffffff; border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Улучшенные стили панели форматирования и блокнота */
         .save-badge { font-size: 12px; color: var(--text-color); margin-left: 6px; opacity: 0; transition: opacity 0.2s ease; }
         .save-badge.visible { opacity: 1; }
         .bg-palette-bar { background-color: var(--card-bg); padding: 10px 14px; border-bottom: 1px solid rgba(100, 100, 100, 0.1); display: flex; align-items: center; justify-content: space-between; gap: 10px; z-index: 19; }
@@ -317,7 +316,6 @@
 </head>
 <body>
 
-    <!-- ЭТАЛОННЫЙ ВОДЯНОЙ ЗНАК БЛiК -->
     <div class="watermark">БЛiК</div>
 
     <div class="app-card" id="mainAppCard">
@@ -653,7 +651,7 @@
                             <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full neu-concave">HTML / CSS Code</span>
                         </div>
 
-                        <div id="selectedColorDisplay" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/20 transition-colors duration-200" style="background-color: #3b82f6;">
+                        <div id="selectedColorDisplay" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/25 transition-colors duration-200" style="background-color: #3b82f6;">
                             <span id="displayHexText" class="font-mono font-bold text-base text-white">#3B82F6</span>
                             <button id="quickCopyBtn" class="text-white p-2 rounded-lg text-sm" title="Копировать HEX">📋</button>
                         </div>
@@ -732,7 +730,7 @@
                         <h2 class="text-sm font-bold">Палитра (Мобильная)</h2>
                     </div>
 
-                    <div id="selectedColorDisplayComp" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/20" style="background-color: #3b82f6;">
+                    <div id="selectedColorDisplayComp" class="w-full h-12 rounded-xl mb-4 flex items-center justify-between px-4 shadow-md border border-white/25" style="background-color: #3b82f6;">
                         <span id="displayHexTextComp" class="font-mono font-bold text-base text-white">#3B82F6</span>
                         <button id="quickCopyBtnComp" class="text-white p-2 rounded-lg text-sm" title="Копировать HEX">📋</button>
                     </div>
@@ -785,10 +783,8 @@
                 </div>
             </header>
 
-            <!-- Скрытый инпут для импорта блокнота -->
             <input type="file" id="notepad-import-file" style="display:none" onchange="importNotepadData(event)">
 
-            <!-- Адаптивный скролл списка заметок на весь оставшийся экран без обрезания -->
             <main id="notes-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; min-height: 0;"></main>
 
             <button id="btn-add-note" class="neu-btn" style="width: 100%; padding: 12px; color: var(--accent-color); margin-top: 8px; flex-shrink: 0;" onclick="createNewNote()">+ НОВАЯ ЗАМЕТКА</button>
@@ -1103,7 +1099,6 @@
 
         let tableSettings = getStoredTableSettings(settings.theme);
 
-        // Переменные для Блокнота (Пункт 6)
         const NOTEPAD_STORAGE_KEY = 'android_dark_notepad_richtext_v3';
         let notes = [];
         let activeNoteId = null;
@@ -1121,7 +1116,6 @@
             { id: 'purple', name: 'Тёмно-фиолетовый', hex: '#1A1026' }
         ];
 
-        /* Основные базовые цвета текста, включая черный */
         const TEXT_COLORS = [
             { name: 'По умолчанию', hex: '' },
             { name: 'Чёрный', hex: '#000000' },
@@ -2289,7 +2283,6 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Логика 5-го пункта (Color Picker)
         let canvas, ctx, canvasContainer, pickerHandle, hueSlider, displayBar, displayHexText;
         let hexInput, rgbR, rgbG, rgbB, hslH, hslS, hslL, contrastPreviewBtn;
         let canvasComp, ctxComp, canvasContainerComp, pickerHandleComp, hueSliderComp, displayBarComp, displayHexTextComp, hexInputComp, tailwindOutputComp;
@@ -2563,7 +2556,6 @@
             updateColorUIComp(imgData[0], imgData[1], imgData[2]);
         }
 
-        // Логика 6-го пункта (Блокнот)
         const MONTHS_RU = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
 
         function formatDateNote(ts) {
