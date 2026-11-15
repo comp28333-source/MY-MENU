@@ -42,6 +42,7 @@
         .rounded-xl { border-radius: 12px; } .rounded-lg { border-radius: 8px; } .rounded-full { border-radius: 9999px; }
         .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .transform { transform: var(--tw-transform); } .-translate-x-1/2 { --tw-translate-x: -50%; transform: translateX(var(--tw-translate-x)); } .-translate-y-1/2 { --tw-translate-y: -50%; transform: translateY(var(--tw-translate-y)); }
+        .hidden { display: none !important; }
 
         body {
             background-color: var(--bg-color); color: var(--text-color); font-size: var(--font-size);
@@ -218,7 +219,7 @@
             box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light); display: flex; flex-direction: column; gap: 4px;
         }
         .modal-input {
-            border: none; outline: none; background: var(--card-bg); padding: 5px 8px; border-radius: 6px;
+            border: None; outline: none; background: var(--card-bg); padding: 5px 8px; border-radius: 6px;
             box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light); font-size: 11px; color: var(--text-color);
         }
         .palette { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 6px; }
@@ -273,6 +274,45 @@
         [data-theme="light"] .neu-concave, .dark:not(.dark) .neu-concave {
             background: linear-gradient(145deg, #d3d9e4, #eff5ff); box-shadow: inset 3px 3px 6px #b4bcc8, inset -3px -3px 6px #ffffff; border: 1px solid rgba(0, 0, 0, 0.05);
         }
+
+        /* Улучшенные стили панели форматирования и блокнота */
+        .save-badge { font-size: 12px; color: rgba(255, 255, 255, 0.65); margin-left: 6px; opacity: 0; transition: opacity 0.2s ease; }
+        .save-badge.visible { opacity: 1; }
+        .bg-palette-bar { background-color: #16182B; padding: 10px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: space-between; gap: 10px; z-index: 19; }
+        .bg-palette-label { font-size: 12px; color: rgba(255, 255, 255, 0.7); }
+        .bg-swatches { display: flex; align-items: center; gap: 10px; }
+        .bg-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.25); cursor: pointer; transition: transform 0.15s ease, border-color 0.15s ease; }
+        .bg-swatch.active { border-color: var(--accent-color); transform: scale(1.15); }
+        
+        .rich-toolbar { background-color: var(--surface-toolbar, #161829); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 8px 10px; display: flex; flex-direction: column; gap: 8px; z-index: 18; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55); flex-shrink: 0; }
+        .toolbar-row { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+        .toolbar-row::-webkit-scrollbar { display: none; }
+        
+        .fmt-btn { min-width: 38px; height: 36px; padding: 0 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.12); background-color: rgba(255, 255, 255, 0.07); color: #FFFFFF; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background-color 0.12s ease; }
+        .fmt-btn:hover { background-color: rgba(255, 255, 255, 0.18); }
+        .fmt-btn.active { background-color: rgba(0, 122, 255, 0.35); border-color: var(--accent-color); color: #FFFFFF; }
+        .toolbar-sep { width: 1px; height: 24px; background-color: rgba(255, 255, 255, 0.2); margin: 0 4px; flex-shrink: 0; }
+        
+        .text-color-list { display: flex; align-items: center; gap: 6px; padding: 0 2px; }
+        .text-color-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.3); cursor: pointer; flex-shrink: 0; transition: transform 0.12s ease; }
+        .text-color-dot:hover { transform: scale(1.15); }
+        .text-color-dot.active { border-color: #FFFFFF; transform: scale(1.2); box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.6); }
+
+        #note-scroll-area { flex: 1; width: 100%; overflow-y: auto; background-color: #000000; transition: background-color 0.2s ease; position: relative; }
+        #note-rich-editor { width: 100%; min-height: 100%; padding: 14px 14px 110px 14px; font-size: 17px; line-height: 1.48; color: #F2F2F2; outline: none; word-wrap: break-word; overflow-wrap: break-word; user-select: text; cursor: text; }
+        #note-rich-editor:empty::before { content: attr(data-placeholder); color: rgba(255, 255, 255, 0.35); pointer-events: none; display: block; }
+        #note-rich-editor ul, #note-rich-editor ol { padding-left: 24px; margin: 6px 0; }
+        #note-rich-editor li { margin: 2px 0; }
+        #note-rich-editor code, #note-rich-editor pre { font-family: "Fira Code", "Roboto Mono", Consolas, monospace; background-color: rgba(255, 255, 255, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.92em; color: #81C784; }
+
+        .note-item { padding: 12px 14px; border-bottom: 1px solid var(--divider-color, rgba(255,255,255,0.08)); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: background-color 0.12s ease; }
+        .note-item:active { background-color: rgba(255, 255, 255, 0.08); }
+        .note-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+        .note-item-title { font-size: 16px; line-height: 1.35; color: var(--text-primary, #F2F2F2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+        .note-item-star { width: 14px; height: 14px; color: #FFD54F; flex-shrink: 0; margin-top: 3px; }
+        .note-item-bottom { display: flex; justify-content: flex-end; margin-top: 4px; }
+        .note-item-date { font-size: 11px; color: #94a3b8; letter-spacing: 0.1px; }
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; color: rgba(255, 255, 255, 0.38); text-align: center; padding: 20px; gap: 12px; }
     </style>
 </head>
 <body>
@@ -669,30 +709,18 @@
                     <div class="p-4 rounded-xl" style="background:var(--card-bg);">
                         <h3 class="text-xs font-bold mb-3">Стандартные HTML Цвета</h3>
                         <div class="grid grid-cols-4 gap-2 mb-2" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;">RED</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;">GREEN</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="0000FF" style="border-left: 3px solid #0000FF;">BLUE</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FFFF00" style="border-left: 3px solid #FFFF00;">YELLOW</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF0000" style="border-left: 3px solid #FF0000;"> RED</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FF00" style="border-left: 3px solid #00FF00;"> GREEN</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="0000FF" style="border-left: 3px solid #0000FF;"> BLUE</button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 mb-2" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">     
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FFFF00" style="border-left: 3px solid #FFFF00;"> YELLOW</button>         
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FFFF" style="border-left: 3px solid #00FFFF;"> CYAN</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF00FF" style="border-left: 3px solid #FF00FF;"> MAGENTA</button>
                         </div>
                         <div class="grid grid-cols-4 gap-2" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr));">
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="00FFFF" style="border-left: 3px solid #00FFFF;">CYAN</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FF00FF" style="border-left: 3px solid #FF00FF;">MAGENTA</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FFA500" style="border-left: 3px solid #FFA500;">ORANGE</button>
-                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="800080" style="border-left: 3px solid #800080;">PURPLE</button>
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-xl" style="background:var(--card-bg);">
-                        <h3 class="text-xs font-bold mb-3">Экспорт для HTML/CSS</h3>
-                        <div class="space-y-2.5 font-mono text-[11px]">
-                            <div class="neu-concave p-2.5 rounded-xl flex items-center justify-between">
-                                <span class="opacity-70">CSS Variable:</span>
-                                <code id="cssVarOutput" class="font-bold">--main-color: #3B82F6;</code>
-                            </div>
-                            <div class="neu-concave p-2.5 rounded-xl flex items-center justify-between">
-                                <span class="opacity-70">Tailwind Class:</span>
-                                <code id="tailwindOutput" class="font-bold">bg-[#3B82F6]</code>
-                            </div>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="FFA500" style="border-left: 3px solid #FFA500;"> ORANGE</button>
+                            <button class="preset-card h-10 rounded-lg neu-btn font-mono text-[10px] font-bold" data-hex="800080" style="border-left: 3px solid #800080;"> PURPLE</button>
                         </div>
                     </div>
                 </section>
@@ -739,10 +767,82 @@
             </div>
         </div>
 
+        <!-- ПУНКТ 6: БЛОКНОТ -->
+        <div id="screenNotepad" class="view-screen" style="height: calc(100vh - 120px); max-height: 75vh;">
+            <header class="appbar" style="background-color: var(--card-bg); padding: 0 6px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; margin-bottom: 8px; flex-shrink: 0;">
+                <div id="header-normal-note" class="flex items-center justify-between w-full">
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-sm font-bold">Список заметок</h2>
+                        <button class="neu-btn" style="padding: 6px 10px; font-size: 11px; color: var(--accent-color);" onclick="openNotepadExportModal()" title="Экспорт/Импорт">ЭКСП./ИМП.</button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="btn-search-open-note" class="neu-btn icon-btn" style="width:36px; height:36px;" title="Поиск">🔍</button>
+                    </div>
+                </div>
+                <div id="header-search-note" class="hidden flex items-center w-full gap-2">
+                    <button id="btn-search-close-note" class="neu-btn icon-btn" style="width:36px; height:36px;">✕</button>
+                    <input id="search-input-note" class="search-input" type="text" placeholder="Поиск заметок..." autocomplete="off">
+                </div>
+            </header>
+
+            <!-- Скрытый инпут для импорта блокнота -->
+            <input type="file" id="notepad-import-file" style="display:none" onchange="importNotepadData(event)">
+
+            <!-- Адаптивный скролл списка заметок на весь оставшийся экран без обрезания -->
+            <main id="notes-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; min-height: 0;"></main>
+
+            <button id="btn-add-note" class="neu-btn" style="width: 100%; padding: 12px; color: var(--accent-color); margin-top: 8px; flex-shrink: 0;" onclick="createNewNote()">+ НОВАЯ ЗАМЕТКА</button>
+        </div>
+
+        <!-- ПОЛНОЭКРАННОЕ ОКНО РЕДАКТИРОВАНИЯ ЗАМЕТКИ -->
+        <div id="editor-screen" class="hidden" style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 9999; flex-direction: column; padding: 12px; border-radius: 0;">
+            <div class="flex justify-between items-center mb-2" style="background: var(--card-bg); padding: 10px 14px; border-radius: 12px; box-shadow: 2px 2px 6px var(--shadow-dark);">
+                <button class="neu-btn" style="padding: 6px 12px; font-size: 12px;" onclick="closeEditor()">← НАЗАД</button>
+                <div class="flex items-center gap-2">
+                    <span id="save-status" class="save-badge">Сохранено</span>
+                    <button id="btn-favorite" class="neu-btn icon-btn" style="width:36px; height:36px;" title="В избранное">⭐</button>
+                    <button id="btn-bg-palette" class="neu-btn icon-btn" style="width:36px; height:36px;" title="Цвет фона">🎨</button>
+                    <button class="neu-btn" style="padding: 6px 12px; font-size: 12px; color: var(--reset-color);" onclick="deleteActiveNote()">УДАЛИТЬ</button>
+                </div>
+            </div>
+
+            <div id="bg-palette-bar" class="bg-palette-bar hidden" style="border-radius: 8px; margin-bottom: 6px;">
+                <span class="bg-palette-label">Цвет фона:</span>
+                <div id="bg-swatches" class="bg-swatches"></div>
+            </div>
+
+            <!-- ИСПРАВЛЕННАЯ ПАНЕЛЬ ФОРМАТИРОВАНИЯ (БЕЗ СПИСКОВ, С ЦВЕТОМ ТЕКСТА И СТРЕЛКАМИ ШРИФТА) -->
+            <div id="rich-toolbar" class="rich-toolbar" style="border-radius: 8px; margin-bottom: 6px;">
+                <div class="toolbar-row">
+                    <button type="button" class="fmt-btn" data-cmd="bold" title="Жирный"><b>Ж</b></button>
+                    <button type="button" class="fmt-btn" data-cmd="italic" title="Курсив"><i>К</i></button>
+                    <button type="button" class="fmt-btn" data-cmd="underline" title="Подчёркнутый"><u>Ч</u></button>
+                    <button type="button" class="fmt-btn" data-cmd="strikeThrough" title="Зачёркнутый"><s>З</s></button>
+                    <div class="toolbar-sep"></div>
+                    <button type="button" id="btn-fmt-code" class="fmt-btn" title="Код">&lt;/&gt;</button>
+                    <div class="toolbar-sep"></div>
+                    <button type="button" class="fmt-btn" data-cmd="justifyLeft" title="По левому краю">⫷</button>
+                    <button type="button" class="fmt-btn" data-cmd="justifyCenter" title="По центру">≡</button>
+                    <button type="button" class="fmt-btn" data-cmd="justifyRight" title="По правому краю">⫸</button>
+                    <div class="toolbar-sep"></div>
+                    <button type="button" id="btn-font-dec" class="fmt-btn" title="Уменьшить шрифт">▼</button>
+                    <button type="button" id="btn-font-inc" class="fmt-btn" title="Увеличить шрифт">▲</button>
+                </div>
+                <div class="toolbar-row" style="padding-top: 2px;">
+                    <span style="font-size: 11px; font-weight: bold; opacity: 0.7; margin-right: 4px;">Цвет:</span>
+                    <div id="text-color-list" class="text-color-list"></div>
+                </div>
+            </div>
+
+            <div id="note-scroll-area" style="flex:1; border-radius: 12px; overflow-y: auto; box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);">
+                <div id="note-rich-editor" contenteditable="true" data-placeholder="Введите текст заметки..." style="min-height: 100%;"></div>
+            </div>
+        </div>
+
         <div class="watermark">БЛiК</div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ЭКСПОРТА -->
+    <!-- МОДАЛЬНОЕ ОКНО ЭКСПОРТА КАЛЕНДАРЯ -->
     <div class="modal-overlay-custom" id="export-modal">
         <div class="modal-content-custom" style="max-width: 360px; text-align: center;">
             <h3 style="color:var(--text-color); font-weight:800; font-size: 15px; margin-bottom: 4px;">ЭКСПОРТ ДАННЫХ</h3>
@@ -754,6 +854,22 @@
             </div>
             
             <button class="cal-action-btn" style="margin-top: 6px; height: 34px;" onclick="closeExportModal()">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ЭКСПОРТА/ИМПОРТА БЛОКНОТА -->
+    <div class="modal-overlay-custom" id="notepad-export-modal">
+        <div class="modal-content-custom" style="max-width: 360px; text-align: center;">
+            <h3 style="color:var(--text-color); font-weight:800; font-size: 15px; margin-bottom: 4px;">ЭКСПОРТ / ИМПОРТ ЗАМЕТОК</h3>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Выберите действие с блокнотом:</div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportNotepadFile()">СКАЧАТЬ ФАЙЛ ЗАМЕТОК (JSON)</button>
+                <button class="cal-action-btn" style="padding: 12px; font-size: 13px;" onclick="exportNotepadClipboard()">КОПИРОВАТЬ ЗАМЕТКИ В БУФЕР</button>
+                <button class="cal-action-btn" style="padding: 12px; font-size: 13px; color: var(--accent-color);" onclick="importNotepadTrigger()">ИМПОРТИРОВАТЬ ИЗ ФАЙЛА</button>
+            </div>
+            
+            <button class="cal-action-btn" style="margin-top: 6px; height: 34px;" onclick="closeNotepadExportModal()">ЗАКРЫТЬ</button>
         </div>
     </div>
 
@@ -903,7 +1019,8 @@
             { id: 2, type: "calculators", name: "2. КАЛЬКУЛЯТОРЫ", color: "", bg: "" },
             { id: 3, type: "spider", name: "3. АНТЕННА «ПАУК»", color: "", bg: "" },
             { id: 4, type: "calendar", name: "4. КАЛЕНДАРЬ С ЗАМЕТКАМИ", color: "", bg: "" },
-            { id: 5, type: "colorpicker", name: "5. HTML COLOR PICKER", color: "", bg: "" }
+            { id: 5, type: "colorpicker", name: "5. HTML COLOR PICKER", color: "", bg: "" },
+            { id: 6, type: "notepad", name: "6. БЛОКНОТ", color: "", bg: "" }
         ];
 
         let settings = JSON.parse(localStorage.getItem('app_settings')) || {
@@ -987,6 +1104,36 @@
 
         let tableSettings = getStoredTableSettings(settings.theme);
 
+        // Переменные для Блокнота (Пункт 6)
+        const NOTEPAD_STORAGE_KEY = 'android_dark_notepad_richtext_v3';
+        let notes = [];
+        let activeNoteId = null;
+        let searchQueryNote = '';
+        let currentTextColor = '#F2F2F2';
+        let currentFontSizePx = 17;
+        let saveDebounce = null;
+
+        const NOTE_BACKGROUNDS = [
+            { id: 'black', name: 'Чёрный', hex: '#000000' },
+            { id: 'navy', name: 'Тёмно-синий', hex: '#0D1426' },
+            { id: 'green', name: 'Тёмно-зелёный', hex: '#0B1F17' },
+            { id: 'maroon', name: 'Тёмно-бордовый', hex: '#240E14' },
+            { id: 'purple', name: 'Тёмно-фиолетовый', hex: '#1A1026' }
+        ];
+
+        const TEXT_COLORS = [
+            { name: 'Белый', hex: '#F2F2F2' },
+            { name: 'Жёлтый', hex: '#FFD54F' },
+            { name: 'Голубой', hex: '#4FC3F7' },
+            { name: 'Зелёный', hex: '#81C784' },
+            { name: 'Красный', hex: '#E57373' },
+            { name: 'Оранжевый', hex: '#FFB74D' },
+            { name: 'Фиолетовый', hex: '#BA68C8' },
+            { name: 'Серый', hex: '#9E9E9E' }
+        ];
+
+        const FONT_SIZES = [14, 17, 20, 24, 28];
+
         function init() {
             applySettings();
             renderMenu();
@@ -1007,6 +1154,10 @@
             renderCalendar();
             calcAllTime();
             initColorPicker();
+            loadNotes();
+            initNotepadUI();
+            
+            openMainMenu();
         }
 
         function applySettings() {
@@ -1112,6 +1263,7 @@
             document.getElementById('screenSpider').classList.remove('active');
             document.getElementById('screenCalendar').classList.remove('active');
             document.getElementById('screenColorPicker').classList.remove('active');
+            document.getElementById('screenNotepad').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('screenTitle').innerText = item.name;
@@ -1132,6 +1284,9 @@
                 } else if (item.type === 'calendar') {
                     document.getElementById('screenCalendar').classList.add('active');
                     renderCalendar();
+                } else if (item.type === 'notepad') {
+                    document.getElementById('screenNotepad').classList.add('active');
+                    renderNotesList();
                 }
             }
         }
@@ -1142,6 +1297,8 @@
             document.getElementById('screenSpider').classList.remove('active');
             document.getElementById('screenCalendar').classList.remove('active');
             document.getElementById('screenColorPicker').classList.remove('active');
+            document.getElementById('screenNotepad').classList.remove('active');
+            document.getElementById('editor-screen').classList.add('hidden');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
             document.getElementById('screenTitle').innerText = "МЕНЮ";
@@ -1786,7 +1943,7 @@
 
             for (let i = 1; i <= 12; i++) {
                 let mData = yearData[i] || {};
-                let monthSum = calcMonthDays(i, mData.from1, mData.to1, mData.from2, mData.to2);
+                let monthSum = calcMonthDays(i, mData.from1, mData.t1, mData.from2, mData.t2);
                 let resCell = document.getElementById(`res_${i}`);
                 if (resCell) resCell.innerText = monthSum > 0 ? monthSum : '';
                 totalYear += monthSum;
@@ -2123,7 +2280,7 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Логика 5-го пункта
+        // Логика 5-го пункта (Color Picker)
         let canvas, ctx, canvasContainer, pickerHandle, hueSlider, displayBar, displayHexText;
         let hexInput, rgbR, rgbG, rgbB, hslH, hslS, hslL, contrastPreviewBtn;
         let canvasComp, ctxComp, canvasContainerComp, pickerHandleComp, hueSliderComp, displayBarComp, displayHexTextComp, hexInputComp, tailwindOutputComp;
@@ -2195,11 +2352,6 @@
                     const rgb = hexToRgb(hex);
                     if (rgb) updateColorUI(rgb.r, rgb.g, rgb.b);
                 });
-            });
-
-            document.querySelector('.copy-trigger')?.addEventListener('click', () => {
-                navigator.clipboard.writeText(`#${hexInput.value}`);
-                alert(`HEX #${hexInput.value} скопирован!`);
             });
 
             document.getElementById('quickCopyBtn')?.addEventListener('click', () => {
@@ -2354,9 +2506,6 @@
             displayBar.style.backgroundColor = `#${hex}`;
             pickerHandle.style.backgroundColor = `#${hex}`;
 
-            document.getElementById('cssVarOutput').textContent = `--main-color: #${hex};`;
-            document.getElementById('tailwindOutput').textContent = `bg-[#${hex}]`;
-
             const brightness = (r * 299 + g * 587 + b * 114) / 1000;
             if (brightness > 128) {
                 contrastPreviewBtn.textContent = "Чёрный текст";
@@ -2403,6 +2552,367 @@
 
             const imgData = ctxComp.getImageData(x, y, 1, 1).data;
             updateColorUIComp(imgData[0], imgData[1], imgData[2]);
+        }
+
+        // Логика 6-го пункта (Блокнот)
+        const MONTHS_RU = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
+
+        function formatDateNote(ts) {
+            const d = new Date(ts);
+            const day = d.getDate();
+            const month = MONTHS_RU[d.getMonth()];
+            const year = d.getFullYear();
+            const hh = String(d.getHours()).padStart(2, '0');
+            const mm = String(d.getMinutes()).padStart(2, '0');
+            return `${day} ${month} ${year} г. ${hh}:${mm}`;
+        }
+
+        function htmlToPlainText(html) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html.replace(/<\/div>/gi, '\n').replace(/<\/p>/gi, '\n').replace(/<\/li>/gi, '\n').replace(/<br\s*\/?>/gi, '\n');
+            return (tmp.textContent || tmp.innerText || '').trim();
+        }
+
+        function getFirstLinePreview(html) {
+            const plain = htmlToPlainText(html);
+            const lines = plain.split('\n').map(l => l.trim()).filter(Boolean);
+            return lines.length > 0 ? lines[0] : 'Пустая заметка';
+        }
+
+        function loadNotes() {
+            try {
+                const raw = localStorage.getItem(NOTEPAD_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) { notes = parsed; return; }
+                }
+            } catch (err) {}
+            notes = [];
+            saveNotes();
+        }
+
+        function saveNotes() {
+            try { localStorage.setItem(NOTEPAD_STORAGE_KEY, JSON.stringify(notes)); } catch (err) {}
+        }
+
+        function renderNotesList() {
+            const sorted = [...notes].sort((a, b) => b.updatedAt - a.updatedAt);
+            const q = searchQueryNote.trim().toLowerCase();
+            const filtered = sorted.filter(note => {
+                if (q) {
+                    const plain = htmlToPlainText(note.html).toLowerCase();
+                    if (!plain.includes(q)) return false;
+                }
+                return true;
+            });
+
+            const notesListEl = document.getElementById('notes-list');
+            if (filtered.length === 0) {
+                notesListEl.innerHTML = `<div class="empty-state"><div>${q ? 'Ничего не найдено' : 'Список заметок пуст'}</div></div>`;
+                return;
+            }
+
+            const frag = document.createDocumentFragment();
+            filtered.forEach(note => {
+                const titleText = getFirstLinePreview(note.html);
+                const dateText = formatDateNote(note.updatedAt);
+                const row = document.createElement('div');
+                row.className = 'note-item';
+                if (note.bg && note.bg !== '#000000') {
+                    row.style.borderLeft = `3px solid ${note.bg}`;
+                }
+                row.innerHTML = `
+                    <div class="note-item-top">
+                        <div class="note-item-title">${titleText}</div>
+                        ${note.favorite ? '<span class="note-item-star">⭐</span>' : ''}
+                    </div>
+                    <div class="note-item-bottom"><span class="note-item-date">${dateText}</span></div>
+                `;
+                row.onclick = () => openNote(note.id);
+                frag.appendChild(row);
+            });
+            notesListEl.innerHTML = '';
+            notesListEl.appendChild(frag);
+        }
+
+        function openNote(noteId) {
+            activeNoteId = noteId;
+            const note = notes.find(n => n.id === noteId);
+            if (!note) return;
+
+            applyNoteBackground(note.bg || '#000000');
+            const noteRichEditor = document.getElementById('note-rich-editor');
+            noteRichEditor.innerHTML = note.html || '';
+
+            document.getElementById('editor-screen').classList.remove('hidden');
+            document.getElementById('rich-toolbar').classList.remove('hidden');
+            document.getElementById('btn-favorite').innerText = note.favorite ? '🌟' : '⭐';
+        }
+
+        function createNewNote() {
+            const newNote = {
+                id: 'note_' + Date.now(),
+                html: '',
+                updatedAt: Date.now(),
+                favorite: false,
+                bg: '#000000'
+            };
+            notes.unshift(newNote);
+            saveNotes();
+            openNote(newNote.id);
+        }
+
+        function closeEditor() {
+            if (activeNoteId) {
+                const idx = notes.findIndex(n => n.id === activeNoteId);
+                if (idx !== -1) {
+                    const currentHtml = document.getElementById('note-rich-editor').innerHTML;
+                    if (htmlToPlainText(currentHtml) === '') {
+                        notes.splice(idx, 1);
+                    } else {
+                        notes[idx].html = currentHtml;
+                        notes[idx].updatedAt = Date.now();
+                    }
+                    saveNotes();
+                }
+            }
+            activeNoteId = null;
+            document.getElementById('editor-screen').classList.add('hidden');
+            renderNotesList();
+        }
+
+        function deleteActiveNote() {
+            if (!activeNoteId) return;
+            if (confirm("Удалить заметку?")) {
+                notes = notes.filter(n => n.id !== activeNoteId);
+                saveNotes();
+                activeNoteId = null;
+                document.getElementById('editor-screen').classList.add('hidden');
+                renderNotesList();
+            }
+        }
+
+        function applyNoteBackground(hex) {
+            document.getElementById('note-scroll-area').style.backgroundColor = hex;
+            document.querySelectorAll('.bg-swatch').forEach(sw => {
+                sw.classList.toggle('active', sw.dataset.hex === hex);
+            });
+        }
+
+        function openNotepadExportModal() { document.getElementById('notepad-export-modal').style.display = 'flex'; }
+        function closeNotepadExportModal() { document.getElementById('notepad-export-modal').style.display = 'none'; }
+
+        function exportNotepadFile() {
+            try {
+                let jsonStr = JSON.stringify(notes, null, 4);
+                let blob = new Blob([jsonStr], { type: "application/json;charset=utf-8;" });
+                let url = URL.createObjectURL(blob);
+                let dlAnchor = document.createElement('a');
+                dlAnchor.href = url;
+                dlAnchor.download = `notepad_backup_${Date.now()}.json`;
+                document.body.appendChild(dlAnchor);
+                dlAnchor.click();
+                setTimeout(() => { document.body.removeChild(dlAnchor); URL.revokeObjectURL(url); }, 500);
+                closeNotepadExportModal();
+            } catch(e) {
+                alert("Ошибка сохранения файла заметок.");
+            }
+        }
+
+        function exportNotepadClipboard() {
+            let jsonStr = JSON.stringify(notes, null, 4);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(jsonStr).then(() => {
+                    alert("Заметки успешно скопированы в буфер обмена!");
+                    closeNotepadExportModal();
+                }).catch(err => { fallbackCopyNotepadClipboard(jsonStr); });
+            } else {
+                fallbackCopyNotepadClipboard(jsonStr);
+            }
+        }
+
+        function fallbackCopyNotepadClipboard(text) {
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                let successful = document.execCommand('copy');
+                if (successful) alert("Заметки скопированы в буфер обмена!");
+                else alert("Не удалось скопировать.");
+            } catch (err) { alert("Ошибка копирования."); }
+            document.body.removeChild(textArea);
+            closeNotepadExportModal();
+        }
+
+        function importNotepadTrigger() { document.getElementById('notepad-import-file').click(); closeNotepadExportModal(); }
+
+        function importNotepadData(e) {
+            let file = e.target.files[0];
+            if (!file) return;
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    let imported = JSON.parse(event.target.result);
+                    if (Array.isArray(imported)) {
+                        notes = imported;
+                        saveNotes();
+                        renderNotesList();
+                        alert("Заметки успешно импортированы!");
+                    } else {
+                        alert("Неверный формат файла заметок!");
+                    }
+                } catch(err) { alert("Ошибка чтения файла заметок!"); }
+            };
+            reader.readAsText(file);
+        }
+
+        function initNotepadUI() {
+            const bgSwatches = document.getElementById('bg-swatches');
+            bgSwatches.innerHTML = '';
+            NOTE_BACKGROUNDS.forEach(item => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'bg-swatch';
+                btn.dataset.hex = item.hex;
+                btn.style.backgroundColor = item.hex;
+                btn.onclick = () => {
+                    if (!activeNoteId) return;
+                    const note = notes.find(n => n.id === activeNoteId);
+                    if (note) {
+                        note.bg = item.hex;
+                        saveNotes();
+                        applyNoteBackground(item.hex);
+                    }
+                };
+                bgSwatches.appendChild(btn);
+            });
+
+            const textColorList = document.getElementById('text-color-list');
+            textColorList.innerHTML = '';
+            TEXT_COLORS.forEach((col, idx) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'text-color-dot' + (idx === 0 ? ' active' : '');
+                dot.dataset.hex = col.hex;
+                dot.style.backgroundColor = col.hex;
+                dot.onmousedown = (e) => e.preventDefault();
+                dot.onclick = () => {
+                    currentTextColor = col.hex;
+                    document.querySelectorAll('.text-color-dot').forEach(d => d.classList.toggle('active', d.dataset.hex === col.hex));
+                    document.getElementById('note-rich-editor').focus();
+                    document.execCommand('styleWithCSS', false, true);
+                    document.execCommand('foreColor', false, col.hex);
+                    scheduleAutoSave();
+                };
+                textColorList.appendChild(dot);
+            });
+
+            document.querySelectorAll('#rich-toolbar .fmt-btn[data-cmd]').forEach(btn => {
+                btn.onmousedown = (e) => e.preventDefault();
+                btn.onclick = () => {
+                    document.getElementById('note-rich-editor').focus();
+                    document.execCommand('styleWithCSS', false, true);
+                    document.execCommand(btn.dataset.cmd, false, null);
+                    scheduleAutoSave();
+                };
+            });
+
+            document.getElementById('btn-fmt-code').onclick = () => {
+                document.getElementById('note-rich-editor').focus();
+                const sel = window.getSelection();
+                if (!sel || sel.rangeCount === 0) return;
+                const range = sel.getRangeAt(0);
+                if (!range.isCollapsed) {
+                    const codeEl = document.createElement('code');
+                    codeEl.textContent = range.toString();
+                    range.deleteContents();
+                    range.insertNode(codeEl);
+                    scheduleAutoSave();
+                }
+            };
+
+            function changeFontSize(delta) {
+                let idx = FONT_SIZES.indexOf(currentFontSizePx);
+                if (idx === -1) idx = 1; // default 17px
+                idx += delta;
+                if (idx < 0) idx = 0;
+                if (idx >= FONT_SIZES.length) idx = FONT_SIZES.length - 1;
+                currentFontSizePx = FONT_SIZES[idx];
+
+                const editor = document.getElementById('note-rich-editor');
+                editor.focus();
+                const sel = window.getSelection();
+                if (sel.rangeCount > 0 && !sel.isCollapsed) {
+                    const range = sel.getRangeAt(0);
+                    const span = document.createElement('span');
+                    span.style.fontSize = currentFontSizePx + 'px';
+                    span.appendChild(range.extractContents());
+                    range.insertNode(span);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else {
+                    editor.style.fontSize = currentFontSizePx + 'px';
+                }
+                scheduleAutoSave();
+            }
+
+            document.getElementById('btn-font-dec').onclick = () => changeFontSize(-1);
+            document.getElementById('btn-font-inc').onclick = () => changeFontSize(1);
+
+            document.getElementById('btn-favorite').onclick = () => {
+                if (!activeNoteId) return;
+                const note = notes.find(n => n.id === activeNoteId);
+                if (note) {
+                    note.favorite = !note.favorite;
+                    saveNotes();
+                    document.getElementById('btn-favorite').innerText = note.favorite ? '🌟' : '⭐';
+                }
+            };
+
+            document.getElementById('btn-bg-palette').onclick = () => {
+                document.getElementById('bg-palette-bar').classList.toggle('hidden');
+            };
+
+            const noteRichEditor = document.getElementById('note-rich-editor');
+            noteRichEditor.oninput = scheduleAutoSave;
+
+            document.getElementById('btn-search-open-note').onclick = () => {
+                document.getElementById('header-normal-note').classList.add('hidden');
+                document.getElementById('header-search-note').classList.remove('hidden');
+                document.getElementById('search-input-note').focus();
+            };
+            document.getElementById('btn-search-close-note').onclick = () => {
+                searchQueryNote = '';
+                document.getElementById('search-input-note').value = '';
+                document.getElementById('header-search-note').classList.add('hidden');
+                document.getElementById('header-normal-note').classList.remove('hidden');
+                renderNotesList();
+            };
+            document.getElementById('search-input-note').oninput = (e) => {
+                searchQueryNote = e.target.value;
+                renderNotesList();
+            };
+        }
+
+        function scheduleAutoSave() {
+            if (!activeNoteId) return;
+            const note = notes.find(n => n.id === activeNoteId);
+            if (!note) return;
+            note.html = document.getElementById('note-rich-editor').innerHTML;
+            note.updatedAt = Date.now();
+            clearTimeout(saveDebounce);
+            saveDebounce = setTimeout(() => {
+                saveNotes();
+                const badge = document.getElementById('save-status');
+                badge.classList.add('visible');
+                setTimeout(() => badge.classList.remove('visible'), 1000);
+            }, 300);
         }
 
         document.getElementById('themeToggle').onclick = () => {
