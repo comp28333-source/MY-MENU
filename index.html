@@ -811,7 +811,6 @@
                 <div id="bg-swatches" class="bg-swatches"></div>
             </div>
 
-            <!-- ИСПРАВЛЕННАЯ ПАНЕЛЬ ФОРМАТИРОВАНИЯ (БЕЗ СПИСКОВ, С ЦВЕТОМ ТЕКСТА И СТРЕЛКАМИ ШРИФТА) -->
             <div id="rich-toolbar" class="rich-toolbar" style="border-radius: 8px; margin-bottom: 6px;">
                 <div class="toolbar-row">
                     <button type="button" class="fmt-btn" data-cmd="bold" title="Жирный"><b>Ж</b></button>
@@ -1717,7 +1716,7 @@
                     <td class="table-data-cell"><input type="number" id="t1_${i}" oninput="onTableInput()"></td>
                     <td class="table-data-cell"><input type="number" id="f2_${i}" oninput="onTableInput()"></td>
                     <td class="table-data-cell"><input type="number" id="t2_${i}" oninput="onTableInput()"></td>
-                    <td id="res_${i}" class="table-result-cell"></td>
+                    <td id="res_${i}" class="table-result-cell" style="color: var(--table-result-font-color) !important;">0</td>
                 `;
                 tbody.appendChild(tr);
             }
@@ -1946,12 +1945,18 @@
                 let mData = yearData[i] || {};
                 let monthSum = calcMonthDays(i, mData.from1, mData.t1, mData.from2, mData.t2);
                 let resCell = document.getElementById(`res_${i}`);
-                if (resCell) resCell.innerText = monthSum > 0 ? monthSum : '';
+                if (resCell) {
+                    resCell.innerText = monthSum > 0 ? monthSum : '0';
+                    resCell.style.color = 'var(--table-result-font-color)';
+                }
                 totalYear += monthSum;
             }
 
             let totalYearEl = document.getElementById('total-year-days');
-            if (totalYearEl) totalYearEl.innerText = totalYear;
+            if (totalYearEl) {
+                totalYearEl.innerText = totalYear;
+                totalYearEl.style.color = 'var(--table-total-font-color)';
+            }
             calcAllTime();
         }
 
@@ -2000,7 +2005,10 @@
                 }
             }
             let totalAll = document.getElementById('total-all-days');
-            if (totalAll) totalAll.innerText = allTime;
+            if (totalAll) {
+                totalAll.innerText = allTime;
+                totalAll.style.color = 'var(--accent-color)';
+            }
         }
 
         function calcMonthDaysForYear(y, m, f1, t1, f2, t2) {
