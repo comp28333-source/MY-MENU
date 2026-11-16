@@ -345,6 +345,7 @@
                 <h1 class="header-title" id="screenTitle">МЕНЮ</h1>
             </div>
             <div class="header-controls">
+                <button class="neu-btn icon-btn" id="securityToggle" title="Безопасность меню">🔑</button>
                 <button class="neu-btn icon-btn" id="themeToggle" title="Тема">
                     <svg id="themeIcon" viewBox="0 0 24 24">
                         <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -1030,6 +1031,31 @@
             <div style="display:flex; flex-direction:column; gap:6px;" id="table-settings-controls"></div>
             <button class="cal-action-btn" style="background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white; height:36px; font-weight:bold;" onclick="saveTableSettings()">СОХРАНИТЬ</button>
             <button class="cal-action-btn" style="background: linear-gradient(145deg, #ef9a9a, #ef5350); color:white; height:32px;" onclick="closeTableSettings()">ОТМЕНИТЬ</button>
+        </div>
+    </div>
+
+
+    <!-- МОДАЛЬНОЕ ОКНО БЕЗОПАСНОСТИ МЕНЮ -->
+    <div class="modal-overlay-custom" id="security-modal">
+        <div class="modal-content-custom" style="max-width: 340px; text-align: center;">
+            <h3 id="secModalTitle" style="color:var(--text-color); font-weight:800; font-size: 15px; margin-bottom: 4px;">ЗАЩИТА МЕНЮ</h3>
+            <div id="secModalDesc" style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Введите пароль для доступа:</div>
+            <input type="password" id="secPasswordInput" class="modal-input" placeholder="Пароль" style="width: 100%; padding: 10px; font-size: 14px; text-align: center; margin-bottom: 12px; text-transform: none;">
+            <div style="display: flex; gap: 8px;">
+                <button class="cal-action-btn" style="flex:1; background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white; height:36px; font-weight:bold;" onclick="submitSecurityPassword()">ОК</button>
+                <button class="cal-action-btn" style="flex:1; height:36px;" onclick="closeSecurityModal()">ОТМЕНА</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОКНО БЛОКИРОВКИ МЕНЮ -->
+    <div id="menuLockOverlay" style="display: none; position: fixed; inset: 0; background: var(--bg-color); z-index: 5000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;">
+        <div class="app-card" style="max-width: 360px; text-align: center; display: flex; flex-direction: column; gap: 16px; align-items: center;">
+            <div style="font-size: 40px;">🔒</div>
+            <h2 class="header-title">МЕНЮ ЗАБЛОКИРОВАНО</h2>
+            <p style="font-size: 12px; color: var(--text-muted);">Введите пароль для разблокировки доступа к приложению:</p>
+            <input type="password" id="lockScreenInput" class="modal-input" placeholder="Введите пароль" style="width: 100%; padding: 12px; font-size: 16px; text-align: center; text-transform: none;" onkeydown="if(event.key==='Enter') unlockMenu()">
+            <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--accent-color); font-weight: bold;" onclick="unlockMenu()">РАЗБЛОКИРОВАТЬ</button>
         </div>
     </div>
 
@@ -3147,6 +3173,104 @@
         document.getElementById('textShadowToggle').onchange = (e) => { settings.textShadow = e.target.checked; applySettings(); };
 
         window.addEventListener('beforeunload', () => { collectTableInputs(); });
+
+        
+        // --- ЛОГИКА БЕЗОПАСНОСТИ МЕНЮ ---
+        let menuLocked = false;
+
+        function getStoredMenuPassword() {
+            return localStorage.getItem('menu_security_password') || '';
+        }
+
+        function updateSecurityButtonIcon() {
+            const pass = getStoredMenuPassword();
+            const btn = document.getElementById('securityToggle');
+            if (btn) {
+                btn.innerText = pass ? '🔒' : '🔑';
+            }
+        }
+
+        document.getElementById('securityToggle').onclick = () => {
+            const pass = getStoredMenuPassword();
+            const modal = document.getElementById('security-modal');
+            const title = document.getElementById('secModalTitle');
+            const desc = document.getElementById('secModalDesc');
+            const input = document.getElementById('secPasswordInput');
+            input.value = '';
+
+            if (!pass) {
+                title.innerText = "УСТАНОВКА ПАРОЛЯ";
+                desc.innerText = "Задайте новый пароль для защиты меню (пустое поле — отмена):";
+            } else if (menuLocked) {
+                title.innerText = "РАЗБЛОКИРОВКА МЕНЮ";
+                desc.innerText = "Введите текущий пароль:";
+            } else {
+                title.innerText = "УПРАВЛЕНИЕ ПАРОЛЕМ";
+                desc.innerText = "Введите новый пароль (оставьте пустым для удаления пароля):";
+            }
+            modal.style.display = 'flex';
+            input.focus();
+        };
+
+        function closeSecurityModal() {
+            document.getElementById('security-modal').style.display = 'none';
+        }
+
+        function submitSecurityPassword() {
+            const inputVal = document.getElementById('secPasswordInput').value.trim();
+            const currentPass = getStoredMenuPassword();
+            const modal = document.getElementById('security-modal');
+
+            if (!currentPass) {
+                if (inputVal !== "") {
+                    localStorage.setItem('menu_security_password', inputVal);
+                    alert("Пароль успешно установлен!");
+                    updateSecurityButtonIcon();
+                }
+            } else if (menuLocked) {
+                if (inputVal === currentPass) {
+                    menuLocked = false;
+                    document.getElementById('menuLockOverlay').style.display = 'none';
+                    alert("Меню разблокировано!");
+                } else {
+                    alert("Неверный пароль!");
+                    return;
+                }
+            } else {
+                if (inputVal === "") {
+                    localStorage.removeItem('menu_security_password');
+                    alert("Пароль удален!");
+                    updateSecurityButtonIcon();
+                } else {
+                    localStorage.setItem('menu_security_password', inputVal);
+                    alert("Пароль успешно изменен!");
+                }
+            }
+            modal.style.display = 'none';
+        }
+
+        function unlockMenu() {
+            const inputVal = document.getElementById('lockScreenInput').value.trim();
+            const currentPass = getStoredMenuPassword();
+            if (inputVal === currentPass) {
+                menuLocked = false;
+                document.getElementById('menuLockOverlay').style.display = 'none';
+                document.getElementById('lockScreenInput').value = '';
+            } else {
+                alert("Неверный пароль!");
+            }
+        }
+
+        // Проверка при загрузке страницы
+        window.addEventListener('load', () => {
+            updateSecurityButtonIcon();
+            const pass = getStoredMenuPassword();
+            if (pass) {
+                menuLocked = true;
+                document.getElementById('menuLockOverlay').style.display = 'flex';
+                document.getElementById('lockScreenInput').focus();
+            }
+        });
 
         init();
     </script>
