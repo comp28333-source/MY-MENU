@@ -1206,85 +1206,346 @@
         /* Данные для 7 пункта: Команды Linux */
         const linuxCommandsData = [
             {
-                category: "1. Файловая система",
+                category: "1. Навигация и файловая система",
                 id: "fs",
                 items: [
                     { cmd: "pwd", desc: "Показать полный путь к текущей директории", ex: "pwd" },
                     { cmd: "ls -la", desc: "Список всех файлов (включая скрытые) с правами и размером", ex: "ls -lah" },
-                    { cmd: "cd [путь]", desc: "Переход в указанную директорию", ex: "cd /etc" },
-                    { cmd: "mkdir -p [путь]", desc: "Создать директорию со всеми родительскими папками", ex: "mkdir -p project/src" },
-                    { cmd: "cp -r [источник] [цель]", desc: "Рекурсивное копирование файлов или папок", ex: "cp -r site/ backup/" },
-                    { cmd: "mv [источник] [цель]", desc: "Перемещение или переименование файла/папки", ex: "mv old.txt new.txt" },
-                    { cmd: "rm -rf [путь]", desc: "Принудительное рекурсивное удаление", ex: "rm -rf temp/" },
-                    { cmd: "find [путь] -name [маска]", desc: "Поиск файлов по имени", ex: "find / -name '*.conf'" },
-                    { cmd: "du -sh [путь]", desc: "Размер указанной папки или файла", ex: "du -sh /var/log/*" },
-                    { cmd: "df -h", desc: "Свободное и занятое место на дисках", ex: "df -h" }
+                    { cmd: "ls -lt", desc: "Список файлов с сортировкой по времени изменения (свежие сверху)", ex: "ls -lth" },
+                    { cmd: "ls -lS", desc: "Список файлов с сортировкой по размеру (крупные сверху)", ex: "ls -lSh" },
+                    { cmd: "cd [путь]", desc: "Переход в указанную директорию", ex: "cd /var/www/html" },
+                    { cmd: "cd -", desc: "Вернуться в предыдущую рабочую директорию", ex: "cd -" },
+                    { cmd: "cd ~", desc: "Перейти в домашнюю директорию текущего пользователя", ex: "cd ~" },
+                    { cmd: "mkdir -p [путь]", desc: "Создать директорию со всеми родительскими папками", ex: "mkdir -p project/src/utils" },
+                    { cmd: "rmdir [папка]", desc: "Удалить пустую директорию", ex: "rmdir empty_folder" },
+                    { cmd: "touch [файл]", desc: "Создать пустой файл или обновить время изменения", ex: "touch index.php" },
+                    { cmd: "cp -rv [источник] [цель]", desc: "Рекурсивное копирование файлов/папок с выводом хода", ex: "cp -rv site/ backup_site/" },
+                    { cmd: "cp -p [источник] [цель]", desc: "Копировать файл с сохранением прав, владельца и меток времени", ex: "cp -p php.ini php.ini.bak" },
+                    { cmd: "mv [источник] [цель]", desc: "Перемещение или переименование файла/папки", ex: "mv old_name.txt new_name.txt" },
+                    { cmd: "rm -rf [путь]", desc: "Принудительное рекурсивное удаление без подтверждения", ex: "rm -rf /tmp/test_dir" },
+                    { cmd: "shred -u -z -n 3 [файл]", desc: "Безопасное затирание файла нулями перед удалением", ex: "shred -u -z -n 3 secret.key" },
+                    { cmd: "ln -s [цель] [ссылка]", desc: "Создать символическую ссылку (ярлык)", ex: "ln -s /etc/nginx/sites-available/site.conf /etc/nginx/sites-enabled/" },
+                    { cmd: "readlink -f [ссылка]", desc: "Узнать реальный конечный путь символической ссылки", ex: "readlink -f /usr/bin/python" },
+                    { cmd: "tree -L [уровень]", desc: "Показать дерево каталогов и файлов", ex: "tree -L 2 /etc/apache2" },
+                    { cmd: "stat [файл]", desc: "Подробная информация о файле (права, inode, даты)", ex: "stat index.html" },
+                    { cmd: "file [файл]", desc: "Определить реальный тип и кодировку файла по содержимому", ex: "file unknown_binary" },
+                    { cmd: "basename / dirname [путь]", desc: "Извлечь только имя файла или только путь к папке", ex: "basename /var/www/html/index.php" },
+                    { cmd: "mc", desc: "Запустить двухпанельный консольный файловый менеджер Midnight Commander", ex: "mc" }
                 ]
             },
             {
-                category: "2. Текст и логи",
+                category: "2. Поиск файлов и данных",
+                id: "search",
+                items: [
+                    { cmd: "find [путь] -name [маска]", desc: "Поиск файлов и папок по имени (с учетом регистра)", ex: "find /var/www -name '*.php'" },
+                    { cmd: "find [путь] -iname [маска]", desc: "Поиск файлов и папок по имени без учета регистра", ex: "find / -iname '*readme*'" },
+                    { cmd: "find [путь] -type f -size +100M", desc: "Найти файлы больше 100 МБ", ex: "find / -type f -size +100M 2>/dev/null" },
+                    { cmd: "find [путь] -mtime -1", desc: "Найти файлы, измененные за последние 24 часа", ex: "find /etc -mtime -1" },
+                    { cmd: "find [путь] -type f -perm 0777", desc: "Найти небезопасные файлы с правами 777", ex: "find /var/www -type f -perm 0777" },
+                    { cmd: "find [путь] -name '*.log' -delete", desc: "Найти и сразу удалить все файлы по маске", ex: "find /var/log -name '*.old' -delete" },
+                    { cmd: "find [путь] -exec [команда] {} +", desc: "Выполнить команду над каждым найденным файлом", ex: "find /var/www -type d -exec chmod 755 {} +" },
+                    { cmd: "locate [имя]", desc: "Быстрый поиск файлов по системной базе (обновить: sudo updatedb)", ex: "locate php.ini" },
+                    { cmd: "which [команда]", desc: "Показать полный путь к исполняемому файлу команды", ex: "which python3" },
+                    { cmd: "whereis [команда]", desc: "Найти бинарный файл, исходники и man-страницы", ex: "whereis apache2" },
+                    { cmd: "type [команда]", desc: "Узнать, является ли команда алиасом, функцией или бинарником", ex: "type ll" }
+                ]
+            },
+            {
+                category: "3. Просмотр и обработка текста/логов",
                 id: "text",
                 items: [
-                    { cmd: "cat [файл]", desc: "Вывести содержимое файла в терминал", ex: "cat /etc/hosts" },
-                    { cmd: "less [файл]", desc: "Постраничный просмотр файлов (выход — q)", ex: "less log.txt" },
-                    { cmd: "tail -f [файл]", desc: "Просмотр логов в реальном времени", ex: "tail -f /var/log/syslog" },
-                    { cmd: "grep -rn '[текст]' [путь]", desc: "Поиск текста внутри файлов", ex: "grep -rni 'error' /var/log/" },
-                    { cmd: "nano [файл]", desc: "Простой текстовый редактор", ex: "nano config.php" },
-                    { cmd: "wc -l [файл]", desc: "Подсчет количества строк", ex: "wc -l file.txt" }
+                    { cmd: "cat -n [файл]", desc: "Вывести содержимое файла целиком с нумерацией строк", ex: "cat -n /etc/hosts" },
+                    { cmd: "tac [файл]", desc: "Вывести содержимое файла в обратном порядке (снизу вверх)", ex: "tac /var/log/auth.log | head -n 20" },
+                    { cmd: "less [файл]", desc: "Постраничный просмотр больших файлов (поиск: /, выход: q)", ex: "less /var/log/syslog" },
+                    { cmd: "head -n [N] [файл]", desc: "Показать первые N строк файла", ex: "head -n 20 access.log" },
+                    { cmd: "tail -n [N] [файл]", desc: "Показать последние N строк файла", ex: "tail -n 50 error.log" },
+                    { cmd: "tail -f [файл]", desc: "Отслеживание логов в реальном времени", ex: "tail -f /var/log/apache2/error.log" },
+                    { cmd: "grep -rni '[текст]' [путь]", desc: "Рекурсивный поиск текста без учета регистра с номерами строк", ex: "grep -rni 'upload_max_filesize' /etc/php/" },
+                    { cmd: "grep -Ev '^#|^$' [файл]", desc: "Показать конфиг без комментариев (#) и пустых строк", ex: "grep -Ev '^#|^$' /etc/ssh/sshd_config" },
+                    { cmd: "sed -i 's/старое/новое/g' [файл]", desc: "Массовая замена текста прямо внутри файла", ex: "sed -i 's/8080/80/g' config.conf" },
+                    { cmd: "sed -n '10,25p' [файл]", desc: "Вывести конкретный диапазон строк (с 10 по 25)", ex: "sed -n '10,25p' index.php" },
+                    { cmd: "awk '{print $1}' [файл]", desc: "Извлечение столбцов и обработка структурированного текста", ex: "awk '{print $1}' /var/log/apache2/access.log | sort | uniq -c" },
+                    { cmd: "cut -d':' -f1 [файл]", desc: "Вырезать колонки текста по разделителю", ex: "cut -d':' -f1 /etc/passwd" },
+                    { cmd: "sort [файл] | uniq -c", desc: "Сортировка строк и подсчет уникальных повторений", ex: "sort ips.txt | uniq -c | sort -nr" },
+                    { cmd: "wc -l [файл]", desc: "Подсчитать количество строк, слов и байт в файле", ex: "wc -l users.json" },
+                    { cmd: "tr 'a-z' 'A-Z'", desc: "Замена или удаление символов в потоке текста", ex: "echo 'blik' | tr 'a-z' 'A-Z'" },
+                    { cmd: "diff -u [файл1] [файл2]", desc: "Сравнить два файла и показать различия", ex: "diff -u php.ini.bak php.ini" },
+                    { cmd: "jq '.' [файл.json]", desc: "Красивое форматирование, подсветка и парсинг JSON в консоли", ex: "cat data.json | jq '.'" },
+                    { cmd: "tee [файл]", desc: "Вывести результат команды одновременно на экран и в файл", ex: "echo 'test' | tee -a output.log" },
+                    { cmd: "nano [файл]", desc: "Консольный текстовый редактор (сохранить Ctrl+O, выход Ctrl+X)", ex: "nano /etc/php/8.2/apache2/php.ini" }
                 ]
             },
             {
-                category: "3. Права и пользователи",
+                category: "4. Права доступа, владельцы и атрибуты",
                 id: "perms",
                 items: [
-                    { cmd: "sudo [команда]", desc: "Выполнить с правами суперпользователя", ex: "sudo apt update" },
-                    { cmd: "chmod [права] [файл]", desc: "Изменить права доступа (напр. 755, 644, +x)", ex: "chmod +x run.sh" },
-                    { cmd: "chown -R [юзер]:[группа] [путь]", desc: "Изменить владельца и группу рекурсивно", ex: "chown -R www-data:www-data /var/www" },
-                    { cmd: "passwd", desc: "Изменить пароль текущего пользователя", ex: "passwd" },
-                    { cmd: "id", desc: "Показать UID, GID и группы пользователя", ex: "id" }
+                    { cmd: "chmod [права] [файл]", desc: "Изменить права доступа (755 для папок/скриптов, 644 для файлов)", ex: "chmod 755 /var/www/html/UPLOAD" },
+                    { cmd: "chmod -R [права] [папка]", desc: "Рекурсивно изменить права для папки и всего содержимого", ex: "chmod -R 755 /var/www/html" },
+                    { cmd: "chmod +x [файл]", desc: "Сделать файл или скрипт исполняемым", ex: "chmod +x backup.sh" },
+                    { cmd: "chown -R [юзер]:[группа] [путь]", desc: "Рекурсивно сменить владельца и группу", ex: "chown -R www-data:www-data /var/www/html" },
+                    { cmd: "chgrp -R [группа] [путь]", desc: "Изменить только группу-владельца файла или каталога", ex: "chgrp -R www-data /var/www/uploads" },
+                    { cmd: "umask", desc: "Показать или задать маску прав по умолчанию для новых файлов", ex: "umask 022" },
+                    { cmd: "chattr +i [файл]", desc: "Сделать файл неизменяемым (защита даже от root, снять: -i)", ex: "sudo chattr +i /etc/resolv.conf" },
+                    { cmd: "lsattr [файл]", desc: "Просмотр расширенных атрибутов файла", ex: "lsattr /etc/resolv.conf" },
+                    { cmd: "getfacl / setfacl", desc: "Просмотр и настройка расширенных списков контроля доступа (ACL)", ex: "setfacl -m u:www-data:rwx /var/www/data" }
                 ]
             },
             {
-                category: "4. Сеть",
-                id: "net",
+                category: "5. Пользователи и группы",
+                id: "users",
                 items: [
-                    { cmd: "ip a", desc: "Показать сетевые интерфейсы и IP-адреса", ex: "ip a" },
-                    { cmd: "ss -tulnp", desc: "Показать открытые порты и процессы", ex: "ss -tulnp" },
-                    { cmd: "ping -c 4 [хост]", desc: "Проверить доступность узла", ex: "ping -c 4 8.8.8.8" },
-                    { cmd: "curl -I [URL]", desc: "Получить HTTP-заголовки сервера", ex: "curl -I http://localhost" },
-                    { cmd: "wget [URL]", desc: "Скачать файл по ссылке", ex: "wget https://example.com/file.zip" },
-                    { cmd: "ssh [юзер]@[хост]", desc: "Подключение к удаленному серверу по SSH", ex: "ssh root@192.168.1.10" }
+                    { cmd: "sudo [команда]", desc: "Выполнить команду от имени суперпользователя root", ex: "sudo systemctl restart apache2" },
+                    { cmd: "sudo !!", desc: "Повторить предыдущую команду с правами sudo", ex: "sudo !!" },
+                    { cmd: "sudo -i", desc: "Переключиться в интерактивную оболочку root", ex: "sudo -i" },
+                    { cmd: "su - [пользователь]", desc: "Переключиться на другого пользователя с загрузкой его окружения", ex: "su - www-data -s /bin/bash" },
+                    { cmd: "whoami", desc: "Показать имя текущего пользователя", ex: "whoami" },
+                    { cmd: "id [пользователь]", desc: "Показать UID, GID и все группы пользователя", ex: "id www-data" },
+                    { cmd: "useradd -m -s /bin/bash [имя]", desc: "Создать нового пользователя с домашней папкой и bash", ex: "sudo useradd -m -s /bin/bash devuser" },
+                    { cmd: "passwd [пользователь]", desc: "Задать или изменить пароль пользователя", ex: "sudo passwd devuser" },
+                    { cmd: "usermod -aG [группа] [юзер]", desc: "Добавить пользователя в дополнительную группу", ex: "sudo usermod -aG sudo,www-data devuser" },
+                    { cmd: "gpasswd -d [юзер] [группа]", desc: "Исключить пользователя из указанной группы", ex: "sudo gpasswd -d devuser sudo" },
+                    { cmd: "userdel -r [пользователь]", desc: "Удалить пользователя вместе с его домашней директорией", ex: "sudo userdel -r devuser" },
+                    { cmd: "groupadd / groupdel [группа]", desc: "Создать или удалить системную группу", ex: "sudo groupadd webadmins" },
+                    { cmd: "w / who", desc: "Показать, кто сейчас вошел в систему и чем занят", ex: "w" },
+                    { cmd: "last -n 10", desc: "История последних входов и перезагрузок системы", ex: "last -n 10" }
                 ]
             },
             {
-                category: "5. Процессы",
+                category: "6. Процессы и мониторинг ресурсов",
                 id: "proc",
                 items: [
-                    { cmd: "htop / top", desc: "Интерактивный монитор процессов и ресурсов", ex: "htop" },
-                    { cmd: "ps aux | grep [имя]", desc: "Найти процесс по имени", ex: "ps aux | grep php" },
-                    { cmd: "kill -9 [PID]", desc: "Принудительно завершить процесс по PID", ex: "kill -9 1234" },
-                    { cmd: "free -h", desc: "Использование оперативной памяти", ex: "free -h" },
-                    { cmd: "uptime", desc: "Время работы и нагрузка системы", ex: "uptime" }
+                    { cmd: "htop", desc: "Интерактивный диспетчер задач (CPU, RAM, процессы)", ex: "htop" },
+                    { cmd: "top", desc: "Стандартный монитор процессов в реальном времени", ex: "top" },
+                    { cmd: "ps aux | grep [имя]", desc: "Найти запущенный процесс по имени и узнать его PID", ex: "ps aux | grep qemu" },
+                    { cmd: "pstree -p", desc: "Показать иерархическое дерево процессов с их PID", ex: "pstree -p" },
+                    { cmd: "pgrep -af [имя]", desc: "Быстро получить PID и полную строку запуска процесса", ex: "pgrep -af php" },
+                    { cmd: "kill -15 [PID]", desc: "Корректно завершить процесс (SIGTERM)", ex: "kill -15 4521" },
+                    { cmd: "kill -9 [PID]", desc: "Принудительно убить зависший процесс (SIGKILL)", ex: "kill -9 4521" },
+                    { cmd: "pkill -f [шаблон]", desc: "Завершить все процессы, совпадающие с именем/командой", ex: "pkill -f python3" },
+                    { cmd: "killall [имя_процесса]", desc: "Завершить все процессы по точному имени бинарника", ex: "killall apache2" },
+                    { cmd: "nice / renice", desc: "Запустить или изменить приоритет процесса (от -20 до 19)", ex: "renice -n -5 -p 4521" },
+                    { cmd: "free -h", desc: "Показать свободную и занятую оперативную память и swap", ex: "free -h" },
+                    { cmd: "uptime", desc: "Время непрерывной работы системы и средняя нагрузка (Load Average)", ex: "uptime" },
+                    { cmd: "vmstat 1", desc: "Статистика памяти, процессов, прерываний и CPU каждую секунду", ex: "vmstat 1" },
+                    { cmd: "iostat -xz 1", desc: "Мониторинг нагрузки на диски и скорости ввода/вывода", ex: "iostat -xz 1" },
+                    { cmd: "lsof -i :[порт]", desc: "Узнать, какой процесс занимает конкретный сетевой порт", ex: "sudo lsof -i :8080" },
+                    { cmd: "nohup [команда] &", desc: "Запустить команду в фоне с защитой от закрытия терминала", ex: "nohup php -S 0.0.0.0:8080 > server.log 2>&1 &" },
+                    { cmd: "jobs / fg / bg", desc: "Управление фоновыми и приостановленными (Ctrl+Z) задачами", ex: "jobs -l" }
                 ]
             },
             {
-                category: "6. Службы systemd",
+                category: "7. Сеть, порты и диагностика",
+                id: "net",
+                items: [
+                    { cmd: "ip a", desc: "Показать все сетевые интерфейсы и IP-адреса", ex: "ip -c a" },
+                    { cmd: "ip r", desc: "Показать таблицу маршрутизации и шлюз по умолчанию", ex: "ip r" },
+                    { cmd: "ip link set [интерфейс] up/down", desc: "Включить или выключить сетевой интерфейс", ex: "sudo ip link set eth0 up" },
+                    { cmd: "ss -tulnp", desc: "Показать все прослушиваемые TCP/UDP порты и их процессы", ex: "sudo ss -tulnp" },
+                    { cmd: "ss -s", desc: "Сводная статистика по всем сетевым сокетам и соединениям", ex: "ss -s" },
+                    { cmd: "ping -c 4 [хост]", desc: "Проверить сетевую доступность и задержку до узла", ex: "ping -c 4 1.1.1.1" },
+                    { cmd: "traceroute / tracepath [хост]", desc: "Отследить маршрут прохождения пакетов до узла", ex: "tracepath blik.lol" },
+                    { cmd: "mtr [хост]", desc: "Комбинированный ping + traceroute в реальном времени", ex: "mtr blik.lol" },
+                    { cmd: "dig [домен] +short", desc: "DNS-запрос для проверки A/MX/TXT записей домена", ex: "dig blik.lol +short" },
+                    { cmd: "nslookup [домен]", desc: "Проверить разрешение DNS-имени через указанный DNS-сервер", ex: "nslookup blik.lol 8.8.8.8" },
+                    { cmd: "whois [домен_или_IP]", desc: "Информация о регистрации домена или владельце IP-адреса", ex: "whois blik.lol" },
+                    { cmd: "curl -I [URL]", desc: "Получить только HTTP-заголовки ответа сервера", ex: "curl -I http://localhost" },
+                    { cmd: "curl -s ifconfig.me", desc: "Узнать свой внешний (белый) IP-адрес из консоли", ex: "curl -s ifconfig.me" },
+                    { cmd: "curl -X POST -d '[данные]' [URL]", desc: "Отправить POST-запрос для тестирования API/скриптов", ex: "curl -X POST -d 'msg=test' http://localhost/api.php" },
+                    { cmd: "wget -c [URL]", desc: "Скачать файл по HTTP/HTTPS с поддержкой докачки", ex: "wget -c https://example.com/archive.tar.gz" },
+                    { cmd: "nc -zv [хост] [порт]", desc: "Проверить, открыт ли конкретный TCP-порт на удаленном хосте", ex: "nc -zv 192.168.1.1 80" },
+                    { cmd: "nmap -sV [хост]", desc: "Сканирование открытых портов и версий служб на хосте", ex: "nmap -sV 192.168.1.1" },
+                    { cmd: "tcpdump -i any port [порт]", desc: "Перехват и анализ сетевых пакетов в реальном времени", ex: "sudo tcpdump -i any port 80 -n" },
+                    { cmd: "nmcli dev wifi list", desc: "Сканировать доступные Wi-Fi сети из консоли (NetworkManager)", ex: "nmcli dev wifi list" },
+                    { cmd: "iwconfig", desc: "Показать параметры беспроводных Wi-Fi интерфейсов и уровень сигнала", ex: "iwconfig" },
+                    { cmd: "ufw status verbose", desc: "Проверить статус и правила фаервола UFW", ex: "sudo ufw status verbose" },
+                    { cmd: "iptables -L -n -v", desc: "Показать все активные правила сетевого фильтра iptables", ex: "sudo iptables -L -n -v" }
+                ]
+            },
+            {
+                category: "8. SSH и передача файлов",
+                id: "ssh",
+                items: [
+                    { cmd: "ssh [юзер]@[хост] -p [порт]", desc: "Подключение к удаленному серверу по SSH", ex: "ssh root@192.168.1.50 -p 22" },
+                    { cmd: "ssh-keygen -t ed25519", desc: "Сгенерировать современную пару SSH-ключей", ex: "ssh-keygen -t ed25519 -C 'blik@linux'" },
+                    { cmd: "ssh-copy-id [юзер]@[хост]", desc: "Скопировать публичный SSH-ключ на сервер для входа без пароля", ex: "ssh-copy-id root@192.168.1.50" },
+                    { cmd: "scp -r [источник] [юзер]@[хост]:[путь]", desc: "Скопировать файлы или папки на сервер по SSH", ex: "scp -r ./UPLOAD root@192.168.1.50:/var/www/html/" },
+                    { cmd: "sftp [юзер]@[хост]", desc: "Интерактивный защищенный файловый менеджер поверх SSH", ex: "sftp root@192.168.1.50" },
+                    { cmd: "rsync -avz --progress [откуда] [куда]", desc: "Умная синхронизация файлов с докачкой и сжатием", ex: "rsync -avz --progress /var/www/ /mnt/backup/www/" },
+                    { cmd: "rsync -avz --delete [откуда] [куда]", desc: "Точное зеркалирование папок с удалением лишних файлов в цели", ex: "rsync -avz --delete ./src/ root@192.168.1.50:/var/www/html/" },
+                    { cmd: "ssh -L [лок_порт]:localhost:[уд_порт] [хост]", desc: "Проброс локального порта на удаленный сервер (SSH-туннель)", ex: "ssh -L 8080:localhost:80 root@192.168.1.50" },
+                    { cmd: "ssh -R [уд_порт]:localhost:[лок_порт] [хост]", desc: "Обратный SSH-туннель (проброс локального сервиса наружу)", ex: "ssh -R 8080:localhost:80 root@blik.lol" },
+                    { cmd: "sshfs [юзер]@[хост]:[путь] [точка]", desc: "Смонтировать папку удаленного сервера как локальный диск", ex: "sshfs root@192.168.1.50:/var/www /mnt/remote" }
+                ]
+            },
+            {
+                category: "9. Службы systemd и системные журналы",
                 id: "sys",
                 items: [
-                    { cmd: "systemctl status [служба]", desc: "Проверить статус службы", ex: "systemctl status apache2" },
-                    { cmd: "systemctl restart [служба]", desc: "Перезапустить службу", ex: "systemctl restart php8.2-fpm" },
-                    { cmd: "systemctl enable --now [служба]", desc: "Включить автозапуск и запустить сразу", ex: "systemctl enable --now ssh" },
-                    { cmd: "journalctl -u [служба] -f", desc: "Логи конкретной службы в реальном времени", ex: "journalctl -u nginx -f" }
+                    { cmd: "systemctl status [служба]", desc: "Проверить состояние, PID и последние логи службы", ex: "systemctl status apache2" },
+                    { cmd: "systemctl start / stop / restart [служба]", desc: "Запустить, остановить или перезапустить службу", ex: "sudo systemctl restart apache2" },
+                    { cmd: "systemctl reload [служба]", desc: "Перечитать конфигурацию службы без разрыва соединений", ex: "sudo systemctl reload nginx" },
+                    { cmd: "systemctl enable --now [служба]", desc: "Добавить службу в автозагрузку и сразу запустить", ex: "sudo systemctl enable --now ssh" },
+                    { cmd: "systemctl disable --now [служба]", desc: "Убрать службу из автозагрузки и сразу остановить", ex: "sudo systemctl disable --now bluetooth" },
+                    { cmd: "systemctl daemon-reload", desc: "Перезагрузить конфигурацию systemd после правки .service файлов", ex: "sudo systemctl daemon-reload" },
+                    { cmd: "systemctl list-units --type=service --state=failed", desc: "Показать все упавшие (сбойные) службы", ex: "systemctl list-units --type=service --state=failed" },
+                    { cmd: "service [служба] status/restart", desc: "Управление службами в системах без systemd (например, Termux/chroot)", ex: "service apache2 restart" },
+                    { cmd: "journalctl -u [служба] -f", desc: "Читать журнал конкретной службы в реальном времени", ex: "sudo journalctl -u apache2 -f" },
+                    { cmd: "journalctl -p err -b", desc: "Показать все системные ошибки с момента последней загрузки", ex: "sudo journalctl -p err -b" },
+                    { cmd: "journalctl --since '1 hour ago'", desc: "Показать системные логи за последний час", ex: "sudo journalctl --since '1 hour ago'" },
+                    { cmd: "journalctl --vacuum-size=100M", desc: "Очистить старые журналы systemd, оставив 100 МБ", ex: "sudo journalctl --vacuum-size=100M" }
                 ]
             },
             {
-                category: "7. Архивы и пакеты",
+                category: "10. Диски, разделы и файловые системы",
+                id: "disk",
+                items: [
+                    { cmd: "df -hT", desc: "Свободное место на смонтированных дисках и типы ФС", ex: "df -hT" },
+                    { cmd: "df -i", desc: "Проверить количество свободных и занятых inode на дисках", ex: "df -i" },
+                    { cmd: "du -sh * | sort -h", desc: "Размер всех папок и файлов в текущем каталоге с сортировкой", ex: "du -sh /var/* | sort -h" },
+                    { cmd: "ncdu [путь]", desc: "Интерактивный консольный анализатор занятого места на диске", ex: "ncdu /var/www" },
+                    { cmd: "lsblk -f", desc: "Показать все блочные устройства, разделы, UUID и точки монтирования", ex: "lsblk -f" },
+                    { cmd: "fdisk -l", desc: "Вывести таблицы разделов всех подключенных дисков", ex: "sudo fdisk -l" },
+                    { cmd: "parted -l", desc: "Информация о разделах дисков (включая GPT и диски > 2 ТБ)", ex: "sudo parted -l" },
+                    { cmd: "mkfs.ext4 / mkfs.vfat [раздел]", desc: "Отформатировать раздел в ext4 или FAT32", ex: "sudo mkfs.ext4 /dev/sdb1" },
+                    { cmd: "fsck -y [раздел]", desc: "Проверить и исправить ошибки файловой системы (на отмонтированном диске)", ex: "sudo fsck -y /dev/sdb1" },
+                    { cmd: "mount [устройство] [точка]", desc: "Смонтировать диск, раздел или образ ISO", ex: "sudo mount /dev/sdb1 /mnt/usb" },
+                    { cmd: "mount -o loop [образ.iso] [точка]", desc: "Смонтировать ISO-образ как виртуальный диск", ex: "sudo mount -o loop debian.iso /mnt/iso" },
+                    { cmd: "umount [точка_или_устройство]", desc: "Безопасно размонтировать диск или раздел", ex: "sudo umount /mnt/usb" },
+                    { cmd: "blkid", desc: "Узнать UUID и PARTUUID всех разделов для /etc/fstab", ex: "sudo blkid" },
+                    { cmd: "dd if=[источник] of=[цель] bs=4M status=progress", desc: "Поблочное копирование дисков или запись ISO-образа", ex: "sudo dd if=debian.iso of=/dev/sdb bs=4M status=progress && sync" },
+                    { cmd: "fallocate -l [размер] [файл]", desc: "Мгновенно создать файл заданного размера (например, для swap)", ex: "sudo fallocate -l 2G /swapfile" },
+                    { cmd: "swapon --show", desc: "Показать активные файлы и разделы подкачки (swap)", ex: "swapon --show" }
+                ]
+            },
+            {
+                category: "11. Архивы и сжатие данных",
+                id: "arch",
+                items: [
+                    { cmd: "tar -czvf [архив.tar.gz] [папка]", desc: "Создать GZIP-архив папки или файлов", ex: "tar -czvf backup_$(date +%F).tar.gz /var/www/html" },
+                    { cmd: "tar -xzvf [архив.tar.gz] -C [путь]", desc: "Распаковать .tar.gz архив в указанную директорию", ex: "tar -xzvf backup.tar.gz -C /tmp/" },
+                    { cmd: "tar -cJvf [архив.tar.xz] [папка]", desc: "Создать архив с максимальным сжатием XZ", ex: "tar -cJvf archive.tar.xz ./project" },
+                    { cmd: "tar -xJvf [архив.tar.xz]", desc: "Распаковать .tar.xz архив", ex: "tar -xJvf archive.tar.xz" },
+                    { cmd: "tar -tf [архив.tar.gz]", desc: "Посмотреть список файлов внутри архива без распаковки", ex: "tar -tf backup.tar.gz" },
+                    { cmd: "zip -r [архив.zip] [папка]", desc: "Упаковать папку в стандартный ZIP-архив", ex: "zip -r site.zip ./UPLOAD" },
+                    { cmd: "unzip [архив.zip] -d [путь]", desc: "Распаковать ZIP-архив в указанную папку", ex: "unzip site.zip -d /var/www/html" },
+                    { cmd: "unzip -l [архив.zip]", desc: "Просмотреть содержимое ZIP-архива без распаковки", ex: "unzip -l app.apk" },
+                    { cmd: "7z a [архив.7z] [папка]", desc: "Создать 7z архив с высокой степенью сжатия", ex: "7z a backup.7z /var/www/html" },
+                    { cmd: "7z x [архив.7z]", desc: "Распаковать архив 7z, rar или zip с сохранением путей", ex: "7z x firmware.7z" },
+                    { cmd: "gzip -d [файл.gz] / xz -d [файл.xz]", desc: "Распаковать одиночный сжатый файл", ex: "gzip -d syslog.1.gz" }
+                ]
+            },
+            {
+                category: "12. Управление пакетами (APT / DPKG)",
                 id: "pkg",
                 items: [
-                    { cmd: "tar -czvf [архив.tar.gz] [папка]", desc: "Упаковать в tar.gz", ex: "tar -czvf backup.tar.gz /var/www/" },
-                    { cmd: "tar -xzvf [архив.tar.gz]", desc: "Распаковать tar.gz", ex: "tar -xzvf backup.tar.gz" },
-                    { cmd: "apt update && apt upgrade", desc: "Обновить систему (Debian/Ubuntu)", ex: "sudo apt update && sudo apt upgrade -y" },
-                    { cmd: "apt install [пакет]", desc: "Установить пакет", ex: "sudo apt install curl git" }
+                    { cmd: "apt update && apt upgrade -y", desc: "Обновить списки репозиториев и все установленные пакеты", ex: "sudo apt update && sudo apt upgrade -y" },
+                    { cmd: "apt full-upgrade -y", desc: "Полное обновление системы с разрешением смены зависимостей", ex: "sudo apt full-upgrade -y" },
+                    { cmd: "apt install -y [пакет]", desc: "Установить один или несколько пакетов", ex: "sudo apt install -y php-zip php-gd curl git" },
+                    { cmd: "apt remove --purge [пакет]", desc: "Полностью удалить пакет вместе с конфигурационными файлами", ex: "sudo apt remove --purge cloudflared" },
+                    { cmd: "apt autoremove -y && apt clean", desc: "Удалить неиспользуемые зависимости и очистить кэш скачанных пакетов", ex: "sudo apt autoremove -y && sudo apt clean" },
+                    { cmd: "apt search [запрос]", desc: "Поиск доступных пакетов в репозиториях", ex: "apt search php8" },
+                    { cmd: "apt show [пакет]", desc: "Показать подробную информацию, версию и зависимости пакета", ex: "apt show apache2" },
+                    { cmd: "apt list --installed | grep [имя]", desc: "Проверить, установлен ли пакет, и узнать его точную версию", ex: "apt list --installed | grep php" },
+                    { cmd: "apt-mark hold / unhold [пакет]", desc: "Заблокировать или разрешить обновление конкретного пакета", ex: "sudo apt-mark hold php8.2" },
+                    { cmd: "dpkg -i [файл.deb]", desc: "Установить локальный .deb пакет", ex: "sudo dpkg -i package.deb" },
+                    { cmd: "dpkg -L [пакет]", desc: "Показать все файлы и пути, установленные данным пакетом", ex: "dpkg -L php8.2-cli" },
+                    { cmd: "apt --fix-broken install", desc: "Исправить сломанные зависимости пакетов", ex: "sudo apt --fix-broken install" }
+                ]
+            },
+            {
+                category: "13. Железо, ядро и система",
+                id: "hw",
+                items: [
+                    { cmd: "uname -a", desc: "Версия ядра Linux, архитектура процессора и имя хоста", ex: "uname -a" },
+                    { cmd: "cat /etc/os-release", desc: "Точное название и версия дистрибутива Linux", ex: "cat /etc/os-release" },
+                    { cmd: "hostnamectl", desc: "Показать или изменить имя хоста и сведения об ОС", ex: "hostnamectl" },
+                    { cmd: "lscpu", desc: "Подробная информация о процессоре (ядра, частоты, кэш)", ex: "lscpu" },
+                    { cmd: "lsmem / dmidecode -t memory", desc: "Информация об установленных модулях оперативной памяти", ex: "sudo dmidecode -t memory" },
+                    { cmd: "lsusb", desc: "Список всех подключенных USB-устройств", ex: "lsusb" },
+                    { cmd: "lspci -nn", desc: "Список устройств на шине PCI (видеокарты, сетевые, контроллеры)", ex: "lspci -nn" },
+                    { cmd: "lsmod", desc: "Показать все загруженные в данный момент модули (драйверы) ядра", ex: "lsmod" },
+                    { cmd: "modprobe [модуль]", desc: "Загрузить модуль ядра (выгрузить: modprobe -r)", ex: "sudo modprobe kvm" },
+                    { cmd: "dmesg -T | tail -n 30", desc: "Последние сообщения ядра с человекочитаемым временем", ex: "sudo dmesg -T | tail -n 30" },
+                    { cmd: "sysctl -a | grep [параметр]", desc: "Просмотр и изменение параметров ядра Linux на лету", ex: "sysctl net.ipv4.ip_forward" },
+                    { cmd: "timedatectl", desc: "Просмотр и настройка системного времени, часового пояса и NTP", ex: "sudo timedatectl set-timezone Europe/Kyiv" },
+                    { cmd: "crontab -e", desc: "Редактировать расписание фоновых задач (cron) пользователя", ex: "crontab -e" },
+                    { cmd: "history | grep [текст]", desc: "Поиск ранее введенных команд в истории терминала", ex: "history | grep apache" },
+                    { cmd: "reboot / poweroff", desc: "Перезагрузить или выключить систему", ex: "sudo reboot" }
+                ]
+            },
+            {
+                category: "14. Веб-серверы (Apache / Nginx / PHP)",
+                id: "web",
+                items: [
+                    { cmd: "apache2ctl -t", desc: "Проверить синтаксис конфигурационных файлов Apache", ex: "sudo apache2ctl -t" },
+                    { cmd: "apache2ctl -M", desc: "Показать список всех включенных модулей Apache", ex: "apache2ctl -M" },
+                    { cmd: "a2enmod / a2dismod [модуль]", desc: "Включить или отключить модуль Apache (например, rewrite)", ex: "sudo a2enmod rewrite && sudo systemctl restart apache2" },
+                    { cmd: "a2ensite / a2dissite [сайт.conf]", desc: "Активировать или отключить виртуальный хост Apache", ex: "sudo a2ensite blik.conf" },
+                    { cmd: "nginx -t", desc: "Проверить конфигурацию Nginx на наличие синтаксических ошибок", ex: "sudo nginx -t" },
+                    { cmd: "php -v", desc: "Проверить установленную версию PHP", ex: "php -v" },
+                    { cmd: "php -m", desc: "Вывести список всех подключенных расширений PHP", ex: "php -m" },
+                    { cmd: "php --ini", desc: "Показать точные пути ко всем загружаемым файлам php.ini", ex: "php --ini" },
+                    { cmd: "php -i | grep [параметр]", desc: "Проверить текущие настройки PHP (лимиты памяти, загрузки и т.д.)", ex: "php -i | grep -E 'upload_max|post_max|memory_limit'" },
+                    { cmd: "php -l [файл.php]", desc: "Быстрая проверка синтаксиса PHP-скрипта без его выполнения", ex: "php -l /var/www/html/UPLOAD/index.php" },
+                    { cmd: "php -S 0.0.0.0:8080", desc: "Запустить встроенный локальный веб-сервер PHP в текущей папке", ex: "php -S 0.0.0.0:8080" }
+                ]
+            },
+            {
+                category: "15. Базы данных (MySQL / MariaDB / SQLite)",
+                id: "db",
+                items: [
+                    { cmd: "mysql -u [юзер] -p", desc: "Войти в интерактивную консоль MySQL / MariaDB", ex: "sudo mysql -u root -p" },
+                    { cmd: "mysqldump -u [юзер] -p [база] > [файл.sql]", desc: "Сделать резервную копию (дамп) базы данных в SQL-файл", ex: "mysqldump -u root -p mydb > backup.sql" },
+                    { cmd: "mysql -u [юзер] -p [база] < [файл.sql]", desc: "Восстановить базу данных из резервного SQL-файла", ex: "mysql -u root -p mydb < backup.sql" },
+                    { cmd: "sqlite3 [файл.db]", desc: "Открыть или создать локальную базу данных SQLite", ex: "sqlite3 app.db '.tables'" },
+                    { cmd: "sqlite3 [файл.db] '.dump' > dump.sql", desc: "Экспортировать базу данных SQLite в текстовый SQL-дамп", ex: "sqlite3 app.db '.dump' > dump.sql" }
+                ]
+            },
+            {
+                category: "16. Git и контроль версий",
+                id: "git",
+                items: [
+                    { cmd: "git init", desc: "Инициализировать новый локальный Git-репозиторий", ex: "git init" },
+                    { cmd: "git clone [URL]", desc: "Склонировать удаленный репозиторий на локальную машину", ex: "git clone https://github.com/user/repo.git" },
+                    { cmd: "git status", desc: "Показать состояние файлов (измененные, новые, подготовленные)", ex: "git status -s" },
+                    { cmd: "git add .", desc: "Добавить все измененные и новые файлы в индекс (stage)", ex: "git add ." },
+                    { cmd: "git commit -m '[сообщение]'", desc: "Зафиксировать изменения в истории репозитория", ex: "git commit -m 'Update UI and add commands'" },
+                    { cmd: "git push origin [ветка]", desc: "Отправить локальные коммиты на удаленный сервер (GitHub)", ex: "git push origin main" },
+                    { cmd: "git pull", desc: "Скачать и применить свежие изменения с удаленного репозитория", ex: "git pull origin main" },
+                    { cmd: "git log --oneline -n 10", desc: "Показать компактную историю последних 10 коммитов", ex: "git log --oneline -n 10" },
+                    { cmd: "git checkout -b [ветка]", desc: "Создать новую ветку и сразу переключиться на нее", ex: "git checkout -b feature-update" },
+                    { cmd: "git reset --hard HEAD", desc: "Отменить все локальные несохраненные изменения до последнего коммита", ex: "git reset --hard HEAD" }
+                ]
+            },
+            {
+                category: "17. Контейнеры и виртуализация (Docker / QEMU)",
+                id: "virt",
+                items: [
+                    { cmd: "docker ps -a", desc: "Показать все запущенные и остановленные Docker-контейнеры", ex: "docker ps -a" },
+                    { cmd: "docker images", desc: "Список всех скачанных Docker-образов на диске", ex: "docker images" },
+                    { cmd: "docker run -d -p [хост]:[конт] --name [имя] [образ]", desc: "Запустить новый контейнер в фоновом режиме с пробросом порта", ex: "docker run -d -p 8080:80 --name web nginx" },
+                    { cmd: "docker exec -it [контейнер] bash", desc: "Зайти в интерактивный терминал работающего контейнера", ex: "docker exec -it web bash" },
+                    { cmd: "docker logs -f [контейнер]", desc: "Просмотр логов контейнера в реальном времени", ex: "docker logs -f web" },
+                    { cmd: "docker compose up -d", desc: "Запустить мультиконтейнерный проект из docker-compose.yml в фоне", ex: "docker compose up -d" },
+                    { cmd: "docker system prune -af", desc: "Удалить все остановленные контейнеры, неиспользуемые сети и образы", ex: "docker system prune -af" },
+                    { cmd: "qemu-img create -f qcow2 [образ.qcow2] [размер]", desc: "Создать динамический виртуальный жесткий диск для QEMU", ex: "qemu-img create -f qcow2 win11.qcow2 40G" },
+                    { cmd: "qemu-system-x86_64 -m [RAM] -smp [ядра] -hda [диск]", desc: "Запустить виртуальную машину x86_64 в QEMU", ex: "qemu-system-x86_64 -m 4096 -smp 4 -hda win11.qcow2" }
+                ]
+            },
+            {
+                category: "18. Мультиплексоры терминала, кодирование и хеши",
+                id: "misc",
+                items: [
+                    { cmd: "tmux new -s [имя]", desc: "Создать именованную сессию tmux (отключиться: Ctrl+B, затем D)", ex: "tmux new -s server" },
+                    { cmd: "tmux attach -t [имя]", desc: "Вернуться в ранее запущенную фоновую сессию tmux", ex: "tmux attach -t server" },
+                    { cmd: "tmux ls", desc: "Показать список всех активных сессий tmux", ex: "tmux ls" },
+                    { cmd: "screen -S [имя]", desc: "Создать фоновую терминальную сессию screen (выход: Ctrl+A, D)", ex: "screen -S work" },
+                    { cmd: "screen -r [имя]", desc: "Подключиться обратно к сессии screen", ex: "screen -r work" },
+                    { cmd: "sha256sum / md5sum [файл]", desc: "Вычислить контрольную сумму (хеш) файла для проверки целостности", ex: "sha256sum debian.iso" },
+                    { cmd: "base64 [файл]", desc: "Закодировать файл или строку в Base64 (декодировать: -d)", ex: "echo -n 'БЛiК' | base64" },
+                    { cmd: "openssl rand -hex 16", desc: "Сгенерировать криптостойкий случайный ключ или пароль", ex: "openssl rand -hex 16" },
+                    { cmd: "alias [имя]='[команда]'", desc: "Создать короткий псевдоним для длинной команды", ex: "alias ll='ls -lah'" },
+                    { cmd: "env / export [ПЕРЕМЕННАЯ]=[значение]", desc: "Показать все переменные окружения или задать новую", ex: "export PATH=$PATH:/usr/local/bin" }
                 ]
             }
         ];
@@ -3127,10 +3388,13 @@
                                     <div class="linux-cmd-item">
                                         <div class="linux-cmd-header">
                                             <code class="linux-cmd-code">${escapeHtml(item.cmd)}</code>
-                                            <button class="linux-copy-btn" onclick="copyLinuxText(this, '${escapeJs(item.ex)}')">Копировать</button>
+                                            <button class="linux-copy-btn" onclick="copyLinuxText(this, '${escapeJs(item.cmd)}')" title="Копировать шаблон команды">Команда</button>
                                         </div>
                                         <div class="linux-cmd-desc">${escapeHtml(item.desc)}</div>
-                                        <div class="linux-cmd-example"><span style="opacity:0.7;">Пример:</span> $ ${escapeHtml(item.ex)}</div>
+                                        <div class="linux-cmd-example" style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                                            <span style="word-break:break-all;"><span style="opacity:0.7;">Пример:</span> $ ${escapeHtml(item.ex)}</span>
+                                            <button class="linux-copy-btn" onclick="copyLinuxText(this, '${escapeJs(item.ex)}')" title="Копировать готовый пример">Пример</button>
+                                        </div>
                                     </div>
                                 `).join('')}
                             </div>
@@ -3152,7 +3416,7 @@
         }
 
         function copyLinuxText(btn, text) {
-            navigator.clipboard.writeText(text).then(() => {
+            const onSuccess = () => {
                 const orig = btn.textContent;
                 btn.textContent = "Готово!";
                 btn.style.color = "#2ecc71";
@@ -3160,7 +3424,28 @@
                     btn.textContent = orig;
                     btn.style.color = "";
                 }, 1200);
-            });
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(onSuccess).catch(() => {
+                    const ta = document.createElement("textarea");
+                    ta.value = text;
+                    ta.style.position = "fixed";
+                    ta.style.opacity = "0";
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); onSuccess(); } catch(e) {}
+                    document.body.removeChild(ta);
+                });
+            } else {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); onSuccess(); } catch(e) {}
+                document.body.removeChild(ta);
+            }
         }
 
         function escapeHtml(str) {
