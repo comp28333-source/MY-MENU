@@ -314,6 +314,30 @@
         .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; color: var(--text-muted); text-align: center; padding: 20px; gap: 12px; }
 
         /* Стили для справочника команд Linux */
+        .linux-cat-card {
+            background: var(--card-bg); border-radius: 14px; padding: 12px 14px;
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+            transition: all 0.2s ease;
+        }
+        .linux-cat-header {
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; font-size: 1em; font-weight: 700; color: var(--accent-color);
+            gap: 10px;
+        }
+        .linux-cat-toggle {
+            width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 900; line-height: 1;
+            background: var(--card-bg); color: var(--accent-color);
+            box-shadow: 2px 2px 5px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
+        }
+        .linux-cat-header:active .linux-cat-toggle {
+            box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+        }
+        .linux-cat-body {
+            margin-top: 12px; padding-top: 10px;
+            border-top: 1px solid rgba(100, 100, 100, 0.12);
+        }
         .linux-cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
         .linux-cmd-item {
             background: var(--card-bg); border-radius: 12px; padding: 12px;
@@ -321,7 +345,7 @@
             display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
         }
         .linux-cmd-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-        .linux-cmd-code { font-family: monospace; font-size: 0.95em; color: var(--accent-color); font-weight: bold; word-break: break-all; }
+        .linux-cmd-code { font-family: monospace; font-size: 0.95em; color: var(--accent-color); font-weight: bold; word-break: break-all; text-transform: none; }
         .linux-copy-btn {
             background: var(--card-bg); color: var(--text-muted); border: none; border-radius: 6px;
             padding: 3px 8px; font-size: 10px; cursor: pointer; flex-shrink: 0;
@@ -329,7 +353,7 @@
         }
         .linux-copy-btn:active { box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light); color: var(--accent-color); }
         .linux-cmd-desc { font-size: 0.85em; color: var(--text-color); }
-        .linux-cmd-example { font-size: 0.75em; color: var(--text-muted); font-family: monospace; background: rgba(128, 128, 128, 0.08); padding: 4px 8px; border-radius: 6px; }
+        .linux-cmd-example { font-size: 0.8em; color: var(--text-muted); font-family: monospace; background: rgba(128, 128, 128, 0.08); padding: 6px 8px; border-radius: 6px; text-transform: none; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -812,8 +836,7 @@
         <!-- ПУНКТ 7: КОМАНДЫ LINUX -->
         <div id="screenLinuxCmds" class="view-screen">
             <input type="text" id="linuxSearchInput" class="search-box" placeholder="Поиск команды или описания..." oninput="filterLinuxCommands()" style="margin-bottom: 10px;">
-            <div class="sub-nav" id="linuxCategoryTabs" style="margin-bottom: 12px; flex-wrap: wrap;"></div>
-            <div id="linuxContentArea" class="flex flex-col gap-4" style="max-height: 60vh; overflow-y: auto; padding-right: 4px;"></div>
+            <div id="linuxContentArea" class="flex flex-col gap-3" style="max-height: 65vh; overflow-y: auto; padding: 4px;"></div>
         </div>
 
         <!-- ПОЛНОЭКРАННОЕ ОКНО РЕДАКТИРОВАНИЯ ЗАМЕТКИ -->
@@ -1266,7 +1289,7 @@
             }
         ];
 
-        let activeLinuxCategory = "all";
+        let expandedLinuxCategories = {};
 
         function init() {
             applySettings();
@@ -3061,35 +3084,22 @@
 
         /* Логика для 7 пункта: Команды Linux */
         function initLinuxCommandsUI() {
-            renderLinuxTabs();
+            renderLinuxCommands();
         }
 
-        function renderLinuxTabs() {
-            const tabsContainer = document.getElementById("linuxCategoryTabs");
-            if (!tabsContainer) return;
-            let html = `<button class="neu-btn sub-nav-btn ${activeLinuxCategory === 'all' ? 'active' : ''}" onclick="selectLinuxCategory('all')">Все</button>`;
-            linuxCommandsData.forEach(cat => {
-                const shortName = cat.category.replace(/^\d+\.\s*/, '');
-                html += `<button class="neu-btn sub-nav-btn ${activeLinuxCategory === cat.id ? 'active' : ''}" onclick="selectLinuxCategory('${cat.id}')">${shortName}</button>`;
-            });
-            tabsContainer.innerHTML = html;
-        }
-
-        function selectLinuxCategory(id) {
-            activeLinuxCategory = id;
-            renderLinuxTabs();
+        function toggleLinuxCategory(id) {
+            expandedLinuxCategories[id] = !expandedLinuxCategories[id];
             renderLinuxCommands();
         }
 
         function renderLinuxCommands() {
-            const query = document.getElementById("linuxSearchInput").value.toLowerCase().trim();
+            const searchEl = document.getElementById("linuxSearchInput");
+            const query = searchEl ? searchEl.value.toLowerCase().trim() : "";
             const contentArea = document.getElementById("linuxContentArea");
             if (!contentArea) return;
             let html = "";
 
             linuxCommandsData.forEach(cat => {
-                if (activeLinuxCategory !== "all" && activeLinuxCategory !== cat.id) return;
-
                 const filteredItems = cat.items.filter(item =>
                     item.cmd.toLowerCase().includes(query) ||
                     item.desc.toLowerCase().includes(query) ||
@@ -3098,24 +3108,34 @@
 
                 if (filteredItems.length === 0) return;
 
+                const isOpen = query !== "" ? true : !!expandedLinuxCategories[cat.id];
+                const toggleSymbol = isOpen ? "−" : "+";
+
                 html += `
-                    <div style="background:var(--card-bg); border-radius:14px; padding:14px; box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);">
-                        <div style="font-size:1em; font-weight:700; color:var(--accent-color); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid rgba(100,100,100,0.1); display:flex; justify-content:space-between;">
-                            <span>${cat.category}</span>
-                            <span style="font-size:0.8em; opacity:0.7;">${filteredItems.length}</span>
+                    <div class="linux-cat-card">
+                        <div class="linux-cat-header" onclick="toggleLinuxCategory('${cat.id}')">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span>${cat.category}</span>
+                                <span style="font-size:0.75em; opacity:0.65; color:var(--text-muted);">(${filteredItems.length})</span>
+                            </div>
+                            <span class="linux-cat-toggle">${toggleSymbol}</span>
                         </div>
-                        <div class="linux-cmd-grid">
-                            ${filteredItems.map(item => `
-                                <div class="linux-cmd-item">
-                                    <div class="linux-cmd-header">
-                                        <code class="linux-cmd-code">${escapeHtml(item.cmd)}</code>
-                                        <button class="linux-copy-btn" onclick="copyLinuxText(this, '${escapeJs(item.ex)}')">Копировать</button>
+                        ${isOpen ? `
+                        <div class="linux-cat-body">
+                            <div class="linux-cmd-grid">
+                                ${filteredItems.map(item => `
+                                    <div class="linux-cmd-item">
+                                        <div class="linux-cmd-header">
+                                            <code class="linux-cmd-code">${escapeHtml(item.cmd)}</code>
+                                            <button class="linux-copy-btn" onclick="copyLinuxText(this, '${escapeJs(item.ex)}')">Копировать</button>
+                                        </div>
+                                        <div class="linux-cmd-desc">${escapeHtml(item.desc)}</div>
+                                        <div class="linux-cmd-example"><span style="opacity:0.7;">Пример:</span> $ ${escapeHtml(item.ex)}</div>
                                     </div>
-                                    <div class="linux-cmd-desc">${escapeHtml(item.desc)}</div>
-                                    <div class="linux-cmd-example">$ ${escapeHtml(item.ex)}</div>
-                                </div>
-                            `).join('')}
+                                `).join('')}
+                            </div>
                         </div>
+                        ` : ''}
                     </div>
                 `;
             });
