@@ -312,6 +312,24 @@
         .note-item-bottom { display: flex; justify-content: flex-end; margin-top: 4px; }
         .note-item-date { font-size: 11px; color: var(--text-muted); letter-spacing: 0.1px; }
         .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; color: var(--text-muted); text-align: center; padding: 20px; gap: 12px; }
+
+        /* Стили для справочника команд Linux */
+        .linux-cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        .linux-cmd-item {
+            background: var(--card-bg); border-radius: 12px; padding: 12px;
+            box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+            display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+        }
+        .linux-cmd-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+        .linux-cmd-code { font-family: monospace; font-size: 0.95em; color: var(--accent-color); font-weight: bold; word-break: break-all; }
+        .linux-copy-btn {
+            background: var(--card-bg); color: var(--text-muted); border: none; border-radius: 6px;
+            padding: 3px 8px; font-size: 10px; cursor: pointer; flex-shrink: 0;
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+        }
+        .linux-copy-btn:active { box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light); color: var(--accent-color); }
+        .linux-cmd-desc { font-size: 0.85em; color: var(--text-color); }
+        .linux-cmd-example { font-size: 0.75em; color: var(--text-muted); font-family: monospace; background: rgba(128, 128, 128, 0.08); padding: 4px 8px; border-radius: 6px; }
     </style>
 </head>
 <body>
@@ -790,6 +808,13 @@
             <button id="btn-add-note" class="neu-btn" style="width: 100%; padding: 12px; color: var(--accent-color); margin-top: 8px; flex-shrink: 0;" onclick="createNewNote()">+ НОВАЯ ЗАМЕТКА</button>
         </div>
 
+        <!-- ПУНКТ 7: КОМАНДЫ LINUX -->
+        <div id="screenLinuxCmds" class="view-screen">
+            <input type="text" id="linuxSearchInput" class="search-box" placeholder="Поиск команды или описания..." oninput="filterLinuxCommands()" style="margin-bottom: 10px;">
+            <div class="sub-nav" id="linuxCategoryTabs" style="margin-bottom: 12px; flex-wrap: wrap;"></div>
+            <div id="linuxContentArea" class="flex flex-col gap-4" style="max-height: 60vh; overflow-y: auto; padding-right: 4px;"></div>
+        </div>
+
         <!-- ПОЛНОЭКРАННОЕ ОКНО РЕДАКТИРОВАНИЯ ЗАМЕТКИ -->
         <div id="editor-screen" class="hidden" style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 9999; flex-direction: column; padding: 12px; border-radius: 0;">
             <div class="flex justify-between items-center mb-2" style="background: var(--card-bg); padding: 10px 14px; border-radius: 12px; box-shadow: 2px 2px 6px var(--shadow-dark);">
@@ -1015,7 +1040,8 @@
             { id: 3, type: "spider", name: "3. АНТЕННА «ПАУК»", color: "", bg: "" },
             { id: 4, type: "calendar", name: "4. КАЛЕНДАРЬ С ЗАМЕТКАМИ", color: "", bg: "" },
             { id: 5, type: "colorpicker", name: "5. HTML COLOR PICKER", color: "", bg: "" },
-            { id: 6, type: "notepad", name: "6. БЛОКНОТ", color: "", bg: "" }
+            { id: 6, type: "notepad", name: "6. БЛОКНОТ", color: "", bg: "" },
+            { id: 7, type: "linuxcmds", name: "7. КОМАНДЫ LINUX", color: "", bg: "" }
         ];
 
         let settings = JSON.parse(localStorage.getItem('app_settings')) || {
@@ -1128,6 +1154,94 @@
 
         const FONT_SIZES = [14, 17, 20, 24, 28];
 
+        /* Данные для 7 пункта: Команды Linux */
+        const linuxCommandsData = [
+            {
+                category: "1. Файловая система",
+                id: "fs",
+                items: [
+                    { cmd: "pwd", desc: "Показать полный путь к текущей директории", ex: "pwd" },
+                    { cmd: "ls -la", desc: "Список всех файлов (включая скрытые) с правами и размером", ex: "ls -lah" },
+                    { cmd: "cd [путь]", desc: "Переход в указанную директорию", ex: "cd /etc" },
+                    { cmd: "mkdir -p [путь]", desc: "Создать директорию со всеми родительскими папками", ex: "mkdir -p project/src" },
+                    { cmd: "cp -r [источник] [цель]", desc: "Рекурсивное копирование файлов или папок", ex: "cp -r site/ backup/" },
+                    { cmd: "mv [источник] [цель]", desc: "Перемещение или переименование файла/папки", ex: "mv old.txt new.txt" },
+                    { cmd: "rm -rf [путь]", desc: "Принудительное рекурсивное удаление", ex: "rm -rf temp/" },
+                    { cmd: "find [путь] -name [маска]", desc: "Поиск файлов по имени", ex: "find / -name '*.conf'" },
+                    { cmd: "du -sh [путь]", desc: "Размер указанной папки или файла", ex: "du -sh /var/log/*" },
+                    { cmd: "df -h", desc: "Свободное и занятое место на дисках", ex: "df -h" }
+                ]
+            },
+            {
+                category: "2. Текст и логи",
+                id: "text",
+                items: [
+                    { cmd: "cat [файл]", desc: "Вывести содержимое файла в терминал", ex: "cat /etc/hosts" },
+                    { cmd: "less [файл]", desc: "Постраничный просмотр файлов (выход — q)", ex: "less log.txt" },
+                    { cmd: "tail -f [файл]", desc: "Просмотр логов в реальном времени", ex: "tail -f /var/log/syslog" },
+                    { cmd: "grep -rn '[текст]' [путь]", desc: "Поиск текста внутри файлов", ex: "grep -rni 'error' /var/log/" },
+                    { cmd: "nano [файл]", desc: "Простой текстовый редактор", ex: "nano config.php" },
+                    { cmd: "wc -l [файл]", desc: "Подсчет количества строк", ex: "wc -l file.txt" }
+                ]
+            },
+            {
+                category: "3. Права и пользователи",
+                id: "perms",
+                items: [
+                    { cmd: "sudo [команда]", desc: "Выполнить с правами суперпользователя", ex: "sudo apt update" },
+                    { cmd: "chmod [права] [файл]", desc: "Изменить права доступа (напр. 755, 644, +x)", ex: "chmod +x run.sh" },
+                    { cmd: "chown -R [юзер]:[группа] [путь]", desc: "Изменить владельца и группу рекурсивно", ex: "chown -R www-data:www-data /var/www" },
+                    { cmd: "passwd", desc: "Изменить пароль текущего пользователя", ex: "passwd" },
+                    { cmd: "id", desc: "Показать UID, GID и группы пользователя", ex: "id" }
+                ]
+            },
+            {
+                category: "4. Сеть",
+                id: "net",
+                items: [
+                    { cmd: "ip a", desc: "Показать сетевые интерфейсы и IP-адреса", ex: "ip a" },
+                    { cmd: "ss -tulnp", desc: "Показать открытые порты и процессы", ex: "ss -tulnp" },
+                    { cmd: "ping -c 4 [хост]", desc: "Проверить доступность узла", ex: "ping -c 4 8.8.8.8" },
+                    { cmd: "curl -I [URL]", desc: "Получить HTTP-заголовки сервера", ex: "curl -I http://localhost" },
+                    { cmd: "wget [URL]", desc: "Скачать файл по ссылке", ex: "wget https://example.com/file.zip" },
+                    { cmd: "ssh [юзер]@[хост]", desc: "Подключение к удаленному серверу по SSH", ex: "ssh root@192.168.1.10" }
+                ]
+            },
+            {
+                category: "5. Процессы",
+                id: "proc",
+                items: [
+                    { cmd: "htop / top", desc: "Интерактивный монитор процессов и ресурсов", ex: "htop" },
+                    { cmd: "ps aux | grep [имя]", desc: "Найти процесс по имени", ex: "ps aux | grep php" },
+                    { cmd: "kill -9 [PID]", desc: "Принудительно завершить процесс по PID", ex: "kill -9 1234" },
+                    { cmd: "free -h", desc: "Использование оперативной памяти", ex: "free -h" },
+                    { cmd: "uptime", desc: "Время работы и нагрузка системы", ex: "uptime" }
+                ]
+            },
+            {
+                category: "6. Службы systemd",
+                id: "sys",
+                items: [
+                    { cmd: "systemctl status [служба]", desc: "Проверить статус службы", ex: "systemctl status apache2" },
+                    { cmd: "systemctl restart [служба]", desc: "Перезапустить службу", ex: "systemctl restart php8.2-fpm" },
+                    { cmd: "systemctl enable --now [служба]", desc: "Включить автозапуск и запустить сразу", ex: "systemctl enable --now ssh" },
+                    { cmd: "journalctl -u [служба] -f", desc: "Логи конкретной службы в реальном времени", ex: "journalctl -u nginx -f" }
+                ]
+            },
+            {
+                category: "7. Архивы и пакеты",
+                id: "pkg",
+                items: [
+                    { cmd: "tar -czvf [архив.tar.gz] [папка]", desc: "Упаковать в tar.gz", ex: "tar -czvf backup.tar.gz /var/www/" },
+                    { cmd: "tar -xzvf [архив.tar.gz]", desc: "Распаковать tar.gz", ex: "tar -xzvf backup.tar.gz" },
+                    { cmd: "apt update && apt upgrade", desc: "Обновить систему (Debian/Ubuntu)", ex: "sudo apt update && sudo apt upgrade -y" },
+                    { cmd: "apt install [пакет]", desc: "Установить пакет", ex: "sudo apt install curl git" }
+                ]
+            }
+        ];
+
+        let activeLinuxCategory = "all";
+
         function init() {
             applySettings();
             renderMenu();
@@ -1150,6 +1264,7 @@
             initColorPicker();
             loadNotes();
             initNotepadUI();
+            initLinuxCommandsUI();
             
             openMainMenu();
         }
@@ -1258,6 +1373,7 @@
             document.getElementById('screenCalendar').classList.remove('active');
             document.getElementById('screenColorPicker').classList.remove('active');
             document.getElementById('screenNotepad').classList.remove('active');
+            document.getElementById('screenLinuxCmds').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('screenTitle').innerText = item.name;
@@ -1267,6 +1383,10 @@
                 card.classList.add('app-card-wide');
                 document.getElementById('screenColorPicker').classList.add('active');
                 setTimeout(() => { resizeCanvas(); resizeCanvasComp(); }, 50);
+            } else if (item.type === 'linuxcmds') {
+                card.classList.add('app-card-wide');
+                document.getElementById('screenLinuxCmds').classList.add('active');
+                renderLinuxCommands();
             } else {
                 card.classList.remove('app-card-wide');
                 if (item.type === 'generator') {
@@ -1292,6 +1412,7 @@
             document.getElementById('screenCalendar').classList.remove('active');
             document.getElementById('screenColorPicker').classList.remove('active');
             document.getElementById('screenNotepad').classList.remove('active');
+            document.getElementById('screenLinuxCmds').classList.remove('active');
             document.getElementById('editor-screen').classList.add('hidden');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
@@ -2912,19 +3033,96 @@
             };
         }
 
-        function scheduleAutoSave() {
-            if (!activeNoteId) return;
-            const note = notes.find(n => n.id === activeNoteId);
-            if (!note) return;
-            note.html = document.getElementById('note-rich-editor').innerHTML;
-            note.updatedAt = Date.now();
-            clearTimeout(saveDebounce);
-            saveDebounce = setTimeout(() => {
-                saveNotes();
-                const badge = document.getElementById('save-status');
-                badge.classList.add('visible');
-                setTimeout(() => badge.classList.remove('visible'), 1000);
-            }, 300);
+        /* Логика для 7 пункта: Команды Linux */
+        function initLinuxCommandsUI() {
+            renderLinuxTabs();
+        }
+
+        function renderLinuxTabs() {
+            const tabsContainer = document.getElementById("linuxCategoryTabs");
+            if (!tabsContainer) return;
+            let html = `<button class="neu-btn sub-nav-btn ${activeLinuxCategory === 'all' ? 'active' : ''}" onclick="selectLinuxCategory('all')">Все</button>`;
+            linuxCommandsData.forEach(cat => {
+                const shortName = cat.category.replace(/^\d+\.\s*/, '');
+                html += `<button class="neu-btn sub-nav-btn ${activeLinuxCategory === cat.id ? 'active' : ''}" onclick="selectLinuxCategory('${cat.id}')">${shortName}</button>`;
+            });
+            tabsContainer.innerHTML = html;
+        }
+
+        function selectLinuxCategory(id) {
+            activeLinuxCategory = id;
+            renderLinuxTabs();
+            renderLinuxCommands();
+        }
+
+        function renderLinuxCommands() {
+            const query = document.getElementById("linuxSearchInput").value.toLowerCase().trim();
+            const contentArea = document.getElementById("linuxContentArea");
+            if (!contentArea) return;
+            let html = "";
+
+            linuxCommandsData.forEach(cat => {
+                if (activeLinuxCategory !== "all" && activeLinuxCategory !== cat.id) return;
+
+                const filteredItems = cat.items.filter(item =>
+                    item.cmd.toLowerCase().includes(query) ||
+                    item.desc.toLowerCase().includes(query) ||
+                    item.ex.toLowerCase().includes(query)
+                );
+
+                if (filteredItems.length === 0) return;
+
+                html += `
+                    <div style="background:var(--card-bg); border-radius:14px; padding:14px; box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);">
+                        <div style="font-size:1em; font-weight:700; color:var(--accent-color); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid rgba(100,100,100,0.1); display:flex; justify-content:space-between;">
+                            <span>${cat.category}</span>
+                            <span style="font-size:0.8em; opacity:0.7;">${filteredItems.length}</span>
+                        </div>
+                        <div class="linux-cmd-grid">
+                            ${filteredItems.map(item => `
+                                <div class="linux-cmd-item">
+                                    <div class="linux-cmd-header">
+                                        <code class="linux-cmd-code">${escapeHtml(item.cmd)}</code>
+                                        <button class="linux-copy-btn" onclick="copyLinuxText(this, '${escapeJs(item.ex)}')">Копировать</button>
+                                    </div>
+                                    <div class="linux-cmd-desc">${escapeHtml(item.desc)}</div>
+                                    <div class="linux-cmd-example">$ ${escapeHtml(item.ex)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (!html) {
+                html = `<div style="text-align:center; padding: 20px; color: var(--text-muted);">Ничего не найдено</div>`;
+            }
+
+            contentArea.innerHTML = html;
+        }
+
+        function filterLinuxCommands() {
+            renderLinuxCommands();
+        }
+
+        function copyLinuxText(btn, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.textContent;
+                btn.textContent = "Готово!";
+                btn.style.color = "#2ecc71";
+                setTimeout(() => {
+                    btn.textContent = orig;
+                    btn.style.color = "";
+                }, 1200);
+            });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        function escapeJs(str) {
+            return str.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
         }
 
         document.getElementById('themeToggle').onclick = () => {
