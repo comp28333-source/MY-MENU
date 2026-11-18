@@ -1016,14 +1016,35 @@
     <!-- ПОЛНОЭКРАННОЕ ОКНО ТАБЛИЦЫ -->
     <div class="fullscreen-modal" id="table-modal">
         <div class="fullscreen-header">
-            <div style="display:flex; gap:6px;">
-                <button class="cal-action-btn" style="background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white;" onclick="saveTableChanges()">СОХРАНИТЬ</button>
-                <button class="cal-action-btn" style="background: linear-gradient(145deg, #ef9a9a, #ef5350); color:white;" onclick="closeTableModal()">ЗАКРЫТЬ</button>
+            <div style="display:flex; gap:8px;">
+                <button class="cal-action-btn" style="background: linear-gradient(145deg, #a5d6a7, #66bb6a); color:white; width:38px; height:38px; padding:0; display:flex; align-items:center; justify-content:center; font-size:16px;" onclick="saveTableChanges()" title="Сохранить">💾</button>
+                <button class="cal-action-btn" style="background: linear-gradient(145deg, #ef9a9a, #ef5350); color:white; width:38px; height:38px; padding:0; display:flex; align-items:center; justify-content:center; font-size:16px;" onclick="closeTableModal()" title="Закрыть">✕</button>
             </div>
             <div style="font-weight:800; font-size:14px; color:var(--text-color);" id="table-modal-year-title">ГОД</div>
-            <button class="cal-action-btn" onclick="openTableSettings()">НАСТРОЙКИ</button>
+            <button class="cal-action-btn" style="width:38px; height:38px; padding:0; display:flex; align-items:center; justify-content:center; font-size:16px;" onclick="openTableSettings()" title="Настройки">⚙️</button>
         </div>
         <div class="fullscreen-body">
+            <div class="table-container" id="table-range-calc-box" style="padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;">
+                <div style="font-size: 11px; font-weight: 800; color: var(--accent-color); text-align: center;">ПОДСЧЕТ КОЛ-ВА ДНЕЙ ПО ПЕРИОДУ</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 4px; flex: 1; min-width: 130px;">
+                        <span style="font-size: 11px; font-weight: 700; white-space: nowrap;">С -</span>
+                        <input type="text" id="rangeStartDisplay" readonly placeholder="дд.мм.гг" onclick="openRangeCalendarPicker('start')" style="padding: 7px 8px; font-size: 12px; text-align: center; cursor: pointer; font-weight: 700;">
+                        <button type="button" class="cal-action-btn" style="padding: 7px 9px; font-size: 13px;" onclick="openRangeCalendarPicker('start')" title="Выбрать дату С с календаря">📅</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px; flex: 1; min-width: 130px;">
+                        <span style="font-size: 11px; font-weight: 700; white-space: nowrap;">ПО -</span>
+                        <input type="text" id="rangeEndDisplay" readonly placeholder="дд.мм.гг" onclick="openRangeCalendarPicker('end')" style="padding: 7px 8px; font-size: 12px; text-align: center; cursor: pointer; font-weight: 700;">
+                        <button type="button" class="cal-action-btn" style="padding: 7px 9px; font-size: 13px;" onclick="openRangeCalendarPicker('end')" title="Выбрать дату ПО с календаря">📅</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px; justify-content: center; flex: 1; min-width: 110px;">
+                        <div class="table-result-cell" style="padding: 7px 10px; border-radius: 8px; font-size: 12px; font-weight: 800; white-space: nowrap;">
+                            ДНЕЙ: <span id="rangeCalcResultDays" style="color: var(--accent-color);">0</span>
+                        </div>
+                        <button type="button" class="cal-action-btn" style="padding: 7px 9px; font-size: 12px; color: var(--reset-color);" onclick="clearRangeCalendarDates()" title="Очистить период">✕</button>
+                    </div>
+                </div>
+            </div>
             <div class="table-container" id="table-container-box">
                 <table class="table-frame" id="stats-table">
                     <thead>
@@ -1044,6 +1065,25 @@
                     </tfoot>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ДАТЫ С КАЛЕНДАРЯ ДЛЯ ТАБЛИЦЫ -->
+    <div class="modal-overlay-custom" id="range-cal-picker-modal" style="z-index: 3500;">
+        <div class="modal-content-custom" style="max-width: 360px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="range-picker-title" style="color:var(--text-color); font-weight:800; font-size: 13px;">ВЫБЕРИТЕ ДАТУ</h3>
+                <button class="cal-action-btn" style="padding: 4px 8px; color: var(--reset-color);" onclick="closeRangeCalendarPicker()">✕</button>
+            </div>
+            <div class="cal-nav-frame" style="padding: 4px 6px 8px 6px;">
+                <div class="cal-center-nav">
+                    <button class="neu-btn" style="width:34px; height:34px; font-size:14px;" onclick="rangePickerPrevMonth()">&lt;</button>
+                    <div id="range-picker-header-label" style="font-size: 15px; font-weight: 800;">МАРТ 2025</div>
+                    <button class="neu-btn" style="width:34px; height:34px; font-size:14px;" onclick="rangePickerNextMonth()">&gt;</button>
+                </div>
+            </div>
+            <div class="cal-grid-frame" id="range-picker-grid" style="gap: 4px;"></div>
+            <button class="cal-action-btn" style="margin-top: 4px; height: 34px;" onclick="closeRangeCalendarPicker()">ОТМЕНА</button>
         </div>
     </div>
 
@@ -2312,8 +2352,194 @@
             renderCalendar();
         }
 
+        let rangePickerTarget = 'start';
+        let rangePickerYear = calYear;
+        let rangePickerMonth = calMonth;
+        let rangeStartDateObj = null;
+        let rangeEndDateObj = null;
+
+        function formatShortDDMMYY(dateObj) {
+            if (!dateObj) return '';
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const yy = String(dateObj.getFullYear()).slice(-2);
+            return `${dd}.${mm}.${yy}`;
+        }
+
+        function parseISODateLocal(isoStr) {
+            if (!isoStr) return null;
+            const parts = isoStr.split('-');
+            if (parts.length !== 3) return null;
+            return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        }
+
+        function toISODateLocal(dateObj) {
+            if (!dateObj) return '';
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function loadRangePeriodState() {
+            if (calDb.custom_range_period) {
+                rangeStartDateObj = parseISODateLocal(calDb.custom_range_period.start);
+                rangeEndDateObj = parseISODateLocal(calDb.custom_range_period.end);
+            }
+            updateRangePeriodUI();
+        }
+
+        function saveRangePeriodState() {
+            calDb.custom_range_period = {
+                start: toISODateLocal(rangeStartDateObj),
+                end: toISODateLocal(rangeEndDateObj)
+            };
+            localStorage.setItem('calendar_db', JSON.stringify(calDb));
+        }
+
+        function updateRangePeriodUI() {
+            const startEl = document.getElementById('rangeStartDisplay');
+            const endEl = document.getElementById('rangeEndDisplay');
+            const resEl = document.getElementById('rangeCalcResultDays');
+            if (startEl) startEl.value = formatShortDDMMYY(rangeStartDateObj);
+            if (endEl) endEl.value = formatShortDDMMYY(rangeEndDateObj);
+
+            if (rangeStartDateObj && rangeEndDateObj) {
+                const d1 = new Date(rangeStartDateObj.getFullYear(), rangeStartDateObj.getMonth(), rangeStartDateObj.getDate());
+                const d2 = new Date(rangeEndDateObj.getFullYear(), rangeEndDateObj.getMonth(), rangeEndDateObj.getDate());
+                const diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+                if (resEl) {
+                    if (diffDays >= 1) {
+                        resEl.innerText = diffDays;
+                        resEl.style.color = 'var(--accent-color)';
+                    } else {
+                        resEl.innerText = 'ОШИБКА (<0)';
+                        resEl.style.color = 'var(--reset-color)';
+                    }
+                }
+            } else {
+                if (resEl) {
+                    resEl.innerText = '0';
+                    resEl.style.color = 'var(--accent-color)';
+                }
+            }
+        }
+
+        function clearRangeCalendarDates() {
+            rangeStartDateObj = null;
+            rangeEndDateObj = null;
+            saveRangePeriodState();
+            updateRangePeriodUI();
+        }
+
+        function openRangeCalendarPicker(target) {
+            rangePickerTarget = target;
+            const refDate = (target === 'start' ? rangeStartDateObj : rangeEndDateObj) || new Date(calYear, calMonth - 1, 1);
+            rangePickerYear = refDate.getFullYear();
+            rangePickerMonth = refDate.getMonth() + 1;
+            document.getElementById('range-picker-title').innerText = target === 'start' ? 'ВЫБЕРИТЕ ДАТУ «С»' : 'ВЫБЕРИТЕ ДАТУ «ПО»';
+            renderRangeCalendarPicker();
+            document.getElementById('range-cal-picker-modal').style.display = 'flex';
+        }
+
+        function closeRangeCalendarPicker() {
+            document.getElementById('range-cal-picker-modal').style.display = 'none';
+        }
+
+        function rangePickerPrevMonth() {
+            rangePickerMonth--;
+            if (rangePickerMonth < 1) { rangePickerMonth = 12; rangePickerYear--; }
+            renderRangeCalendarPicker();
+        }
+
+        function rangePickerNextMonth() {
+            rangePickerMonth++;
+            if (rangePickerMonth > 12) { rangePickerMonth = 1; rangePickerYear++; }
+            renderRangeCalendarPicker();
+        }
+
+        function renderRangeCalendarPicker() {
+            document.getElementById('range-picker-header-label').innerText = `${DISPLAY_MONTHS[rangePickerMonth - 1]} ${rangePickerYear}`;
+            const grid = document.getElementById('range-picker-grid');
+            grid.innerHTML = '';
+
+            const daysOfWeek = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+            daysOfWeek.forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'cal-header-cell';
+                div.style.padding = '5px 0';
+                div.style.fontSize = '11px';
+                div.innerText = d;
+                grid.appendChild(div);
+            });
+
+            const firstDayIndex = (new Date(rangePickerYear, rangePickerMonth - 1, 1).getDay() + 6) % 7;
+            const totalDays = new Date(rangePickerYear, rangePickerMonth, 0).getDate();
+            const prevTotalDays = new Date(rangePickerYear, rangePickerMonth - 1, 0).getDate();
+            const now = new Date();
+
+            const createPickerCell = (day, y, m, isOther, isWeekend) => {
+                const cell = document.createElement('div');
+                const classes = ['cal-day-cell'];
+                const isToday = (day === now.getDate() && m === now.getMonth() + 1 && y === now.getFullYear());
+                if (isOther) classes.push('other-month');
+                else if (isToday) classes.push('today');
+                else if (isWeekend) classes.push('weekend');
+
+                const cellDate = new Date(y, m - 1, day);
+                const isSelectedStart = rangeStartDateObj && cellDate.getTime() === new Date(rangeStartDateObj.getFullYear(), rangeStartDateObj.getMonth(), rangeStartDateObj.getDate()).getTime();
+                const isSelectedEnd = rangeEndDateObj && cellDate.getTime() === new Date(rangeEndDateObj.getFullYear(), rangeEndDateObj.getMonth(), rangeEndDateObj.getDate()).getTime();
+
+                cell.className = classes.join(' ');
+                cell.style.fontSize = '13px';
+                cell.innerText = day;
+
+                if (isSelectedStart || isSelectedEnd) {
+                    cell.style.outline = '2px solid var(--accent-color)';
+                    cell.style.fontWeight = '900';
+                }
+
+                cell.onclick = () => {
+                    if (rangePickerTarget === 'start') {
+                        rangeStartDateObj = cellDate;
+                        if (rangeEndDateObj && rangeStartDateObj > rangeEndDateObj) {
+                            rangeEndDateObj = null;
+                        }
+                    } else {
+                        rangeEndDateObj = cellDate;
+                    }
+                    saveRangePeriodState();
+                    updateRangePeriodUI();
+                    closeRangeCalendarPicker();
+                };
+                grid.appendChild(cell);
+            };
+
+            for (let i = firstDayIndex - 1; i >= 0; i--) {
+                const d = prevTotalDays - i;
+                const prevM = rangePickerMonth === 1 ? 12 : rangePickerMonth - 1;
+                const prevY = rangePickerMonth === 1 ? rangePickerYear - 1 : rangePickerYear;
+                const colIdx = (firstDayIndex - 1 - i) % 7;
+                createPickerCell(d, prevY, prevM, true, colIdx >= 5);
+            }
+
+            for (let d = 1; d <= totalDays; d++) {
+                const colIdx = (firstDayIndex + d - 1) % 7;
+                createPickerCell(d, rangePickerYear, rangePickerMonth, false, colIdx >= 5);
+            }
+
+            const remainingCells = 42 - (firstDayIndex + totalDays);
+            for (let d = 1; d <= remainingCells; d++) {
+                const nextM = rangePickerMonth === 12 ? 1 : rangePickerMonth + 1;
+                const nextY = rangePickerMonth === 12 ? rangePickerYear + 1 : rangePickerYear;
+                const colIdx = (firstDayIndex + totalDays + d - 1) % 7;
+                createPickerCell(d, nextY, nextM, true, colIdx >= 5);
+            }
+        }
+
         function openTableModal() {
             document.getElementById('table-modal-year-title').innerText = `${calYear} ГОД`;
+            loadRangePeriodState();
             loadTableData();
             highlightActiveTableRow();
             document.getElementById('table-modal').style.display = 'flex';
