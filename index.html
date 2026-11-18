@@ -354,6 +354,72 @@
         .linux-copy-btn:active { box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light); color: var(--accent-color); }
         .linux-cmd-desc { font-size: 0.85em; color: var(--text-color); }
         .linux-cmd-example { font-size: 0.8em; color: var(--text-muted); font-family: monospace; background: rgba(128, 128, 128, 0.08); padding: 6px 8px; border-radius: 6px; text-transform: none; word-break: break-all; }
+    
+        /* Стили для пункта 8: DEBIAN СЕРВЕР */
+        .deb-container { display: flex; flex-direction: column; gap: 14px; text-transform: none; }
+        .deb-header-card {
+            background: var(--card-bg); border-radius: 14px; padding: 14px 16px;
+            box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+        }
+        .deb-header-card h2 { font-size: 1.05em; font-weight: 700; color: var(--accent-color); margin-bottom: 4px; }
+        .deb-header-card p { font-size: 0.85em; color: var(--text-muted); line-height: 1.4; }
+        .deb-toc {
+            background: var(--card-bg); border-radius: 14px; padding: 12px 14px;
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+        }
+        .deb-toc-title { font-size: 0.85em; font-weight: 700; color: var(--accent-color); text-transform: uppercase; margin-bottom: 8px; }
+        .deb-toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 4px 12px; list-style: none; }
+        .deb-toc-grid a {
+            color: var(--text-color); text-decoration: none; font-size: 0.8em; display: block;
+            padding: 4px 6px; border-radius: 6px; transition: background 0.2s, color 0.2s;
+        }
+        .deb-toc-grid a:hover { background: rgba(56, 189, 248, 0.12); color: var(--accent-color); }
+        .deb-step-card {
+            background: var(--card-bg); border-radius: 14px; padding: 14px 16px;
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+        }
+        .deb-step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid rgba(100, 100, 100, 0.15); padding-bottom: 8px; }
+        .deb-step-badge {
+            background: linear-gradient(145deg, #0284c7, #38bdf8); color: #fff; font-weight: 800; font-size: 0.85em;
+            min-width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.25); flex-shrink: 0;
+        }
+        .deb-step-badge.media { background: linear-gradient(145deg, #059669, #34d399); }
+        .deb-step-badge.ops { background: linear-gradient(145deg, #d97706, #fbbf24); color: #0f172a; }
+        .deb-step-header h3 { font-size: 0.98em; font-weight: 700; color: var(--text-color); }
+        .deb-step-card h4 { font-size: 0.9em; color: var(--accent-color); margin: 12px 0 6px 0; }
+        .deb-step-card p { margin-bottom: 8px; font-size: 0.85em; line-height: 1.5; }
+        .deb-step-card ul, .deb-step-card ol { margin-left: 18px; margin-bottom: 10px; }
+        .deb-step-card li { margin-bottom: 4px; font-size: 0.83em; line-height: 1.45; }
+        .deb-code-wrapper {
+            position: relative; margin: 8px 0 12px 0; border-radius: 10px; background: #12141a;
+            box-shadow: inset 2px 2px 6px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
+        }
+        .deb-code-header {
+            display: flex; justify-content: space-between; align-items: center; padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.04); border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.75em; color: #94a3b8; font-family: monospace;
+        }
+        .deb-copy-btn {
+            background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 3px 8px; border-radius: 5px; font-size: 0.72em; cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .deb-copy-btn:hover { background: #38bdf8; color: #0f172a; }
+        .deb-copy-btn.copied { background: #22c55e; color: #fff; border-color: #22c55e; }
+        .deb-code-wrapper pre {
+            padding: 10px 12px; overflow-x: auto; font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+            font-size: 0.8em; color: #f8fafc; line-height: 1.45; user-select: text; -webkit-user-select: text;
+        }
+        code.deb-inline {
+            background: rgba(56, 189, 248, 0.12); color: var(--accent-color); padding: 1px 5px;
+            border-radius: 4px; font-family: monospace; font-size: 0.88em;
+        }
+        .deb-note {
+            border-left: 3px solid var(--accent-color); background: rgba(56, 189, 248, 0.08);
+            padding: 8px 12px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 0.82em; line-height: 1.45;
+        }
+        .deb-note.warn { border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.08); }
+
     </style>
 </head>
 <body>
@@ -839,6 +905,486 @@
             <div id="linuxContentArea" class="flex flex-col gap-3" style="max-height: 65vh; overflow-y: auto; padding: 4px;"></div>
         </div>
 
+        <!-- ПУНКТ 8: DEBIAN СЕРВЕР -->
+        <div id="screenDebianServer" class="view-screen">
+            <div class="deb-container" id="debContentArea" style="max-height: 70vh; overflow-y: auto; padding: 4px;">
+                <div class="deb-header-card">
+                    <h2>Debian Web Server: Apache + PHP-FPM + MariaDB (:8080)</h2>
+                    <p>Полная сборка с FFmpeg, медиа/документами/APK, сменой директории сайта, скриптами запуска и Cloudflare Tunnel</p>
+                </div>
+
+                <nav class="deb-toc">
+                    <div class="deb-toc-title">Навигация по этапам настройки</div>
+                    <ul class="deb-toc-grid">
+                        <li><a href="#deb-step1" onclick="scrollToDebStep(event, 'deb-step1')">1. Обновление системы и базовых утилит</a></li>
+                        <li><a href="#deb-step2" onclick="scrollToDebStep(event, 'deb-step2')">2. Установка Apache и настройка порта 8080</a></li>
+                        <li><a href="#deb-step3" onclick="scrollToDebStep(event, 'deb-step3')">3. Установка PHP-FPM и расширений</a></li>
+                        <li><a href="#deb-step4" onclick="scrollToDebStep(event, 'deb-step4')">4. Связка Apache с PHP-FPM (event MPM)</a></li>
+                        <li><a href="#deb-step5" onclick="scrollToDebStep(event, 'deb-step5')">5. Настройка лимитов php.ini (загрузка файлов)</a></li>
+                        <li><a href="#deb-step6" onclick="scrollToDebStep(event, 'deb-step6')">6. Установка и защита MariaDB</a></li>
+                        <li><a href="#deb-step7" onclick="scrollToDebStep(event, 'deb-step7')">7. Создание базы данных и пользователя</a></li>
+                        <li><a href="#deb-step8" onclick="scrollToDebStep(event, 'deb-step8')">8. FFmpeg и работа с видео / аудио</a></li>
+                        <li><a href="#deb-step9" onclick="scrollToDebStep(event, 'deb-step9')">9. Модули для изображений (ImageMagick, WebP, EXIF)</a></li>
+                        <li><a href="#deb-step10" onclick="scrollToDebStep(event, 'deb-step10')">10. Модули для документов (PDF, Office, OCR)</a></li>
+                        <li><a href="#deb-step11" onclick="scrollToDebStep(event, 'deb-step11')">11. Инструменты для APK (aapt, apksigner, apktool)</a></li>
+                        <li><a href="#deb-step12" onclick="scrollToDebStep(event, 'deb-step12')">12. Права доступа на стандартный каталог /var/www/html</a></li>
+                        <li><a href="#deb-step13" onclick="scrollToDebStep(event, 'deb-step13')">13. Как изменить рабочую директорию сайта (DocumentRoot)</a></li>
+                        <li><a href="#deb-step14" onclick="scrollToDebStep(event, 'deb-step14')">14. Автоматизация запуска/остановки (/usr/local/bin/start)</a></li>
+                        <li><a href="#deb-step15" onclick="scrollToDebStep(event, 'deb-step15')">15. Запуск Cloudflare Tunnel в Termux</a></li>
+                        <li><a href="#deb-step16" onclick="scrollToDebStep(event, 'deb-step16')">16. Комплексный скрипт проверки всех модулей</a></li>
+                        <li><a href="#deb-step17" onclick="scrollToDebStep(event, 'deb-step17')">17. Шпаргалка по логам и диагностике</a></li>
+                    </ul>
+                </nav>
+
+                <!-- ШАГ 1 -->
+                <section class="deb-step-card" id="deb-step1">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">1</div>
+                        <h3>Обновление пакетов системы и базовых утилит</h3>
+                    </div>
+                    <p>Обновите индекс пакетов и установите базовые консольные утилиты, архиваторы (<code class="deb-inline">zip</code>, <code class="deb-inline">unzip</code>, <code class="deb-inline">p7zip-full</code>) и инструменты определения MIME-типов файлов (<code class="deb-inline">file</code>):</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt update && apt upgrade -y
+apt install -y curl wget nano zip unzip p7zip-full file ca-certificates lsb-release apt-transport-https</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 2 -->
+                <section class="deb-step-card" id="deb-step2">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">2</div>
+                        <h3>Установка Apache и перевод на порт 8080</h3>
+                    </div>
+                    <p>Установим веб-сервер Apache2 и сразу переключим его с порта <code class="deb-inline">80</code> на <code class="deb-inline">8080</code>:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt install -y apache2
+sed -i 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf
+sed -i 's/&lt;VirtualHost \*:80&gt;/&lt;VirtualHost \*:8080&gt;/g' /etc/apache2/sites-available/000-default.conf
+echo "ServerName localhost" >> /etc/apache2/apache2.conf</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 3 -->
+                <section class="deb-step-card" id="deb-step3">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">3</div>
+                        <h3>Установка PHP-FPM и расширений</h3>
+                    </div>
+                    <p>Устанавливаем <strong>PHP-FPM</strong> вместе с полным набором расширений для работы с БД, изображениями (<code class="deb-inline">gd</code>, <code class="deb-inline">imagick</code>, <code class="deb-inline">exif</code>), архивами (<code class="deb-inline">zip</code>), сетью (<code class="deb-inline">curl</code>), многобайтовыми строками (<code class="deb-inline">mbstring</code>) и XML/JSON:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt install -y php-fpm php-mysql php-sqlite3 php-cli php-curl php-gd php-imagick php-exif php-mbstring php-xml php-zip php-json php-intl php-bcmath php-fileinfo</pre>
+                    </div>
+                    <p>Проверим установленную версию PHP:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>PHP_VER=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+echo "Установленная версия PHP: $PHP_VER"</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 4 -->
+                <section class="deb-step-card" id="deb-step4">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">4</div>
+                        <h3>Подключение PHP-FPM к Apache (режим event MPM)</h3>
+                    </div>
+                    <p>Переключаем Apache на быстрый многопоточный <code class="deb-inline">mpm_event</code>, включаем <code class="deb-inline">proxy_fcgi</code>, <code class="deb-inline">rewrite</code>, <code class="deb-inline">headers</code> и разрешаем работу <code class="deb-inline">.htaccess</code> в <code class="deb-inline">/var/www/html</code>:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>a2dismod php* mpm_prefork 2>/dev/null || true
+a2enmod mpm_event proxy_fcgi setenvif rewrite headers
+
+PHP_VER=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+a2enconf php${PHP_VER}-fpm
+
+cat &lt;&lt; 'EOF' &gt; /etc/apache2/conf-available/override-html.conf
+&lt;Directory /var/www/html&gt;
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+&lt;/Directory&gt;
+EOF
+a2enconf override-html</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 5 -->
+                <section class="deb-step-card" id="deb-step5">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">5</div>
+                        <h3>Настройка лимитов PHP-FPM (загрузка крупных файлов и видео)</h3>
+                    </div>
+                    <p>Для файлообменника, загрузки видео, архивов и крупных APK увеличим лимиты в <code class="deb-inline">php.ini</code> до <strong>1024 МБ</strong> (1 ГБ) и время выполнения скриптов до 600 секунд (полезно при конвертации видео через FFmpeg):</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>PHP_VER=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+PHP_INI="/etc/php/${PHP_VER}/fpm/php.ini"
+
+sed -i 's/^upload_max_filesize = .*/upload_max_filesize = 1024M/' "$PHP_INI"
+sed -i 's/^post_max_size = .*/post_max_size = 1024M/' "$PHP_INI"
+sed -i 's/^memory_limit = .*/memory_limit = 512M/' "$PHP_INI"
+sed -i 's/^max_execution_time = .*/max_execution_time = 600/' "$PHP_INI"
+sed -i 's/^max_input_time = .*/max_input_time = 600/' "$PHP_INI"
+sed -i 's/^max_file_uploads = .*/max_file_uploads = 50/' "$PHP_INI"</pre>
+                    </div>
+                    <div class="deb-note">
+                        <strong>Важно:</strong> Убедитесь, что в <code class="deb-inline">disable_functions</code> в <code class="deb-inline">php.ini</code> не заблокированы функции <code class="deb-inline">exec</code> и <code class="deb-inline">shell_exec</code> (в Debian по умолчанию они разрешены), так как они нужны PHP для вызова <code class="deb-inline">ffmpeg</code> и <code class="deb-inline">aapt</code>.
+                    </div>
+                </section>
+
+                <!-- ШАГ 6 -->
+                <section class="deb-step-card" id="deb-step6">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">6</div>
+                        <h3>Установка и защита MariaDB</h3>
+                    </div>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt install -y mariadb-server mariadb-client
+service mariadb start
+mariadb-secure-installation</pre>
+                    </div>
+                    <p>В мастере <code class="deb-inline">mariadb-secure-installation</code>: на первый запрос нажмите <strong>Enter</strong>, далее везде отвечайте <strong>Y</strong> (задав пароль для <code class="deb-inline">root</code> БД).</p>
+                </section>
+
+                <!-- ШАГ 7 -->
+                <section class="deb-step-card" id="deb-step7">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">7</div>
+                        <h3>Создание базы данных и пользователя</h3>
+                    </div>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>mariadb -e "CREATE DATABASE IF NOT EXISTS my_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'webuser'@'localhost' IDENTIFIED BY 'StrongPassword123!';
+GRANT ALL PRIVILEGES ON my_db.* TO 'webuser'@'localhost';
+FLUSH PRIVILEGES;"</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 8 -->
+                <section class="deb-step-card" id="deb-step8">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge media">8</div>
+                        <h3>FFmpeg и инструменты для работы с видео и аудио</h3>
+                    </div>
+                    <p><strong>FFmpeg</strong> (вместе с <code class="deb-inline">ffprobe</code>) необходим для генерации видео-превью (кадров-миниатюр), конвертации видео в MP4/WebM, сжатия, извлечения аудиодорожек и получения метаданных (длительность, разрешение, битрейт, кодек).</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt install -y ffmpeg mediainfo</pre>
+                    </div>
+                    <ul>
+                        <li><code class="deb-inline">ffmpeg</code> — конвертация, нарезка, создание превью (thumbnail) из любого видеофайла.</li>
+                        <li><code class="deb-inline">ffprobe</code> (входит в пакет ffmpeg) — быстрое получение JSON с точным разрешением, длительностью и FPS видео.</li>
+                        <li><code class="deb-inline">mediainfo</code> — подробный технический паспорт любых медиафайлов (видео, аудио, контейнеры).</li>
+                    </ul>
+                    <p><strong>Пример вызова из PHP (создание превью на 2-й секунде видео):</strong></p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>php</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>$cmd = "ffmpeg -ss 00:00:02 -i " . escapeshellarg($videoPath) . " -vframes 1 -q:v 3 " . escapeshellarg($thumbPath) . " -y 2>&1";
+exec($cmd, $output, $returnCode);</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 9 -->
+                <section class="deb-step-card" id="deb-step9">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge media">9</div>
+                        <h3>Модули для работы с изображениями и графикой</h3>
+                    </div>
+                    <p>Помимо PHP-расширений <code class="deb-inline">php-gd</code>, <code class="deb-inline">php-imagick</code> и <code class="deb-inline">php-exif</code> (установленных на Шаге 3), установим системные утилиты и библиотеки форматов (WebP, HEIC/AVIF, оптимизаторы PNG/JPEG и векторный SVG):</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt install -y imagemagick webp libheif-examples libavif-bin librsvg2-bin jpegoptim optipng pngquant exiftool</pre>
+                    </div>
+                    <ul>
+                        <li><code class="deb-inline">imagemagick</code> + <code class="deb-inline">php-imagick</code> — ресайз, обрезка, водяные знаки, конвертация PSD/SVG/TIFF/PDF в PNG/WebP.</li>
+                        <li><code class="deb-inline">webp</code> (<code class="deb-inline">cwebp</code>, <code class="deb-inline">dwebp</code>) — сжатие загружаемых фото в лёгкий формат WebP.</li>
+                        <li><code class="deb-inline">libheif-examples</code> (<code class="deb-inline">heif-convert</code>) — конвертация фото с iPhone (<code class="deb-inline">.heic</code>) в стандартный JPG/PNG.</li>
+                        <li><code class="deb-inline">librsvg2-bin</code> (<code class="deb-inline">rsvg-convert</code>) — качественный рендеринг векторных иконок SVG в растровый PNG.</li>
+                        <li><code class="deb-inline">jpegoptim</code> / <code class="deb-inline">optipng</code> / <code class="deb-inline">pngquant</code> — сжатие картинок без видимой потери качества.</li>
+                        <li><code class="deb-inline">exiftool</code> + <code class="deb-inline">php-exif</code> — чтение и удаление EXIF-метаданных (координаты GPS, модель камеры, ориентация поворота фото).</li>
+                    </ul>
+                </section>
+
+                <!-- ШАГ 10 -->
+                <section class="deb-step-card" id="deb-step10">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge media">10</div>
+                        <h3>Модули для работы с документами (PDF, Office, Текст)</h3>
+                    </div>
+                    <p>Для генерации миниатюр первой страницы PDF, извлечения текста для поиска, конвертации офисных документов (<code class="deb-inline">.docx</code>, <code class="deb-inline">.xlsx</code>, <code class="deb-inline">.pptx</code>) и распознавания текста со сканов:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt install -y poppler-utils ghostscript qpdf pandoc unoconv tesseract-ocr tesseract-ocr-rus tesseract-ocr-eng</pre>
+                    </div>
+                    <ul>
+                        <li><code class="deb-inline">poppler-utils</code> (<code class="deb-inline">pdftoppm</code>, <code class="deb-inline">pdftotext</code>, <code class="deb-inline">pdfinfo</code>) — мгновенное создание PNG-обложки 1-й страницы PDF, подсчёт страниц и извлечение текста.</li>
+                        <li><code class="deb-inline">ghostscript</code> + <code class="deb-inline">qpdf</code> — сжатие тяжёлых PDF-файлов, объединение и разделение страниц.</li>
+                        <li><code class="deb-inline">pandoc</code> — конвертация документов между Markdown, DOCX, HTML, EPUB, RTF.</li>
+                        <li><code class="deb-inline">tesseract-ocr</code> (<code class="deb-inline">-rus</code>, <code class="deb-inline">-eng</code>) — оптическое распознавание текста (OCR) с фотографий документов и скриншотов.</li>
+                    </ul>
+                    <div class="deb-note warn">
+                        <strong>Если нужна полная конвертация DOC/DOCX/XLSX в PDF на сервере:</strong> дополнительно можно установить <code class="deb-inline">apt install -y libreoffice-nogui</code> (занимает ~350–450 МБ на диске, позволяет конвертировать любые файлы Office в PDF командой <code class="deb-inline">libreoffice --headless --convert-to pdf file.docx</code>).
+                    </div>
+                </section>
+
+                <!-- ШАГ 11 -->
+                <section class="deb-step-card" id="deb-step11">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge media">11</div>
+                        <h3>Инструменты для извлечения данных и иконок из APK</h3>
+                    </div>
+                    <p>Для серверного анализа Android-пакетов (<code class="deb-inline">.apk</code>) — чтения <code class="deb-inline">AndroidManifest.xml</code>, получения названия приложения, имени пакета (<code class="deb-inline">package name</code>), <code class="deb-inline">versionName</code>, <code class="deb-inline">versionCode</code>, разрешений (<code class="deb-inline">uses-permission</code>), проверки цифровой подписи и извлечения иконки приложения:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>apt install -y aapt apksigner zipalign dexdump apktool default-jre-headless</pre>
+                    </div>
+                    <ul>
+                        <li><code class="deb-inline">aapt</code> (Android Asset Packaging Tool) — <strong>самый быстрый консольный инструмент</strong> (написан на C++, не требует запуска тяжёлой JVM). Мгновенно извлекает всю метаинформацию из APK и путь к иконке.</li>
+                        <li><code class="deb-inline">apksigner</code> — проверка подписи APK (<code class="deb-inline">apksigner verify --verbose app.apk</code>) и данных о сертификате разработчика.</li>
+                        <li><code class="deb-inline">apktool</code> — полная распаковка бинарного <code class="deb-inline">AndroidManifest.xml</code> и ресурсов (<code class="deb-inline">res/</code>) в читаемый вид (использует <code class="deb-inline">default-jre-headless</code>).</li>
+                        <li><code class="deb-inline">unzip</code> + <code class="deb-inline">php-zip</code> (<code class="deb-inline">ZipArchive</code>) — так как APK это обычный ZIP-архив, зная путь к иконке из <code class="deb-inline">aapt</code>, PHP может достать PNG/WebP иконку напрямую за миллисекунды!</li>
+                    </ul>
+
+                    <h4>Пример получения всех данных и иконки из APK в терминале:</h4>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre># 1. Получить package name, версию, название приложения, SDK и путь к иконке:
+aapt dump badging /var/www/html/app.apk
+
+# 2. Получить список всех запрошенных приложением разрешений:
+aapt dump permissions /var/www/html/app.apk
+
+# 3. Извлечь файл иконки (например, res/mipmap-xxxhdpi-v4/ic_launcher.png) из APK:
+unzip -p /var/www/html/app.apk "res/mipmap-xxxhdpi-v4/ic_launcher.png" > /var/www/html/icon.png</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 12 -->
+                <section class="deb-step-card" id="deb-step12">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">12</div>
+                        <h3>Права доступа на стандартный каталог /var/www/html</h3>
+                    </div>
+                    <p>Назначим владельца <code class="deb-inline">www-data</code> и правильные права доступа на директорию веб-сервера:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>chown -R www-data:www-data /var/www/html
+find /var/www/html -type d -exec chmod 755 {} \;
+find /var/www/html -type f -exec chmod 644 {} \;</pre>
+                    </div>
+                </section>
+
+                <!-- ШАГ 13 -->
+                <section class="deb-step-card" id="deb-step13">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge ops">13</div>
+                        <h3>Как изменить рабочую директорию сайта (DocumentRoot)</h3>
+                    </div>
+                    <p>Если вы хотите перенести корень сайта из стандартного <code class="deb-inline">/var/www/html</code> в другую папку (например, во внешнюю или общую папку Android/Termux <code class="deb-inline">/sdcard/WWW</code> или <code class="deb-inline">/srv/site</code>), нужно обновить путь в трёх местах: в виртуальном хосте Apache, в глобальном <code class="deb-inline">apache2.conf</code> и выдать права доступа.</p>
+
+                    <h4>Вариант А: Автоматическая замена пути через скрипт (подставьте свой путь в NEW_DIR)</h4>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre># Укажите нужный путь к вашей папке сайта:
+NEW_DIR="/srv/my_site"
+
+# 1. Создаём папку, если её ещё нет
+mkdir -p "$NEW_DIR"
+
+# 2. Меняем DocumentRoot в конфигурации виртуального хоста 000-default.conf
+sed -i "s|DocumentRoot /var/www/html|DocumentRoot ${NEW_DIR}|g" /etc/apache2/sites-available/000-default.conf
+
+# 3. Разрешаем Apache доступ к новой директории и работу .htaccess
+cat &lt;&lt; EOF &gt; /etc/apache2/conf-available/override-html.conf
+&lt;Directory ${NEW_DIR}&gt;
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+&lt;/Directory&gt;
+EOF
+
+# 4. Назначаем владельца www-data и перезапускаем Apache
+chown -R www-data:www-data "$NEW_DIR"
+chmod -R 755 "$NEW_DIR"
+apachectl configtest && service apache2 restart</pre>
+                    </div>
+
+                    <h4>Вариант Б: Ручное редактирование (если нужно поправить вручную)</h4>
+                    <ol>
+                        <li>Откройте конфиг сайта: <code class="deb-inline">nano /etc/apache2/sites-available/000-default.conf</code> и измените строку <code class="deb-inline">DocumentRoot /var/www/html</code> на ваш путь (например, <code class="deb-inline">DocumentRoot /sdcard/SITE</code>).</li>
+                        <li>Откройте общий конфиг Apache: <code class="deb-inline">nano /etc/apache2/apache2.conf</code> (или <code class="deb-inline">/etc/apache2/conf-available/override-html.conf</code>), найдите блок <code class="deb-inline">&lt;Directory /var/www/&gt;</code> и добавьте или исправьте блок для вашей новой папки с параметром <code class="deb-inline">Require all granted</code> (иначе Apache выдаст ошибку <strong>403 Forbidden</strong>).</li>
+                        <li>Проверьте синтаксис <code class="deb-inline">apachectl configtest</code> и перезапустите: <code class="deb-inline">service apache2 restart</code>.</li>
+                    </ol>
+
+                    <div class="deb-note warn">
+                        <strong>Особенность папок Android (<code class="deb-inline">/sdcard/...</code>) в Termux Debian:</strong> На файловой системе Android (<code class="deb-inline">sdcardfs</code> / FUSE) команда <code class="deb-inline">chown</code> не меняет владельца, а доступ зависит от группы Android-хранилища (<code class="deb-inline">aid_everybody</code> / <code class="deb-inline">9997</code>). Чтобы Apache (<code class="deb-inline">www-data</code>) мог читать и записывать файлы в <code class="deb-inline">/sdcard/SITE</code>, добавьте пользователя <code class="deb-inline">www-data</code> в системную группу с GID <code class="deb-inline">9997</code> (или <code class="deb-inline">sdcard_rw</code> / <code class="deb-inline">1015</code>):
+                        <br><code class="deb-inline">groupadd -g 9997 sdcard_all 2>/dev/null || true && usermod -aG 9997 www-data</code>
+                    </div>
+                </section>
+
+                <!-- ШАГ 14 -->
+                <section class="deb-step-card" id="deb-step14">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge ops">14</div>
+                        <h3>Автоматизация запуска и остановки сервера одной командой</h3>
+                    </div>
+                    <p>Создадим исполняемые системные команды <code class="deb-inline">start</code>, <code class="deb-inline">stop</code> и <code class="deb-inline">restart</code> в <code class="deb-inline">/usr/local/bin/</code>, чтобы запускать весь стек одной короткой командой из любой директории терминала.</p>
+
+                    <h4>14.1. Команда <code class="deb-inline">start</code> (запуск MariaDB, PHP-FPM и Apache на порту 8080):</h4>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>cat &lt;&lt; 'EOF' &gt; /usr/local/bin/start
+#!/bin/bash
+echo "Запуск APACHE, MYSQL и PHP-сервера на порту 8080..."
+service mariadb start && service php8.4-fpm start && service apache2 start
+EOF
+chmod +x /usr/local/bin/start</pre>
+                    </div>
+                    <p>После выполнения этого блока достаточно просто написать <code class="deb-inline">start</code> в терминале из любой папки — сервер сразу запустится. <em>(Если у вас в Debian установилась другая версия PHP, например 8.2, просто замените <code class="deb-inline">php8.4-fpm</code> на вашу версию)</em>.</p>
+
+                    <h4>14.2. Дополнительно: команды <code class="deb-inline">stop</code> и <code class="deb-inline">restart</code> для полного контроля:</h4>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>cat &lt;&lt; 'EOF' &gt; /usr/local/bin/stop
+#!/bin/bash
+echo "Остановка APACHE, PHP-FPM и MariaDB..."
+PHP_VER=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+service apache2 stop
+service php${PHP_VER}-fpm stop
+service mariadb stop
+echo "Все службы остановлены."
+EOF
+chmod +x /usr/local/bin/stop
+
+cat &lt;&lt; 'EOF' &gt; /usr/local/bin/restart
+#!/bin/bash
+echo "Перезапуск APACHE, PHP-FPM и MariaDB..."
+PHP_VER=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+service mariadb restart && service php${PHP_VER}-fpm restart && service apache2 restart
+echo "Сервер перезапущен на порту 8080!"
+EOF
+chmod +x /usr/local/bin/restart</pre>
+                    </div>
+                    <p>Теперь в терминале Debian достаточно ввести <code class="deb-inline">start</code> для запуска, <code class="deb-inline">restart</code> для перезагрузки или <code class="deb-inline">stop</code> для остановки.</p>
+                </section>
+
+                <!-- ШАГ 15 -->
+                <section class="deb-step-card" id="deb-step15">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge ops">15</div>
+                        <h3>Запуск Cloudflare Tunnel в Termux</h3>
+                    </div>
+                    <p>Да, ваш синтаксис для запуска именованного туннеля <code class="deb-inline">tablet</code> на локальный порт <code class="deb-inline">8080</code> <strong>полностью правильный</strong>! Разберём нюансы запуска в обычном Termux и в Termux Debian:</p>
+
+                    <h4>15.1. Запуск в обычном Termux (основная оболочка Android):</h4>
+                    <p>Если пакет <code class="deb-inline">cloudflared</code> установлен в самом Termux (<code class="deb-inline">pkg install cloudflared</code>) и авторизован (<code class="deb-inline">cloudflared tunnel login</code>), запускайте в отдельной вкладке/сессии Termux:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>cloudflared tunnel run --url http://127.0.0.1:8080 tablet</pre>
+                    </div>
+
+                    <h4>15.2. Запуск в фоновом режиме (чтобы не занимать окно терминала):</h4>
+                    <p>Чтобы туннель работал в фоне и писал лог в файл, используйте <code class="deb-inline">nohup</code> или <code class="deb-inline">tmux</code> / <code class="deb-inline">screen</code>:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre># Запуск в фоне с записью лога:
+nohup cloudflared tunnel run --url http://127.0.0.1:8080 tablet > ~/cloudflared.log 2>&1 &
+
+# Посмотреть статус / лог работы туннеля:
+tail -f ~/cloudflared.log
+
+# Остановить фоновый туннель:
+pkill cloudflared</pre>
+                    </div>
+
+                    <h4>15.3. Полезные флаги для мобильного интернета / Wi-Fi (QUIC vs HTTP2):</h4>
+                    <p>На мобильных сетях или Android некоторые провайдеры режут UDP-трафик (протокол <code class="deb-inline">quic</code>, который cloudflared использует по умолчанию). Если туннель долго подключается или обрывается, добавьте флаг <code class="deb-inline">--protocol http2</code>:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>cloudflared tunnel --protocol http2 run --url http://127.0.0.1:8080 tablet</pre>
+                    </div>
+
+                    <div class="deb-note">
+                        <strong>Важно при работе внутри Termux Debian (proot-distro):</strong><br>
+                        1. Сеть между Termux и Termux Debian общая (<code class="deb-inline">127.0.0.1</code> единый), поэтому <code class="deb-inline">cloudflared</code> можно запускать как из самого Termux, так и из Debian.<br>
+                        2. Если запускаете внутри <code class="deb-inline">proot-distro</code> (Debian), иногда <code class="deb-inline">cloudflared</code> ругается на отсутствие доступа к <code class="deb-inline">/proc/net/route</code> при автоопределении IP. В этом случае надёжнее запускать <code class="deb-inline">cloudflared</code> из <strong>родного Termux</strong>, а в Termux включить <strong>Acquire wakelock</strong> в шторке уведомлений, чтобы Android не усыплял процессор при выключенном экране!
+                    </div>
+                </section>
+
+                <!-- ШАГ 16 -->
+                <section class="deb-step-card" id="deb-step16">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">16</div>
+                        <h3>Комплексная проверка всех модулей и утилит</h3>
+                    </div>
+                    <p>Создадим проверочный скрипт <code class="deb-inline">check_server.php</code> в корне сайта (в примере — <code class="deb-inline">/var/www/html/check_server.php</code>), который протестирует PHP-FPM, MariaDB, GD, Imagick, Zip, FFmpeg, AAPT, Poppler и ImageMagick:</p>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre>cat &lt;&lt; 'EOF' &gt; /var/www/html/check_server.php
+&lt;?php
+header('Content-Type: text/html; charset=utf-8');
+echo "&lt;style&gt;body{font-family:sans-serif;background:#1a1d24;color:#e2e8f0;padding:20px;} .ok{color:#22c55e;font-weight:bold;} .err{color:#ef4444;font-weight:bold;} table{border-collapse:collapse;width:100%;max-width:750px;} td,th{border:1px solid #334155;padding:8px 12px;text-align:left;}&lt;/style&gt;";
+echo "&lt;h2&gt;Диагностика сервера (Порт " . $_SERVER['SERVER_PORT'] . ")&lt;/h2&gt;";
+echo "&lt;p&gt;DocumentRoot: &lt;b&gt;" . $_SERVER['DOCUMENT_ROOT'] . "&lt;/b&gt;&lt;br&gt;";
+echo "PHP SAPI: &lt;span class='ok'&gt;" . php_sapi_name() . "&lt;/span&gt; | Версия PHP: &lt;span class='ok'&gt;" . phpversion() . "&lt;/span&gt;&lt;/p&gt;";
+
+$exts = ['pdo_mysql', 'gd', 'imagick', 'exif', 'zip', 'curl', 'mbstring', 'xml', 'fileinfo'];
+echo "&lt;h3&gt;PHP Расширения&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Модуль&lt;/th&gt;&lt;th&gt;Статус&lt;/th&gt;&lt;/tr&gt;";
+foreach ($exts as $ext) {
+    $st = extension_loaded($ext) ? "&lt;span class='ok'&gt;Установлен&lt;/span&gt;" : "&lt;span class='err'&gt;Отсутствует&lt;/span&gt;";
+    echo "&lt;tr&gt;&lt;td&gt;$ext&lt;/td&gt;&lt;td&gt;$st&lt;/td&gt;&lt;/tr&gt;";
+}
+echo "&lt;/table&gt;";
+
+$bins = [
+    'ffmpeg' => 'ffmpeg -version | head -n 1',
+    'ffprobe' => 'ffprobe -version | head -n 1',
+    'aapt' => 'aapt version',
+    'apksigner' => 'apksigner --version',
+    'apktool' => 'apktool --version',
+    'convert (ImageMagick)' => 'convert -version | head -n 1',
+    'cwebp (WebP)' => 'cwebp -version',
+    'pdftoppm (PDF)' => 'pdftoppm -v 2>&1 | head -n 1',
+    'exiftool' => 'exiftool -ver'
+];
+echo "&lt;h3&gt;Системные консольные утилиты&lt;/h3&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Утилита&lt;/th&gt;&lt;th&gt;Версия / Статус&lt;/th&gt;&lt;/tr&gt;";
+foreach ($bins as $name => $cmd) {
+    $out = trim(shell_exec($cmd . " 2>&1"));
+    $st = $out ? "&lt;span class='ok'&gt;" . htmlspecialchars($out) . "&lt;/span&gt;" : "&lt;span class='err'&gt;Не найдено&lt;/span&gt;";
+    echo "&lt;tr&gt;&lt;td&gt;$name&lt;/td&gt;&lt;td&gt;$st&lt;/td&gt;&lt;/tr&gt;";
+}
+echo "&lt;/table&gt;";
+EOF
+chown www-data:www-data /var/www/html/check_server.php</pre>
+                    </div>
+                    <p>Откройте в браузере <code class="deb-inline">http://127.0.0.1:8080/check_server.php</code>. После проверки удалите файл (<code class="deb-inline">rm /var/www/html/check_server.php</code>).</p>
+                </section>
+
+                <!-- ШАГ 17 -->
+                <section class="deb-step-card" id="deb-step17">
+                    <div class="deb-step-header">
+                        <div class="deb-step-badge">17</div>
+                        <h3>Шпаргалка по логам и проверке портов</h3>
+                    </div>
+                    <div class="deb-code-wrapper">
+                        <div class="deb-code-header"><span>bash</span><button class="deb-copy-btn" onclick="copyDebCode(this)">Копировать</button></div>
+                        <pre># Проверка прослушивания порта 8080
+ss -tulpn | grep 8080
+
+# Просмотр логов ошибок Apache и PHP-FPM в реальном времени
+tail -f /var/log/apache2/error.log
+tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fpm.log</pre>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+
         <!-- ПОЛНОЭКРАННОЕ ОКНО РЕДАКТИРОВАНИЯ ЗАМЕТКИ -->
         <div id="editor-screen" class="hidden" style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 9999; flex-direction: column; padding: 12px; border-radius: 0;">
             <div class="flex justify-between items-center mb-2" style="background: var(--card-bg); padding: 10px 14px; border-radius: 12px; box-shadow: 2px 2px 6px var(--shadow-dark);">
@@ -1130,8 +1676,13 @@
             { id: 4, type: "calendar", name: "4. КАЛЕНДАРЬ С ЗАМЕТКАМИ", color: "", bg: "" },
             { id: 5, type: "colorpicker", name: "5. HTML COLOR PICKER", color: "", bg: "" },
             { id: 6, type: "notepad", name: "6. БЛОКНОТ", color: "", bg: "" },
-            { id: 7, type: "linuxcmds", name: "7. КОМАНДЫ LINUX", color: "", bg: "" }
+            { id: 7, type: "linuxcmds", name: "7. КОМАНДЫ LINUX", color: "", bg: "" },
+            { id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" }
         ];
+        if (!menuItems.some(m => m.type === 'debianserver')) {
+            menuItems.push({ id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" });
+            localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
+        }
 
         let settings = JSON.parse(localStorage.getItem('app_settings')) || {
             theme: 'dark',
@@ -1724,6 +2275,7 @@
             document.getElementById('screenColorPicker').classList.remove('active');
             document.getElementById('screenNotepad').classList.remove('active');
             document.getElementById('screenLinuxCmds').classList.remove('active');
+            document.getElementById('screenDebianServer').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('screenTitle').innerText = item.name;
@@ -1737,6 +2289,9 @@
                 card.classList.add('app-card-wide');
                 document.getElementById('screenLinuxCmds').classList.add('active');
                 renderLinuxCommands();
+            } else if (item.type === 'debianserver') {
+                card.classList.add('app-card-wide');
+                document.getElementById('screenDebianServer').classList.add('active');
             } else {
                 card.classList.remove('app-card-wide');
                 if (item.type === 'generator') {
@@ -1763,6 +2318,7 @@
             document.getElementById('screenColorPicker').classList.remove('active');
             document.getElementById('screenNotepad').classList.remove('active');
             document.getElementById('screenLinuxCmds').classList.remove('active');
+            document.getElementById('screenDebianServer').classList.remove('active');
             document.getElementById('editor-screen').classList.add('hidden');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
@@ -3802,6 +4358,55 @@
                 document.getElementById('lockScreenInput').focus();
             }
         });
+
+
+        /* Логика для 8 пункта: DEBIAN СЕРВЕР */
+        function copyDebCode(btn) {
+            const pre = btn.closest('.deb-code-wrapper').querySelector('pre');
+            const text = pre.innerText;
+            const onSuccess = () => {
+                const orig = btn.innerText;
+                btn.innerText = 'Скопировано!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerText = orig;
+                    btn.classList.remove('copied');
+                }, 1800);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(onSuccess).catch(() => {
+                    const ta = document.createElement("textarea");
+                    ta.value = text;
+                    ta.style.position = "fixed";
+                    ta.style.opacity = "0";
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); onSuccess(); } catch(e) {}
+                    document.body.removeChild(ta);
+                });
+            } else {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); onSuccess(); } catch(e) {}
+                document.body.removeChild(ta);
+            }
+        }
+
+        function scrollToDebStep(e, stepId) {
+            e.preventDefault();
+            const target = document.getElementById(stepId);
+            const container = document.getElementById('debContentArea');
+            if (target && container) {
+                container.scrollTo({
+                    top: target.offsetTop - container.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
 
         init();
     </script>
