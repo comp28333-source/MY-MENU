@@ -420,6 +420,123 @@
         }
         .deb-note.warn { border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.08); }
 
+    
+        /* Стили для пункта 9: ПАЧКОРД */
+        #screenPatchcord .pc-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-transform: none;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 4px;
+        }
+        #screenPatchcord header {
+            background: var(--card-bg);
+            padding: 18px 20px;
+            border-radius: 14px;
+            box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+        }
+        #screenPatchcord h1 {
+            margin: 0 0 8px 0;
+            font-size: 1.25rem;
+            color: var(--accent-color);
+        }
+        #screenPatchcord h2 {
+            font-size: 1.05rem;
+            color: var(--accent-color);
+            border-bottom: 1px solid rgba(100, 100, 100, 0.2);
+            padding-bottom: 6px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        #screenPatchcord h3 {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            margin-top: 14px;
+            margin-bottom: 8px;
+        }
+        #screenPatchcord p, #screenPatchcord li {
+            font-size: 0.86rem;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
+        #screenPatchcord .card {
+            background: var(--card-bg);
+            padding: 16px 18px;
+            border-radius: 14px;
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+        }
+        #screenPatchcord .ascii-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-family: "Fira Code", "JetBrains Mono", Consolas, Monaco, monospace;
+            font-size: 0.78rem;
+            overflow-x: auto;
+            line-height: 1.45;
+            margin: 10px 0;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+        #screenPatchcord .note {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid var(--accent-color);
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 12px;
+            font-size: 0.84rem;
+        }
+        #screenPatchcord table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.84rem;
+        }
+        #screenPatchcord th, #screenPatchcord td {
+            text-align: left;
+            padding: 10px 10px;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.2);
+        }
+        #screenPatchcord th {
+            background-color: rgba(100, 100, 100, 0.12);
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        #screenPatchcord tr:last-child td {
+            border-bottom: none;
+        }
+        #screenPatchcord .svg-wrapper {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 12px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        #screenPatchcord .svg-wrapper svg {
+            max-width: 100%;
+            height: auto;
+        }
+        #screenPatchcord .svg-caption {
+            font-size: 0.8rem;
+            color: #475569;
+            margin-top: 6px;
+        }
+        #screenPatchcord .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 14px;
+        }
+        #screenPatchcord ul {
+            padding-left: 18px;
+        }
+        #screenPatchcord li {
+            margin-bottom: 8px;
+        }
+
     </style>
 </head>
 <body>
@@ -1385,6 +1502,463 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
         </div>
 
 
+
+        <!-- ПУНКТ 9: ПАЧКОРД -->
+        <div id="screenPatchcord" class="view-screen">
+            <div class="pc-container">
+                <header>
+                    <h1>Схемы обжима патч-корда (RJ-45 / 8P8C)</h1>
+                    <p style="margin:0; color: var(--text-muted);">
+                        Полное руководство по распиновке витой пары Cat5e/Cat6: стандарты <strong>T568A</strong> и <strong>T568B</strong>, прямой кабель, кроссовер и консольный (Rollover) кабель с наглядными графическими схемами и ASCII-шпаргалками.
+                    </p>
+                </header>
+
+                <!-- Секция 1: Графическая распиновка коннектора RJ-45 -->
+                <section class="card">
+                    <h2>1. Графическая распиновка коннектора RJ-45 (T568B и T568A)</h2>
+                    <p>Смотрите на коннектор <strong>RJ-45</strong> со стороны золотистых контактов (фиксирующая защёлка находится сзади, «смотрит» от вас) — нумерация пинов идёт слева направо с <strong>1 по 8</strong>.</p>
+                    
+                    <div class="grid-2">
+                        <!-- SVG T568B -->
+                        <div class="svg-wrapper">
+                            <svg width="390" height="310" viewBox="0 0 390 310" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <pattern id="wo" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                                        <rect width="4" height="8" fill="#f97316"/>
+                                        <rect x="4" width="4" height="8" fill="#ffffff"/>
+                                    </pattern>
+                                    <pattern id="wg" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                                        <rect width="4" height="8" fill="#16a34a"/>
+                                        <rect x="4" width="4" height="8" fill="#ffffff"/>
+                                    </pattern>
+                                    <pattern id="wb" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                                        <rect width="4" height="8" fill="#2563eb"/>
+                                        <rect x="4" width="4" height="8" fill="#ffffff"/>
+                                    </pattern>
+                                    <pattern id="wbr" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                                        <rect width="4" height="8" fill="#78350f"/>
+                                        <rect x="4" width="4" height="8" fill="#ffffff"/>
+                                    </pattern>
+                                </defs>
+                                <text x="195" y="22" font-family="sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#0f172a">Стандарт T568B (Основной)</text>
+                                <!-- Защелка сзади -->
+                                <rect x="145" y="34" width="100" height="16" rx="3" fill="#cbd5e1" stroke="#94a3b8"/>
+                                <text x="195" y="45" font-family="sans-serif" font-size="9" text-anchor="middle" fill="#475569">защёлка сзади</text>
+                                <!-- Корпус коннектора -->
+                                <rect x="95" y="46" width="200" height="125" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                                <!-- Фиксатор кабеля -->
+                                <rect x="135" y="145" width="120" height="18" rx="3" fill="#cbd5e1" stroke="#64748b"/>
+                                <!-- Внешняя оболочка кабеля -->
+                                <rect x="155" y="171" width="80" height="65" fill="#94a3b8" stroke="#475569" stroke-width="1.5"/>
+                                <text x="195" y="208" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#ffffff">UTP / FTP</text>
+
+                                <!-- Жилы и контакты T568B -->
+                                <!-- Pin 1: Бело-оранжевый -->
+                                <rect x="111" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="113" y="80" width="10" height="91" fill="url(#wo)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="118" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">1</text>
+
+                                <!-- Pin 2: Оранжевый -->
+                                <rect x="133" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="135" y="80" width="10" height="91" fill="#f97316"/>
+                                <text x="140" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">2</text>
+
+                                <!-- Pin 3: Бело-зелёный -->
+                                <rect x="155" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="157" y="80" width="10" height="91" fill="url(#wg)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="162" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">3</text>
+
+                                <!-- Pin 4: Синий -->
+                                <rect x="177" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="179" y="80" width="10" height="91" fill="#2563eb"/>
+                                <text x="184" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">4</text>
+
+                                <!-- Pin 5: Бело-синий -->
+                                <rect x="199" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="201" y="80" width="10" height="91" fill="url(#wb)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="206" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">5</text>
+
+                                <!-- Pin 6: Зелёный -->
+                                <rect x="221" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="223" y="80" width="10" height="91" fill="#16a34a"/>
+                                <text x="228" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">6</text>
+
+                                <!-- Pin 7: Бело-коричневый -->
+                                <rect x="243" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="245" y="80" width="10" height="91" fill="url(#wbr)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="250" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">7</text>
+
+                                <!-- Pin 8: Коричневый -->
+                                <rect x="265" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="267" y="80" width="10" height="91" fill="#78350f"/>
+                                <text x="272" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">8</text>
+
+                                <!-- Легенда внизу -->
+                                <text x="15" y="258" font-family="sans-serif" font-size="11" fill="#334155">1: Бел-Оранж</text>
+                                <text x="110" y="258" font-family="sans-serif" font-size="11" fill="#334155">2: Оранж</text>
+                                <text x="195" y="258" font-family="sans-serif" font-size="11" fill="#334155">3: Бел-Зелён</text>
+                                <text x="295" y="258" font-family="sans-serif" font-size="11" fill="#334155">4: Синий</text>
+
+                                <text x="15" y="282" font-family="sans-serif" font-size="11" fill="#334155">5: Бел-Синий</text>
+                                <text x="110" y="282" font-family="sans-serif" font-size="11" fill="#334155">6: Зелён</text>
+                                <text x="195" y="282" font-family="sans-serif" font-size="11" fill="#334155">7: Бел-Корич</text>
+                                <text x="295" y="282" font-family="sans-serif" font-size="11" fill="#334155">8: Корич</text>
+                            </svg>
+                            <div class="svg-caption">Рис. 1. Вид на коннектор RJ-45 со стороны контактов (T568B)</div>
+                        </div>
+
+                        <!-- SVG T568A -->
+                        <div class="svg-wrapper">
+                            <svg width="390" height="310" viewBox="0 0 390 310" xmlns="http://www.w3.org/2000/svg">
+                                <text x="195" y="22" font-family="sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#0f172a">Стандарт T568A (Альтернативный)</text>
+                                <rect x="145" y="34" width="100" height="16" rx="3" fill="#cbd5e1" stroke="#94a3b8"/>
+                                <text x="195" y="45" font-family="sans-serif" font-size="9" text-anchor="middle" fill="#475569">защёлка сзади</text>
+                                <rect x="95" y="46" width="200" height="125" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+                                <rect x="135" y="145" width="120" height="18" rx="3" fill="#cbd5e1" stroke="#64748b"/>
+                                <rect x="155" y="171" width="80" height="65" fill="#94a3b8" stroke="#475569" stroke-width="1.5"/>
+                                <text x="195" y="208" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#ffffff">UTP / FTP</text>
+
+                                <!-- Жилы и контакты T568A -->
+                                <!-- Pin 1: Бело-зелёный -->
+                                <rect x="111" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="113" y="80" width="10" height="91" fill="url(#wg)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="118" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">1</text>
+
+                                <!-- Pin 2: Зелёный -->
+                                <rect x="133" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="135" y="80" width="10" height="91" fill="#16a34a"/>
+                                <text x="140" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">2</text>
+
+                                <!-- Pin 3: Бело-оранжевый -->
+                                <rect x="155" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="157" y="80" width="10" height="91" fill="url(#wo)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="162" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">3</text>
+
+                                <!-- Pin 4: Синий -->
+                                <rect x="177" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="179" y="80" width="10" height="91" fill="#2563eb"/>
+                                <text x="184" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">4</text>
+
+                                <!-- Pin 5: Бело-синий -->
+                                <rect x="199" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="201" y="80" width="10" height="91" fill="url(#wb)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="206" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">5</text>
+
+                                <!-- Pin 6: Оранжевый -->
+                                <rect x="221" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="223" y="80" width="10" height="91" fill="#f97316"/>
+                                <text x="228" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">6</text>
+
+                                <!-- Pin 7: Бело-коричневый -->
+                                <rect x="243" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="245" y="80" width="10" height="91" fill="url(#wbr)" stroke="#cbd5e1" stroke-width="0.5"/>
+                                <text x="250" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">7</text>
+
+                                <!-- Pin 8: Коричневый -->
+                                <rect x="265" y="52" width="14" height="28" rx="2" fill="#eab308" stroke="#a16207"/>
+                                <rect x="267" y="80" width="10" height="91" fill="#78350f"/>
+                                <text x="272" y="42" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">8</text>
+
+                                <!-- Легенда внизу -->
+                                <text x="15" y="258" font-family="sans-serif" font-size="11" fill="#334155">1: Бел-Зелён</text>
+                                <text x="110" y="258" font-family="sans-serif" font-size="11" fill="#334155">2: Зелён</text>
+                                <text x="195" y="258" font-family="sans-serif" font-size="11" fill="#334155">3: Бел-Оранж</text>
+                                <text x="295" y="258" font-family="sans-serif" font-size="11" fill="#334155">4: Синий</text>
+
+                                <text x="15" y="282" font-family="sans-serif" font-size="11" fill="#334155">5: Бел-Синий</text>
+                                <text x="110" y="282" font-family="sans-serif" font-size="11" fill="#334155">6: Оранж</text>
+                                <text x="195" y="282" font-family="sans-serif" font-size="11" fill="#334155">7: Бел-Корич</text>
+                                <text x="295" y="282" font-family="sans-serif" font-size="11" fill="#334155">8: Корич</text>
+                            </svg>
+                            <div class="svg-caption">Рис. 2. Вид на коннектор RJ-45 со стороны контактов (T568A)</div>
+                        </div>
+                    </div>
+
+                    <h3>Текстовые шпаргалки (порядок слева направо)</h3>
+                    <p><strong>Схема T568B</strong> (самая частая в СКС и бытовых сетях):</p>
+                    <pre class="ascii-block">Пин RJ-45:    1             2          3            4       5            6         7            8
+Цвет жилы:  [Бел-Оранж] — [Оранж] — [Бел-Зелён] — [Синий] — [Бел-Синий] — [Зелён] — [Бел-Корич] — [Корич]</pre>
+
+                    <p><strong>Схема T568A</strong> (используется реже, чаще в госсекторе и по стандартам ряда стран):</p>
+                    <pre class="ascii-block">Пин RJ-45:    1             2          3            4       5            6         7            8
+Цвет жилы:  [Бел-Зелён] — [Зелён] — [Бел-Оранж] — [Синий] — [Бел-Синий] — [Оранж] — [Бел-Корич] — [Корич]</pre>
+
+                    <div class="note">
+                        В обеих схемах <strong>синяя (4–5)</strong> и <strong>коричневая (7–8)</strong> пары остаются на своих местах; меняются местами только <strong>оранжевая</strong> и <strong>зелёная</strong> пары.
+                    </div>
+                </section>
+
+                <!-- Секция 2: Таблица сравнения -->
+                <section class="card">
+                    <h2>2. Три основных варианта обжима патч-корда</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Вариант</th>
+                                <th>Сторона A</th>
+                                <th>Сторона B</th>
+                                <th>Когда используется</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Прямой кабель (Straight-through)</strong></td>
+                                <td><strong>T568B</strong> <em>(или A)</em></td>
+                                <td><strong>T568B</strong> <em>(или A)</em></td>
+                                <td>ПК ↔ коммутатор/роутер, роутер ↔ модем, сетевой принтер ↔ свитч. Основной вариант для 99% задач.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Кроссовер (Crossover)</strong></td>
+                                <td><strong>T568A</strong></td>
+                                <td><strong>T568B</strong></td>
+                                <td>Прямое соединение двух одинаковых устройств на старом оборудовании без Auto-MDI/MDI-X (ПК ↔ ПК, свитч ↔ свитч).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Консольный / Rollover</strong></td>
+                                <td>Прямой порядок 1→8</td>
+                                <td>Обратный порядок 8→1</td>
+                                <td>Настройка консольных портов сетевого оборудования (Cisco и др.) через последовательный/консольный интерфейс.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Секция 3: Визуальные схемы соединений -->
+                <section class="card">
+                    <h2>3. Визуальные схемы соединений (графика + ASCII)</h2>
+
+                    <!-- А. Прямой -->
+                    <h3>А. Прямой патч-корд (T568B — T568B)</h3>
+                    <p>Каждый контакт идёт <strong>1-в-1</strong> на тот же номер с другой стороны:</p>
+                    
+                    <div class="svg-wrapper">
+                        <svg width="760" height="270" viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg">
+                            <text x="130" y="22" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#0f172a">Сторона A (T568B)</text>
+                            <text x="630" y="22" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#0f172a">Сторона B (T568B)</text>
+
+                            <!-- Блоки пинов и цветные линии -->
+                            <!-- 1 -->
+                            <rect x="50" y="36" width="160" height="22" rx="4" fill="#fff7ed" stroke="#f97316"/>
+                            <text x="130" y="51" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">1. Бел-Оранж</text>
+                            <line x1="210" y1="47" x2="550" y2="47" stroke="#f97316" stroke-width="3" stroke-dasharray="8,4"/>
+                            <rect x="550" y="36" width="160" height="22" rx="4" fill="#fff7ed" stroke="#f97316"/>
+                            <text x="630" y="51" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">1. Бел-Оранж</text>
+
+                            <!-- 2 -->
+                            <rect x="50" y="64" width="160" height="22" rx="4" fill="#ffedd5" stroke="#ea580c"/>
+                            <text x="130" y="79" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">2. Оранж</text>
+                            <line x1="210" y1="75" x2="550" y2="75" stroke="#ea580c" stroke-width="3"/>
+                            <rect x="550" y="64" width="160" height="22" rx="4" fill="#ffedd5" stroke="#ea580c"/>
+                            <text x="630" y="79" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">2. Оранж</text>
+
+                            <!-- 3 -->
+                            <rect x="50" y="92" width="160" height="22" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+                            <text x="130" y="107" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">3. Бел-Зелён</text>
+                            <line x1="210" y1="103" x2="550" y2="103" stroke="#22c55e" stroke-width="3" stroke-dasharray="8,4"/>
+                            <rect x="550" y="92" width="160" height="22" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+                            <text x="630" y="107" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">3. Бел-Зелён</text>
+
+                            <!-- 4 -->
+                            <rect x="50" y="120" width="160" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="130" y="135" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">4. Синий</text>
+                            <line x1="210" y1="131" x2="550" y2="131" stroke="#2563eb" stroke-width="3"/>
+                            <rect x="550" y="120" width="160" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="630" y="135" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">4. Синий</text>
+
+                            <!-- 5 -->
+                            <rect x="50" y="148" width="160" height="22" rx="4" fill="#eff6ff" stroke="#3b82f6"/>
+                            <text x="130" y="163" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">5. Бел-Синий</text>
+                            <line x1="210" y1="159" x2="550" y2="159" stroke="#3b82f6" stroke-width="3" stroke-dasharray="8,4"/>
+                            <rect x="550" y="148" width="160" height="22" rx="4" fill="#eff6ff" stroke="#3b82f6"/>
+                            <text x="630" y="163" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">5. Бел-Синий</text>
+
+                            <!-- 6 -->
+                            <rect x="50" y="176" width="160" height="22" rx="4" fill="#dcfce7" stroke="#16a34a"/>
+                            <text x="130" y="191" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">6. Зелён</text>
+                            <line x1="210" y1="187" x2="550" y2="187" stroke="#16a34a" stroke-width="3"/>
+                            <rect x="550" y="176" width="160" height="22" rx="4" fill="#dcfce7" stroke="#16a34a"/>
+                            <text x="630" y="191" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">6. Зелён</text>
+
+                            <!-- 7 -->
+                            <rect x="50" y="204" width="160" height="22" rx="4" fill="#fef3c7" stroke="#92400e"/>
+                            <text x="130" y="219" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">7. Бел-Корич</text>
+                            <line x1="210" y1="215" x2="550" y2="215" stroke="#92400e" stroke-width="3" stroke-dasharray="8,4"/>
+                            <rect x="550" y="204" width="160" height="22" rx="4" fill="#fef3c7" stroke="#92400e"/>
+                            <text x="630" y="219" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">7. Бел-Корич</text>
+
+                            <!-- 8 -->
+                            <rect x="50" y="232" width="160" height="22" rx="4" fill="#fde68a" stroke="#78350f"/>
+                            <text x="130" y="247" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">8. Корич</text>
+                            <line x1="210" y1="243" x2="550" y2="243" stroke="#78350f" stroke-width="3"/>
+                            <rect x="550" y="232" width="160" height="22" rx="4" fill="#fde68a" stroke="#78350f"/>
+                            <text x="630" y="247" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">8. Корич</text>
+                        </svg>
+                    </div>
+
+                    <pre class="ascii-block">Сторона A (T568B)                     Сторона B (T568B)
+  1  Бел-Оранж  ───────────────────────  1  Бел-Оранж
+  2  Оранж      ───────────────────────  2  Оранж
+  3  Бел-Зелён  ───────────────────────  3  Бел-Зелён
+  4  Синий      ───────────────────────  4  Синий
+  5  Бел-Синий  ───────────────────────  5  Бел-Синий
+  6  Зелён      ───────────────────────  6  Зелён
+  7  Бел-Корич  ───────────────────────  7  Бел-Корич
+  8  Корич      ───────────────────────  8  Корич</pre>
+
+                    <!-- Б. Кроссовер -->
+                    <h3>Б. Кроссовер (T568A — T568B)</h3>
+                    <p>Перекрещиваются передающие (<strong>TX: 1, 2</strong>) и принимающие (<strong>RX: 3, 6</strong>) пары 10/100 Мбит/с (в гигабитных портах с <strong>Auto-MDI/MDI-X</strong> современные устройства согласуют пары автоматически):</p>
+
+                    <div class="svg-wrapper">
+                        <svg width="760" height="270" viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg">
+                            <text x="130" y="22" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#0f172a">Сторона A (T568A)</text>
+                            <text x="630" y="22" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#0f172a">Сторона B (T568B)</text>
+
+                            <!-- Перекрестные линии (1->3, 2->6, 3->1, 6->2) -->
+                            <!-- 1 (y=47) -> 3 (y=103) -->
+                            <path d="M 210 47 C 350 47, 410 103, 550 103" fill="none" stroke="#22c55e" stroke-width="3" stroke-dasharray="8,4"/>
+                            <!-- 2 (y=75) -> 6 (y=187) -->
+                            <path d="M 210 75 C 350 75, 410 187, 550 187" fill="none" stroke="#16a34a" stroke-width="3"/>
+                            <!-- 3 (y=103) -> 1 (y=47) -->
+                            <path d="M 210 103 C 350 103, 410 47, 550 47" fill="none" stroke="#f97316" stroke-width="3" stroke-dasharray="8,4"/>
+                            <!-- 6 (y=187) -> 2 (y=75) -->
+                            <path d="M 210 187 C 350 187, 410 75, 550 75" fill="none" stroke="#ea580c" stroke-width="3"/>
+
+                            <!-- Прямые линии (4, 5, 7, 8) -->
+                            <line x1="210" y1="131" x2="550" y2="131" stroke="#2563eb" stroke-width="2.5" opacity="0.6"/>
+                            <line x1="210" y1="159" x2="550" y2="159" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.6"/>
+                            <line x1="210" y1="215" x2="550" y2="215" stroke="#92400e" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.6"/>
+                            <line x1="210" y1="243" x2="550" y2="243" stroke="#78350f" stroke-width="2.5" opacity="0.6"/>
+
+                            <!-- Левая колонка (T568A) -->
+                            <rect x="50" y="36" width="160" height="22" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+                            <text x="130" y="51" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">1. Бел-Зелён</text>
+                            <rect x="50" y="64" width="160" height="22" rx="4" fill="#dcfce7" stroke="#16a34a"/>
+                            <text x="130" y="79" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">2. Зелён</text>
+                            <rect x="50" y="92" width="160" height="22" rx="4" fill="#fff7ed" stroke="#f97316"/>
+                            <text x="130" y="107" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">3. Бел-Оранж</text>
+                            <rect x="50" y="120" width="160" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="130" y="135" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">4. Синий</text>
+                            <rect x="50" y="148" width="160" height="22" rx="4" fill="#eff6ff" stroke="#3b82f6"/>
+                            <text x="130" y="163" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">5. Бел-Синий</text>
+                            <rect x="50" y="176" width="160" height="22" rx="4" fill="#ffedd5" stroke="#ea580c"/>
+                            <text x="130" y="191" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">6. Оранж</text>
+                            <rect x="50" y="204" width="160" height="22" rx="4" fill="#fef3c7" stroke="#92400e"/>
+                            <text x="130" y="219" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">7. Бел-Корич</text>
+                            <rect x="50" y="232" width="160" height="22" rx="4" fill="#fde68a" stroke="#78350f"/>
+                            <text x="130" y="247" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">8. Корич</text>
+
+                            <!-- Правая колонка (T568B) -->
+                            <rect x="550" y="36" width="160" height="22" rx="4" fill="#fff7ed" stroke="#f97316"/>
+                            <text x="630" y="51" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">1. Бел-Оранж</text>
+                            <rect x="550" y="64" width="160" height="22" rx="4" fill="#ffedd5" stroke="#ea580c"/>
+                            <text x="630" y="79" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">2. Оранж</text>
+                            <rect x="550" y="92" width="160" height="22" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+                            <text x="630" y="107" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">3. Бел-Зелён</text>
+                            <rect x="550" y="120" width="160" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="630" y="135" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">4. Синий</text>
+                            <rect x="550" y="148" width="160" height="22" rx="4" fill="#eff6ff" stroke="#3b82f6"/>
+                            <text x="630" y="163" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">5. Бел-Синий</text>
+                            <rect x="550" y="176" width="160" height="22" rx="4" fill="#dcfce7" stroke="#16a34a"/>
+                            <text x="630" y="191" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">6. Зелён</text>
+                            <rect x="550" y="204" width="160" height="22" rx="4" fill="#fef3c7" stroke="#92400e"/>
+                            <text x="630" y="219" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">7. Бел-Корич</text>
+                            <rect x="550" y="232" width="160" height="22" rx="4" fill="#fde68a" stroke="#78350f"/>
+                            <text x="630" y="247" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#0f172a">8. Корич</text>
+                        </svg>
+                    </div>
+
+                    <pre class="ascii-block">Сторона A (T568A)                     Сторона B (T568B)
+  1  Бел-Зелён  ───┐             ┌───  1  Бел-Оранж
+  2  Зелён      ───┼───╲     ╱───┼───  2  Оранж
+  3  Бел-Оранж  ───┼───╱     ╲───┼───  3  Бел-Зелён
+  4  Синий      ───┼─────────────┼───  4  Синий
+  5  Бел-Синий  ───┼─────────────┼───  5  Бел-Синий
+  6  Оранж      ───┼───╱     ╲───┼───  6  Зелён
+  7  Бел-Корич  ───┼─────────────┼───  7  Бел-Корич
+  8  Корич      ───┘             └───  8  Корич</pre>
+
+                    <!-- В. Консольный -->
+                    <h3>В. Консольный кабель (Rollover)</h3>
+                    <p>Жила с пина <code>1</code> приходит на пин <code>8</code>, <code>2</code> на <code>7</code> и так далее (полный разворот шлейфа):</p>
+
+                    <div class="svg-wrapper">
+                        <svg width="760" height="270" viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg">
+                            <text x="130" y="22" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#0f172a">Сторона A (1 → 8)</text>
+                            <text x="630" y="22" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#0f172a">Сторона B (8 → 1)</text>
+
+                            <!-- Зеркальные линии -->
+                            <path d="M 210 47 C 360 47, 400 243, 550 243" fill="none" stroke="#64748b" stroke-width="2"/>
+                            <path d="M 210 75 C 360 75, 400 215, 550 215" fill="none" stroke="#64748b" stroke-width="2"/>
+                            <path d="M 210 103 C 360 103, 400 187, 550 187" fill="none" stroke="#64748b" stroke-width="2"/>
+                            <path d="M 210 131 C 360 131, 400 159, 550 159" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+                            <path d="M 210 159 C 360 159, 400 131, 550 131" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+                            <path d="M 210 187 C 360 187, 400 103, 550 103" fill="none" stroke="#64748b" stroke-width="2"/>
+                            <path d="M 210 215 C 360 215, 400 75, 550 75" fill="none" stroke="#64748b" stroke-width="2"/>
+                            <path d="M 210 243 C 360 243, 400 47, 550 47" fill="none" stroke="#64748b" stroke-width="2"/>
+
+                            <!-- Левая колонка -->
+                            <rect x="80" y="36" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="145" y="51" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 1</text>
+                            <rect x="80" y="64" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="145" y="79" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 2</text>
+                            <rect x="80" y="92" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="145" y="107" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 3</text>
+                            <rect x="80" y="120" width="130" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="145" y="135" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 4</text>
+                            <rect x="80" y="148" width="130" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="145" y="163" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 5</text>
+                            <rect x="80" y="176" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="145" y="191" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 6</text>
+                            <rect x="80" y="204" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="145" y="219" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 7</text>
+                            <rect x="80" y="232" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="145" y="247" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 8</text>
+
+                            <!-- Правая колонка -->
+                            <rect x="550" y="36" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="615" y="51" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 1</text>
+                            <rect x="550" y="64" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="615" y="79" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 2</text>
+                            <rect x="550" y="92" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="615" y="107" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 3</text>
+                            <rect x="550" y="120" width="130" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="615" y="135" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 4</text>
+                            <rect x="550" y="148" width="130" height="22" rx="4" fill="#dbeafe" stroke="#2563eb"/>
+                            <text x="615" y="163" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 5</text>
+                            <rect x="550" y="176" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="615" y="191" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 6</text>
+                            <rect x="550" y="204" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="615" y="219" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 7</text>
+                            <rect x="550" y="232" width="130" height="22" rx="4" fill="#f1f5f9" stroke="#64748b"/>
+                            <text x="615" y="247" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">Пин 8</text>
+                        </svg>
+                    </div>
+
+                    <pre class="ascii-block">Сторона A                             Сторона B
+  1  ──────────────────────────────────  8
+  2  ──────────────────────────────────  7
+  3  ──────────────────────────────────  6
+  4  ──────────────────────────────────  5
+  5  ──────────────────────────────────  4
+  6  ──────────────────────────────────  3
+  7  ──────────────────────────────────  2
+  8  ──────────────────────────────────  1</pre>
+                </section>
+
+                <!-- Секция 4: Практические нюансы -->
+                <section class="card">
+                    <h2>4. Важные нюансы при обжиме патч-корда</h2>
+                    <ul>
+                        <li><strong>Многожильный кабель (stranded) vs одножильный (solid):</strong> Настоящий патч-корд делается из <strong>многожильного</strong> кабеля (он гибче и не ломается на изгибах). Для него нужны коннекторы <strong>для многожильной витой пары</strong> (ножи у них раздвоенные/вилкообразные, чтобы надёжно прорезать жилу, а не перерубить её).</li>
+                        <li><strong>Длина расплетённого участка:</strong> Старайтесь расплетать пары не длиннее <strong>10–13 мм</strong> у входа в коннектор и обязательно зажмите <strong>фиксатор внешней оболочки</strong> внутри RJ-45 — иначе при натяжении нагрузка пойдёт на тонкие жилы.</li>
+                        <li><strong>Гигабит (1000BASE-T):</strong> Использует все <strong>4 пары (все 8 жил)</strong>, поэтому обжим «по 4 жилам» (только 1, 2, 3, 6) обрежет скорость до 100 Мбит/с.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+
         <!-- ПОЛНОЭКРАННОЕ ОКНО РЕДАКТИРОВАНИЯ ЗАМЕТКИ -->
         <div id="editor-screen" class="hidden" style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 9999; flex-direction: column; padding: 12px; border-radius: 0;">
             <div class="flex justify-between items-center mb-2" style="background: var(--card-bg); padding: 10px 14px; border-radius: 12px; box-shadow: 2px 2px 6px var(--shadow-dark);">
@@ -1677,10 +2251,15 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             { id: 5, type: "colorpicker", name: "5. HTML COLOR PICKER", color: "", bg: "" },
             { id: 6, type: "notepad", name: "6. БЛОКНОТ", color: "", bg: "" },
             { id: 7, type: "linuxcmds", name: "7. КОМАНДЫ LINUX", color: "", bg: "" },
-            { id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" }
+            { id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" },
+            { id: 9, type: "patchcord", name: "9. ПАЧКОРД", color: "", bg: "" }
         ];
         if (!menuItems.some(m => m.type === 'debianserver')) {
             menuItems.push({ id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" });
+            localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
+        }
+        if (!menuItems.some(m => m.type === 'patchcord')) {
+            menuItems.push({ id: 9, type: "patchcord", name: "9. ПАЧКОРД", color: "", bg: "" });
             localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
         }
 
@@ -2276,6 +2855,8 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             document.getElementById('screenNotepad').classList.remove('active');
             document.getElementById('screenLinuxCmds').classList.remove('active');
             document.getElementById('screenDebianServer').classList.remove('active');
+            document.getElementById('screenPatchcord').classList.remove('active');
+            document.getElementById('screenPatchcord').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('screenTitle').innerText = item.name;
@@ -2292,6 +2873,9 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             } else if (item.type === 'debianserver') {
                 card.classList.add('app-card-wide');
                 document.getElementById('screenDebianServer').classList.add('active');
+            } else if (item.type === 'patchcord') {
+                card.classList.add('app-card-wide');
+                document.getElementById('screenPatchcord').classList.add('active');
             } else {
                 card.classList.remove('app-card-wide');
                 if (item.type === 'generator') {
