@@ -2252,15 +2252,21 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             { id: 6, type: "notepad", name: "6. БЛОКНОТ", color: "", bg: "" },
             { id: 7, type: "linuxcmds", name: "7. КОМАНДЫ LINUX", color: "", bg: "" },
             { id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" },
-            { id: 9, type: "patchcord", name: "9. ПАЧКОРД", color: "", bg: "" }
+            { id: 9, type: "patchcord", name: "9. ПАТЧ-КОРД", color: "", bg: "" }
         ];
         if (!menuItems.some(m => m.type === 'debianserver')) {
             menuItems.push({ id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" });
             localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
         }
         if (!menuItems.some(m => m.type === 'patchcord')) {
-            menuItems.push({ id: 9, type: "patchcord", name: "9. ПАЧКОРД", color: "", bg: "" });
+            menuItems.push({ id: 9, type: "patchcord", name: "9. ПАТЧ-КОРД", color: "", bg: "" });
             localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
+        } else {
+            const pcItem = menuItems.find(m => m.type === 'patchcord');
+            if (pcItem && pcItem.name === '9. ПАЧКОРД') {
+                pcItem.name = '9. ПАТЧ-КОРД';
+                localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
+            }
         }
 
         let settings = JSON.parse(localStorage.getItem('app_settings')) || {
@@ -2903,6 +2909,7 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             document.getElementById('screenNotepad').classList.remove('active');
             document.getElementById('screenLinuxCmds').classList.remove('active');
             document.getElementById('screenDebianServer').classList.remove('active');
+            document.getElementById('screenPatchcord').classList.remove('active');
             document.getElementById('editor-screen').classList.add('hidden');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
