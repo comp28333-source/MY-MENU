@@ -2980,6 +2980,9 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
                 card.classList.remove('app-card-wide');
                 if (item.type === 'generator') {
                     document.getElementById('screenGenerator').classList.add('active');
+                    if (document.getElementById('btnTabFuel').classList.contains('active')) {
+                        card.classList.add('app-card-wide');
+                    }
                 } else if (item.type === 'calculators') {
                     document.getElementById('screenCalculators').classList.add('active');
                 } else if (item.type === 'spider') {
@@ -3064,6 +3067,12 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             document.getElementById('genTabFuel').style.display = tabId === 'tabFuel' ? 'block' : 'none';
             document.querySelectorAll('#screenGenerator > .sub-nav .sub-nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            const card = document.getElementById('mainAppCard');
+            if (tabId === 'tabFuel') {
+                card.classList.add('app-card-wide');
+            } else {
+                card.classList.remove('app-card-wide');
+            }
         }
 
         function setMode(mode) {
