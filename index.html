@@ -537,6 +537,76 @@
             margin-bottom: 8px;
         }
 
+
+        /* Стили для обновлённой вкладки РАСХОД ТОПЛИВА в 1. ГЕНЕРАТОР */
+        #genTabFuel .fuel-summary-box {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 14px;
+            margin-bottom: 14px;
+        }
+        #genTabFuel .fuel-stat-item {
+            padding: 10px 6px;
+            border-radius: calc(var(--border-radius) - 4px);
+            background: var(--card-bg);
+            box-shadow: inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            text-align: center;
+        }
+        #genTabFuel .fuel-stat-label {
+            font-size: calc(var(--font-size) * 0.65);
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+        #genTabFuel .fuel-stat-value {
+            font-size: calc(var(--font-size) * 0.9);
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+        #genTabFuel .fuel-table-wrapper {
+            width: 100%;
+            max-height: 270px;
+            overflow: auto;
+            border-radius: calc(var(--border-radius) - 4px);
+            box-shadow: inset calc(var(--shadow-dist) * 0.6) calc(var(--shadow-dist) * 0.6) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.6) calc(var(--shadow-dist) * -0.6) var(--shadow-blur) var(--shadow-light);
+            padding: 6px;
+        }
+        #genTabFuel table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: calc(var(--font-size) * 0.78);
+        }
+        #genTabFuel th {
+            padding: 8px 4px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+            white-space: nowrap;
+        }
+        #genTabFuel td {
+            padding: 7px 4px;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+            white-space: nowrap;
+        }
+        #genTabFuel tbody tr:nth-child(even) {
+            background-color: rgba(148, 163, 184, 0.06);
+        }
+        #genTabFuel tbody tr:last-child td {
+            border-bottom: none;
+        }
+        #genTabFuel .badge-zero { color: var(--reset-color); font-weight: 800; }
+        #genTabFuel .badge-low { color: #f59e0b; font-weight: 800; }
+        #genTabFuel .badge-ok { color: #10b981; font-weight: 700; }
+        #genTabFuel .today-row {
+            outline: 2px solid var(--accent-color);
+            border-radius: 6px;
+        }
+
     </style>
 </head>
 <body>
@@ -629,23 +699,52 @@
 
             <div id="genTabFuel" style="display: none;">
                 <div class="input-group">
-                    <label for="fuelStartDate">С ДАТЫ:</label>
+                    <label for="fuelStartDate">НАЧАЛЬНАЯ ДАТА (В КАЛЕНДАРЕ):</label>
                     <input type="date" id="fuelStartDate" onchange="calcFuel()">
                 </div>
                 <div class="input-group" style="margin-top: 12px;">
-                    <label for="fuelEndDate">ПО ТЕКУЩУЮ:</label>
-                    <input type="date" id="fuelEndDate" onchange="calcFuel()">
+                    <label for="fuelInitialVol">НАЧАЛЬНЫЙ ОБЪЕМ (Л):</label>
+                    <input type="number" id="fuelInitialVol" step="0.1" min="0" placeholder="НАПРИМЕР: 42" oninput="calcFuel()">
                 </div>
                 <div class="input-group" style="margin-top: 12px; margin-bottom: 15px;">
-                    <label for="fuelLitersDay">ЛИТРОВ В ДЕНЬ:</label>
-                    <input type="number" id="fuelLitersDay" value="7" oninput="calcFuel()">
+                    <label for="fuelLitersDay">РАСХОД В ДЕНЬ (Л/СУТКИ):</label>
+                    <input type="number" id="fuelLitersDay" step="0.1" min="0.1" placeholder="НАПРИМЕР: 6" oninput="calcFuel()">
                 </div>
-                <button class="neu-btn" style="width: 100%; padding: 12px; color: var(--accent-color);" onclick="calcFuel()">РАССЧИТАТЬ</button>
-                
-                <div class="result-box" id="fuelResultBox" style="display: flex; margin-top: 15px;">
-                    <h3>РЕЗУЛЬТАТ:</h3>
-                    <div class="result-item">ИТОГО РАСХОД: <span id="fuelTotalRes" class="highlight">-</span> Л</div>
-                    <div class="result-item">ПЕРИОД: <span id="fuelPeriodRes" class="highlight">-</span> ДН.</div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="neu-btn" style="flex: 1; padding: 12px; color: var(--accent-color);" onclick="calcFuel(true)">РАССЧИТАТЬ ТАБЛИЦУ</button>
+                    <button class="neu-btn" style="padding: 12px 16px; color: var(--reset-color);" onclick="resetFuelCalc()">СБРОС</button>
+                </div>
+
+                <div id="fuelResultBox" style="display: none;">
+                    <div class="fuel-summary-box">
+                        <div class="fuel-stat-item">
+                            <div class="fuel-stat-label">ХВАТИТ ДНЕЙ</div>
+                            <div class="fuel-stat-value" id="fuelStatDays">0</div>
+                        </div>
+                        <div class="fuel-stat-item">
+                            <div class="fuel-stat-label">ОКОНЧАНИЕ</div>
+                            <div class="fuel-stat-value" id="fuelStatEndDate">—</div>
+                        </div>
+                        <div class="fuel-stat-item">
+                            <div class="fuel-stat-label">НА СЕГОДНЯ</div>
+                            <div class="fuel-stat-value" id="fuelStatTodayLeft">—</div>
+                        </div>
+                    </div>
+
+                    <div class="fuel-table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>ДАТА</th>
+                                    <th>НАЧАЛО (Л)</th>
+                                    <th>РАСХОД (Л)</th>
+                                    <th>ОСТАТОК (Л)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fuelTableBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2735,12 +2834,7 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             loadSavedGenData();
             autoCalculateGen();
 
-            const fEnd = new Date();
-            const fStart = new Date();
-            fStart.setDate(fStart.getDate() - 5);
-            document.getElementById('fuelEndDate').valueAsDate = fEnd;
-            document.getElementById('fuelStartDate').valueAsDate = fStart;
-            calcFuel();
+            loadSavedFuelState();
             calcPercent();
             calcSpider(0);
             loadTimeCalcData();
@@ -3086,15 +3180,123 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             saveGenData();
         }
 
-        function calcFuel() {
-            const start = new Date(document.getElementById('fuelStartDate').value);
-            const end = new Date(document.getElementById('fuelEndDate').value);
-            const liters = parseFloat(document.getElementById('fuelLitersDay').value) || 0;
-            if (start && end && end >= start) {
-                const days = Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) + 1;
-                document.getElementById('fuelTotalRes').innerText = days * liters;
-                document.getElementById('fuelPeriodRes').innerText = days;
+        const FUEL_STORAGE_KEY = 'blik_fuel_calc_data_v1';
+
+        function formatFuelDateRU(dateObj) {
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const yyyy = dateObj.getFullYear();
+            return `${dd}.${mm}.${yyyy}`;
+        }
+
+        function toFuelISODate(dateObj) {
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const yyyy = dateObj.getFullYear();
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function formatFuelNum(val) {
+            return Number.isInteger(val) ? val.toString() : val.toFixed(2).replace(/\.?0+$/, '');
+        }
+
+        function calcFuel(showAlert = false) {
+            const dateStr = document.getElementById('fuelStartDate').value;
+            const fuel = parseFloat(document.getElementById('fuelInitialVol').value);
+            const rate = parseFloat(document.getElementById('fuelLitersDay').value);
+            const resultBox = document.getElementById('fuelResultBox');
+
+            if (!dateStr || isNaN(fuel) || fuel <= 0 || isNaN(rate) || rate <= 0) {
+                if (showAlert) {
+                    alert('Пожалуйста, корректно укажите дату, начальный объем и суточный расход.');
+                }
+                resultBox.style.display = 'none';
+                return;
             }
+
+            localStorage.setItem(FUEL_STORAGE_KEY, JSON.stringify({
+                startDate: dateStr,
+                initialFuel: fuel,
+                dailyRate: rate
+            }));
+
+            const [y, m, d] = dateStr.split('-').map(Number);
+            let currentDate = new Date(y, m - 1, d);
+            const todayStr = toFuelISODate(new Date());
+
+            let remaining = fuel;
+            let dayCount = 0;
+            let rowsHTML = '';
+            let endDateStr = formatFuelDateRU(currentDate);
+            let todayRemainingText = 'НЕ В ПЕРИОДЕ';
+            const maxDays = 3650;
+
+            while (remaining > 0.0001 && dayCount < maxDays) {
+                dayCount++;
+                const startOfDay = remaining;
+                const spent = Math.min(remaining, rate);
+                remaining = Math.max(0, +(remaining - spent).toFixed(4));
+
+                const isoCurrent = toFuelISODate(currentDate);
+                const formattedCurrent = formatFuelDateRU(currentDate);
+                endDateStr = formattedCurrent;
+
+                const isToday = isoCurrent === todayStr;
+                if (isToday) {
+                    todayRemainingText = `${formatFuelNum(remaining)} Л`;
+                }
+
+                let badgeClass = 'badge-ok';
+                if (remaining === 0) badgeClass = 'badge-zero';
+                else if (remaining <= rate) badgeClass = 'badge-low';
+
+                rowsHTML += `
+                    <tr class="${isToday ? 'today-row' : ''}">
+                        <td>${dayCount}</td>
+                        <td>${formattedCurrent}${isToday ? ' 📍' : ''}</td>
+                        <td>${formatFuelNum(startOfDay)}</td>
+                        <td>${formatFuelNum(spent)}</td>
+                        <td class="${badgeClass}">${formatFuelNum(remaining)}</td>
+                    </tr>
+                `;
+
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            const fullDays = Math.floor(fuel / rate);
+            document.getElementById('fuelStatDays').innerText = `${fullDays} ДН.` + (fuel % rate > 0 ? ' (+ОСТ.)' : '');
+            document.getElementById('fuelStatEndDate').innerText = endDateStr;
+            document.getElementById('fuelStatTodayLeft').innerText = todayRemainingText;
+            document.getElementById('fuelTableBody').innerHTML = rowsHTML;
+            resultBox.style.display = 'block';
+        }
+
+        function loadSavedFuelState() {
+            const raw = localStorage.getItem(FUEL_STORAGE_KEY);
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    if (data.startDate) document.getElementById('fuelStartDate').value = data.startDate;
+                    if (data.initialFuel) document.getElementById('fuelInitialVol').value = data.initialFuel;
+                    if (data.dailyRate) document.getElementById('fuelLitersDay').value = data.dailyRate;
+                    if (data.startDate && data.initialFuel && data.dailyRate) {
+                        calcFuel(false);
+                        return;
+                    }
+                } catch (e) {}
+            }
+            document.getElementById('fuelStartDate').value = '2026-11-19';
+            document.getElementById('fuelInitialVol').value = '42';
+            document.getElementById('fuelLitersDay').value = '6';
+            calcFuel(false);
+        }
+
+        function resetFuelCalc() {
+            localStorage.removeItem(FUEL_STORAGE_KEY);
+            document.getElementById('fuelStartDate').value = toFuelISODate(new Date());
+            document.getElementById('fuelInitialVol').value = '';
+            document.getElementById('fuelLitersDay').value = '';
+            document.getElementById('fuelResultBox').style.display = 'none';
         }
 
         function clearGenData() {
