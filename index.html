@@ -607,6 +607,247 @@
             border-radius: 6px;
         }
 
+    
+        /* Стили для пункта 10: TERMUX BACKUP */
+        #screenTermuxBackup .tb-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-transform: none;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 4px;
+            --tb-accent: var(--accent-color);
+            --tb-radius: var(--border-radius);
+        }
+        #screenTermuxBackup .neu-out {
+            background: var(--card-bg);
+            border-radius: var(--tb-radius);
+            box-shadow: var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
+                        calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
+        }
+        #screenTermuxBackup .neu-in {
+            background: var(--card-bg);
+            border-radius: calc(var(--tb-radius) - 4px);
+            box-shadow: inset calc(var(--shadow-dist) * 0.7) calc(var(--shadow-dist) * 0.7) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -0.7) calc(var(--shadow-dist) * -0.7) var(--shadow-blur) var(--shadow-light);
+        }
+        #screenTermuxBackup header {
+            padding: 16px 18px;
+        }
+        #screenTermuxBackup .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        #screenTermuxBackup h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--tb-accent);
+            margin: 0 0 4px 0;
+        }
+        #screenTermuxBackup .subtitle {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+        }
+        #screenTermuxBackup .toolbar {
+            display: flex;
+            gap: 8px;
+        }
+        #screenTermuxBackup .toolbar .neu-btn,
+        #screenTermuxBackup .chip-btn,
+        #screenTermuxBackup .copy-btn {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            text-transform: none;
+        }
+        #screenTermuxBackup .settings-panel {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            padding: 12px 14px;
+            margin-top: 12px;
+        }
+        #screenTermuxBackup .settings-panel.open {
+            display: grid;
+        }
+        #screenTermuxBackup .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        #screenTermuxBackup .control-group label {
+            font-size: 0.78rem;
+            text-transform: none;
+        }
+        #screenTermuxBackup .tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        #screenTermuxBackup .tabs .tab-btn {
+            flex: 1;
+            min-width: 210px;
+            padding: 12px 14px;
+            font-size: 0.84rem;
+            text-transform: none;
+            color: var(--text-color);
+            background: var(--card-bg);
+            border-radius: var(--tb-radius);
+            box-shadow: var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
+                        calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
+        }
+        #screenTermuxBackup .tabs .tab-btn.active {
+            box-shadow: inset var(--shadow-dist) var(--shadow-dist) var(--shadow-blur) var(--shadow-dark),
+                        inset calc(var(--shadow-dist) * -1) calc(var(--shadow-dist) * -1) var(--shadow-blur) var(--shadow-light);
+            color: var(--tb-accent);
+        }
+        #screenTermuxBackup .tab-content {
+            display: none !important;
+            flex-direction: column;
+            gap: 14px;
+        }
+        #screenTermuxBackup .tab-content.active {
+            display: flex !important;
+        }
+        #screenTermuxBackup .card {
+            padding: 16px 18px;
+        }
+        #screenTermuxBackup .card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 12px;
+        }
+        #screenTermuxBackup .badge {
+            background: var(--tb-accent);
+            color: #ffffff;
+            min-width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        #screenTermuxBackup .alert.info {
+            border-left: 4px solid var(--tb-accent);
+        }
+        #screenTermuxBackup .alert.warn {
+            border-left: 4px solid #f59e0b;
+        }
+        #screenTermuxBackup .alert-title {
+            font-weight: 800;
+            font-size: 0.92rem;
+            margin-bottom: 6px;
+            color: var(--tb-accent);
+        }
+        #screenTermuxBackup .alert.warn .alert-title {
+            color: #f59e0b;
+        }
+        #screenTermuxBackup p,
+        #screenTermuxBackup li,
+        #screenTermuxBackup .step-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
+        #screenTermuxBackup code {
+            background: rgba(128, 128, 128, 0.14);
+            color: var(--tb-accent);
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.86em;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+        #screenTermuxBackup .control-bar {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+        #screenTermuxBackup .chip-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        #screenTermuxBackup .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        #screenTermuxBackup .step-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        #screenTermuxBackup .code-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 12px;
+        }
+        #screenTermuxBackup .code-wrapper code {
+            background: transparent;
+            padding: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            flex: 1;
+            font-size: 0.82rem;
+        }
+        #screenTermuxBackup .copy-btn.copied {
+            color: #22c55e;
+        }
+        #screenTermuxBackup .step-note {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        #screenTermuxBackup ul.nuances {
+            margin-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        #screenTermuxBackup .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        #screenTermuxBackup .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            cursor: pointer;
+            font-size: 0.84rem;
+            text-transform: none;
+        }
+        #screenTermuxBackup .check-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--tb-accent);
+            flex-shrink: 0;
+        }
+        #screenTermuxBackup .check-item.done span {
+            text-decoration: line-through;
+            opacity: 0.65;
+        }
+
     </style>
 </head>
 <body>
@@ -2058,6 +2299,240 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
         </div>
 
 
+
+        <!-- ПУНКТ 10: TERMUX BACKUP -->
+        <div id="screenTermuxBackup" class="view-screen">
+            <div class="tb-container" id="tbRootContainer">
+              <header class="neu-out">
+                <div class="header-top">
+                  <div>
+                    <h1>Полный перенос Termux и proot-distro</h1>
+                    <div class="subtitle">Единое руководство по резервному копированию и восстановлению среды без root-прав</div>
+                  </div>
+                  <div class="toolbar">
+                    <button class="neu-btn" id="tbSettingsToggle" title="Настройки 3D интерфейса">⚙️ Настройки UI</button>
+                  </div>
+                </div>
+
+                <div class="settings-panel neu-in" id="tbSettingsPanel">
+                  <div class="control-group">
+                    <label for="tbDepthRange">3D Глубина: <span id="tbDepthVal">6px</span></label>
+                    <input type="range" id="tbDepthRange" min="2" max="14" value="6">
+                  </div>
+                  <div class="control-group">
+                    <label for="tbRadiusRange">Скругление углов: <span id="tbRadiusVal">18px</span></label>
+                    <input type="range" id="tbRadiusRange" min="4" max="32" value="18">
+                  </div>
+                  <div class="control-group">
+                    <label for="tbAccentPicker">Акцентный цвет (HEX)</label>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <input type="color" id="tbAccentPicker" value="#38bdf8">
+                      <span id="tbAccentHex">#38bdf8</span>
+                    </div>
+                  </div>
+                </div>
+              </header>
+
+              <nav class="tabs">
+                <button class="neu-btn tab-btn active" data-tab="full-termux">📦 1. Полный перенос Termux (home и usr)</button>
+                
+              </nav>
+
+              <!-- SECTION 1: FULL TERMUX (FROM FIRST FILE) -->
+              <section class="tab-content active" id="tab-full-termux">
+                <div class="card neu-out alert info">
+                  <div class="alert-title">Общие условия переноса</div>
+                  <p>Перенести всю конфигурацию, скрипты и установленные пакеты Termux на другое устройство можно с помощью официального метода архивации директорий <code>home</code> и <code>usr</code>.</p>
+                  <p style="margin-top:6px;">Для этого <strong>не требуются root-права</strong>, но <strong>архитектура процессора</strong> (например, <code>aarch64</code>) на обоих устройствах должна совпадать, иначе бинарные файлы из папки <code>usr</code> не запустятся.</p>
+                </div>
+
+                <div class="control-bar neu-out">
+                  <span>Режим архивации (архитектура устройств):</span>
+                  <div class="chip-group">
+                    <button class="neu-btn chip-btn mode-chip active" data-mode="full">Одинаковая архитектура (./home + ./usr)</button>
+                    <button class="neu-btn chip-btn mode-chip" data-mode="home">Разная архитектура (только ./home)</button>
+                  </div>
+                </div>
+
+                <div class="card neu-out">
+                  <h2><span class="badge">1</span> Создание резервной копии на старом устройстве</h2>
+                  <div class="step-list">
+                    <div class="step-item">
+                      <div class="step-desc"><strong>1.1. Предоставьте доступ к памяти смартфона.</strong> Откройте Termux и разрешите доступ к хранилищу, если вы ещё не делали этого:</div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-ft-1">termux-setup-storage</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-ft-1">Копировать</button>
+                      </div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc" id="backup-desc"><strong>1.2. Упакуйте данные в архив.</strong> Команда сохранит домашнюю директорию (настройки, скрипты, SSH-ключи) и системную папку (все установленные утилиты и пакеты) во внутреннюю память устройства:</div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-ft-2">tar -zcf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files ./home ./usr</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-ft-2">Копировать</button>
+                      </div>
+                      <div class="step-note">Примечание: процесс может занять несколько минут в зависимости от объема установленных пакетов (особенно если внутри развернут дистрибутив через <code>proot-distro</code>).</div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>1.3. Перенесите архив.</strong> Перенесите полученный файл <code>termux-backup.tar.gz</code> из корня внутренней памяти (<code>/sdcard/</code>) на новое устройство любым удобным способом (через облако, кабель или мессенджер).</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card neu-out">
+                  <h2><span class="badge">2</span> Восстановление на новом устройстве</h2>
+                  <div class="step-list">
+                    <div class="step-item">
+                      <div class="step-desc">Установите Termux на новый смартфон из того же источника (рекомендуется <strong>F-Droid</strong> или <strong>GitHub</strong>, чтобы совпадали подписи и версии) и поместите файл <code>termux-backup.tar.gz</code> в корень его внутренней памяти.</div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>2.1. Выдайте права на чтение хранилища:</strong></div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-ft-3">termux-setup-storage</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-ft-3">Копировать</button>
+                      </div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc" id="restore-desc"><strong>2.2. Распакуйте архив с заменой системных файлов.</strong> Важно использовать флаг <code>--recursive-unlink</code> и <code>unset LD_PRELOAD</code>, чтобы перезаписать текущую папку <code>usr</code> без конфликта библиотек:</div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-ft-4">unset LD_PRELOAD
+tar -zxf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files --recursive-unlink --preserve-permissions</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-ft-4">Копировать</button>
+                      </div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>2.3. Перезапустите приложение.</strong> Полностью закройте Termux (через кнопку <strong>Exit</strong> в шторке уведомлений) и откройте заново. Все ваши настройки, алиасы, пакеты и истории команд будут на месте.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card neu-out alert warn">
+                  <div class="alert-title">⚠️ Важные ограничения и нюансы</div>
+                  <ul class="nuances">
+                    <li><strong>Разная архитектура процессоров:</strong> Если вы переезжаете, например, со старого 32-битного устройства (<code>arm</code>) на современное 64-битное (<code>aarch64</code>), переносить папку <code>usr</code> нельзя. В таком случае архивируйте только <code>./home</code> (конфиги и скрипты), а пакеты на новом телефоне установите заново (переключите режим выше для готовых команд).</li>
+                    <li><strong>Дополнительные плагины:</strong> Настройки и разрешения для аддонов вроде <code>Termux:API</code>, <code>Termux:Boot</code> или <code>Termux:Widget</code> хранятся в системных данных Android этих отдельных приложений — их придется установить и настроить вручную.</li>
+                    <li><strong>Альтернативный подход (для профи):</strong> Если у вас много кастомных настроек, удобнее хранить конфигурационные файлы (<code>.bashrc</code>, <code>.zshrc</code>, конфиги <code>nvim</code> или <code>tmux</code>) в приватном репозитории на GitHub (так называемые <em>dotfiles</em>) и подтягивать их на любое новое устройство за пару секунд.</li>
+                  </ul>
+
+                  <div style="margin-top:14px;">
+                    <div class="step-note" style="margin-bottom:6px;">Команда для проверки архитектуры процессора на обоих устройствах:</div>
+                    <div class="code-wrapper neu-in">
+                      <code id="cmd-ft-arch">uname -m</code>
+                      <button class="neu-btn copy-btn" data-target="cmd-ft-arch">Копировать</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card neu-out">
+                  <h2><span class="badge">✓</span> Чек-лист полного переноса Termux</h2>
+                  <div class="checklist" id="checklist">
+                    <label class="check-item neu-in"><input type="checkbox" data-key="c1"><span>Проверена архитектура процессора (<code>uname -m</code>) на обоих устройствах</span></label>
+                    <label class="check-item neu-in"><input type="checkbox" data-key="c2"><span>Создан архив <code>termux-backup.tar.gz</code> и скопирован в <code>/sdcard/</code> нового устройства</span></label>
+                    <label class="check-item neu-in"><input type="checkbox" data-key="c3"><span>Termux на новом устройстве установлен из того же источника (F-Droid / GitHub)</span></label>
+                    <label class="check-item neu-in"><input type="checkbox" data-key="c4"><span>Выполнена распаковка с <code>unset LD_PRELOAD</code> и приложение перезапущено через кнопку Exit</span></label>
+                  </div>
+                </div>
+              </section>
+
+              <!-- SECTION 2: PROOT-DISTRO (FROM SECOND FILE) -->
+              <section class="tab-content" id="tab-proot-distro">
+                <div class="card neu-out alert info">
+                  <div class="alert-title">Встроенный механизм backup / restore в proot-distro</div>
+                  <p>У <code>proot-distro</code> есть встроенные команды <code>backup</code> и <code>restore</code>, которые упаковывают конкретный дистрибутив со всеми его настройками, пакетами и симлинками без поломок прав доступа.</p>
+                  <p style="margin-top:6px;">Если вы делаете общий бэкап папки <code>./usr</code>, дистрибутивы уже лежат внутри неё (в <code>$PREFIX/var/lib/proot-distro/installed-rootfs/</code>). Однако переносить их отдельно через встроенную утилиту безопаснее и удобнее, если нужно перенести только сам Linux или не трогать базовый Termux.</p>
+                </div>
+
+                <div class="control-bar neu-out">
+                  <span>Подставить алиас дистрибутива в команды:</span>
+                  <div class="chip-group">
+                    <button class="neu-btn chip-btn distro-chip active" data-distro="debian">debian</button>
+                    <button class="neu-btn chip-btn distro-chip" data-distro="ubuntu">ubuntu</button>
+                    <button class="neu-btn chip-btn distro-chip" data-distro="kali">kali</button>
+                    <button class="neu-btn chip-btn distro-chip" data-distro="archlinux">archlinux</button>
+                  </div>
+                </div>
+
+                <div class="card neu-out">
+                  <h2><span class="badge">1</span> Создание бэкапа на старом устройстве</h2>
+                  <div class="step-list">
+                    <div class="step-item">
+                      <div class="step-desc">Выполнять команды нужно <strong>внутри самого Termux</strong> (выйдите из дистрибутива командой <code>exit</code>, если вы сейчас в нём).</div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>1.1. Посмотрите точное название (алиас) вашего дистрибутива:</strong></div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-pd-1">proot-distro list</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-pd-1">Копировать</button>
+                      </div>
+                      <div class="step-note">Запомните его алиас, например: <code>debian</code>, <code>ubuntu</code>, <code>archlinux</code> или <code>kali</code>.</div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>1.2. Упакуйте дистрибутив в архив на карту памяти:</strong></div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-pd-2">proot-distro backup debian --output /sdcard/debian-backup.tar.gz</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-pd-2">Копировать</button>
+                      </div>
+                      <div class="step-note">Используйте кнопки выбора дистрибутива выше, чтобы автоматически подставить нужное имя.</div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>1.3. Перенесите архив.</strong> Перекиньте файл <code id="file-label-pd">debian-backup.tar.gz</code> из корня памяти (<code>/sdcard/</code>) на новое устройство.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card neu-out">
+                  <h2><span class="badge">2</span> Восстановление на новом устройстве</h2>
+                  <div class="step-list">
+                    <div class="step-item">
+                      <div class="step-desc">На новом телефоне должен быть установлен чистый Termux и сам пакет <code>proot-distro</code> (<code>pkg install proot-distro</code>). Предварительно скачивать дистрибутив через <code>install</code> <strong>не нужно</strong>.</div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>2.1. Выдайте доступ к памяти (если еще не выдали):</strong></div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-pd-3">termux-setup-storage</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-pd-3">Копировать</button>
+                      </div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>2.2. Восстановите систему из архива:</strong></div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-pd-4">proot-distro restore /sdcard/debian-backup.tar.gz</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-pd-4">Копировать</button>
+                      </div>
+                      <div class="step-note">Утилита сама создаст нужную папку и восстановит правильные права для эмуляции root.</div>
+                    </div>
+
+                    <div class="step-item">
+                      <div class="step-desc"><strong>2.3. Запустите дистрибутив:</strong></div>
+                      <div class="code-wrapper neu-in">
+                        <code id="cmd-pd-5">proot-distro login debian</code>
+                        <button class="neu-btn copy-btn" data-target="cmd-pd-5">Копировать</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card neu-out alert warn">
+                  <div class="alert-title">⚠️ Важные нюансы работы с proot-distro</div>
+                  <ul class="nuances">
+                    <li><strong>Запрет на ручной tar внутри proot:</strong> Не пытайтесь упаковать дистрибутив вручную обычным <code>tar</code>, находясь внутри самого Linux или в папке <code>installed-rootfs</code>. Внутри proot используются виртуальные права и специфические симлинки — ручной <code>tar</code> может выдавать ошибки прав доступа или сломать загрузку системы при распаковке. Команда <code>proot-distro backup</code> решает это автоматически.</li>
+                    <li><strong>Ограничения файловой системы (&gt; 4 ГБ):</strong> Если дистрибутив весит много (например, больше 4 ГБ), учитывайте ограничения файловой системы (FAT32 не поддерживает файлы больше 4 ГБ) при переносе архива через внешние накопители или SD-карты.</li>
+                  </ul>
+                </div>
+              </section>
+            </div>
+        </div>
+
+
         <!-- ПОЛНОЭКРАННОЕ ОКНО РЕДАКТИРОВАНИЯ ЗАМЕТКИ -->
         <div id="editor-screen" class="hidden" style="position: fixed; inset: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 9999; flex-direction: column; padding: 12px; border-radius: 0;">
             <div class="flex justify-between items-center mb-2" style="background: var(--card-bg); padding: 10px 14px; border-radius: 12px; box-shadow: 2px 2px 6px var(--shadow-dark);">
@@ -2351,14 +2826,23 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             { id: 6, type: "notepad", name: "6. БЛОКНОТ", color: "", bg: "" },
             { id: 7, type: "linuxcmds", name: "7. КОМАНДЫ LINUX", color: "", bg: "" },
             { id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" },
-            { id: 9, type: "patchcord", name: "9. ПАТЧ-КОРД", color: "", bg: "" }
+            { id: 9, type: "patchcord", name: "9. ПАТЧ-КОРД", color: "", bg: "" },
+            { id: 10, type: "termuxbackup", name: "10. TERMUX BACKUP", color: "", bg: "" }
         ];
         const savedMenuRaw = localStorage.getItem('menu_items_config');
         let menuItems = savedMenuRaw !== null ? JSON.parse(savedMenuRaw) : JSON.parse(JSON.stringify(DEFAULT_MENU_ITEMS));
         if (savedMenuRaw !== null) {
+            let menuChanged = false;
             const pcItem = menuItems.find(m => m.type === 'patchcord');
             if (pcItem && pcItem.name === '9. ПАЧКОРД') {
                 pcItem.name = '9. ПАТЧ-КОРД';
+                menuChanged = true;
+            }
+            if (!menuItems.some(m => m.type === 'termuxbackup')) {
+                menuItems.push({ id: 10, type: "termuxbackup", name: "10. TERMUX BACKUP", color: "", bg: "" });
+                menuChanged = true;
+            }
+            if (menuChanged) {
                 localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
             }
         }
@@ -2840,6 +3324,7 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             loadNotes();
             initNotepadUI();
             initLinuxCommandsUI();
+            initTermuxBackupUI();
             
             openMainMenu();
         }
@@ -2951,7 +3436,7 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             document.getElementById('screenLinuxCmds').classList.remove('active');
             document.getElementById('screenDebianServer').classList.remove('active');
             document.getElementById('screenPatchcord').classList.remove('active');
-            document.getElementById('screenPatchcord').classList.remove('active');
+            document.getElementById('screenTermuxBackup').classList.remove('active');
             
             document.getElementById('backBtn').style.display = 'flex';
             document.getElementById('screenTitle').innerText = item.name;
@@ -2971,6 +3456,9 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             } else if (item.type === 'patchcord') {
                 card.classList.add('app-card-wide');
                 document.getElementById('screenPatchcord').classList.add('active');
+            } else if (item.type === 'termuxbackup') {
+                card.classList.add('app-card-wide');
+                document.getElementById('screenTermuxBackup').classList.add('active');
             } else {
                 card.classList.remove('app-card-wide');
                 if (item.type === 'generator') {
@@ -3002,6 +3490,7 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             document.getElementById('screenLinuxCmds').classList.remove('active');
             document.getElementById('screenDebianServer').classList.remove('active');
             document.getElementById('screenPatchcord').classList.remove('active');
+            document.getElementById('screenTermuxBackup').classList.remove('active');
             document.getElementById('editor-screen').classList.add('hidden');
             document.getElementById('screenMainMenu').classList.add('active');
             document.getElementById('backBtn').style.display = 'none';
@@ -5230,6 +5719,154 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
                     behavior: 'smooth'
                 });
             }
+        }
+
+
+        /* Логика для 10 пункта: TERMUX BACKUP */
+        function initTermuxBackupUI() {
+            const tbScreen = document.getElementById('screenTermuxBackup');
+            const tbContainer = document.getElementById('tbRootContainer');
+            if (!tbScreen || !tbContainer) return;
+
+            const tbSettingsToggle = document.getElementById('tbSettingsToggle');
+            const tbSettingsPanel = document.getElementById('tbSettingsPanel');
+            if (tbSettingsToggle && tbSettingsPanel) {
+                tbSettingsToggle.addEventListener('click', () => {
+                    tbSettingsPanel.classList.toggle('open');
+                    tbSettingsToggle.classList.toggle('active');
+                });
+            }
+
+            const tbDepthRange = document.getElementById('tbDepthRange');
+            const tbDepthVal = document.getElementById('tbDepthVal');
+            const tbRadiusRange = document.getElementById('tbRadiusRange');
+            const tbRadiusVal = document.getElementById('tbRadiusVal');
+            const tbAccentPicker = document.getElementById('tbAccentPicker');
+            const tbAccentHex = document.getElementById('tbAccentHex');
+
+            if (tbDepthRange && tbDepthVal) {
+                tbDepthRange.addEventListener('input', (e) => {
+                    const px = parseInt(e.target.value, 10) || 6;
+                    tbContainer.style.setProperty('--shadow-dist', px + 'px');
+                    tbContainer.style.setProperty('--shadow-blur', (px * 2) + 'px');
+                    tbDepthVal.textContent = px + 'px';
+                });
+            }
+
+            if (tbRadiusRange && tbRadiusVal) {
+                tbRadiusRange.addEventListener('input', (e) => {
+                    const val = e.target.value + 'px';
+                    tbContainer.style.setProperty('--tb-radius', val);
+                    tbRadiusVal.textContent = val;
+                });
+            }
+
+            if (tbAccentPicker && tbAccentHex) {
+                tbAccentPicker.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    tbContainer.style.setProperty('--tb-accent', val);
+                    tbAccentHex.textContent = val;
+                });
+            }
+
+            const tbTabBtns = tbScreen.querySelectorAll('.tabs .tab-btn');
+            const tbTabContents = tbScreen.querySelectorAll('#tab-full-termux, #tab-proot-distro');
+            tbTabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tbTabBtns.forEach(b => b.classList.remove('active'));
+                    tbTabContents.forEach(c => {
+                        c.classList.remove('active');
+                        c.style.display = 'none';
+                    });
+                    btn.classList.add('active');
+                    const targetTab = document.getElementById('tab-' + btn.dataset.tab);
+                    if (targetTab) {
+                        targetTab.classList.add('active');
+                        targetTab.style.display = 'flex';
+                    }
+                });
+            });
+
+            const modeChips = tbScreen.querySelectorAll('.mode-chip');
+            const cmdFt2 = document.getElementById('cmd-ft-2');
+            const cmdFt4 = document.getElementById('cmd-ft-4');
+            const backupDesc = document.getElementById('backup-desc');
+            const restoreDesc = document.getElementById('restore-desc');
+
+            modeChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    modeChips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    if (chip.dataset.mode === 'home') {
+                        backupDesc.innerHTML = '<strong>1.2. Упакуйте только директорию <code>home</code> (для разных архитектур процессора).</strong> Сохранятся ваши конфиги, скрипты и SSH-ключи, а пакеты нужно будет поставить заново:';
+                        cmdFt2.textContent = 'tar -zcf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files ./home';
+                        restoreDesc.innerHTML = '<strong>2.2. Распакуйте только домашнюю директорию <code>home</code>:</strong>';
+                        cmdFt4.textContent = 'tar -zxf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files --preserve-permissions';
+                    } else {
+                        backupDesc.innerHTML = '<strong>1.2. Упакуйте данные в архив.</strong> Команда сохранит домашнюю директорию (настройки, скрипты, SSH-ключи) и системную папку (все установленные утилиты и пакеты) во внутреннюю память устройства:';
+                        cmdFt2.textContent = 'tar -zcf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files ./home ./usr';
+                        restoreDesc.innerHTML = '<strong>2.2. Распакуйте архив с заменой системных файлов.</strong> Важно использовать флаг <code>--recursive-unlink</code> и <code>unset LD_PRELOAD</code>, чтобы перезаписать текущую папку <code>usr</code> без конфликта библиотек:';
+                        cmdFt4.textContent = 'unset LD_PRELOAD\ntar -zxf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files --recursive-unlink --preserve-permissions';
+                    }
+                });
+            });
+
+            tbScreen.querySelectorAll('#checklist input[type="checkbox"]').forEach(cb => {
+                const key = 'blik_merged_chk_' + cb.dataset.key;
+                if (localStorage.getItem(key) === '1') {
+                    cb.checked = true;
+                    cb.closest('.check-item').classList.add('done');
+                }
+                cb.addEventListener('change', () => {
+                    localStorage.setItem(key, cb.checked ? '1' : '0');
+                    cb.closest('.check-item').classList.toggle('done', cb.checked);
+                });
+            });
+
+            const distroChips = tbScreen.querySelectorAll('.distro-chip');
+            const cmdPd2 = document.getElementById('cmd-pd-2');
+            const cmdPd4 = document.getElementById('cmd-pd-4');
+            const cmdPd5 = document.getElementById('cmd-pd-5');
+            const fileLabelPd = document.getElementById('file-label-pd');
+
+            distroChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    distroChips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    const d = chip.dataset.distro;
+                    cmdPd2.textContent = `proot-distro backup ${d} --output /sdcard/${d}-backup.tar.gz`;
+                    cmdPd4.textContent = `proot-distro restore /sdcard/${d}-backup.tar.gz`;
+                    cmdPd5.textContent = `proot-distro login ${d}`;
+                    fileLabelPd.textContent = `${d}-backup.tar.gz`;
+                });
+            });
+
+            tbScreen.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const targetEl = document.getElementById(btn.dataset.target);
+                    if (!targetEl) return;
+                    const text = targetEl.textContent;
+                    try {
+                        await navigator.clipboard.writeText(text);
+                    } catch {
+                        const ta = document.createElement('textarea');
+                        ta.value = text;
+                        ta.style.position = 'fixed';
+                        ta.style.opacity = '0';
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(ta);
+                    }
+                    const orig = btn.textContent;
+                    btn.textContent = '✓ Готово';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.textContent = orig;
+                        btn.classList.remove('copied');
+                    }, 1600);
+                });
+            });
         }
 
         init();
