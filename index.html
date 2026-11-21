@@ -2342,7 +2342,7 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
     </div>
 
     <script>
-        let menuItems = JSON.parse(localStorage.getItem('menu_items_config')) || [
+        const DEFAULT_MENU_ITEMS = [
             { id: 1, type: "generator", name: "1. ГЕНЕРАТОР", color: "", bg: "" },
             { id: 2, type: "calculators", name: "2. КАЛЬКУЛЯТОРЫ", color: "", bg: "" },
             { id: 3, type: "spider", name: "3. АНТЕННА «ПАУК»", color: "", bg: "" },
@@ -2353,14 +2353,9 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             { id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" },
             { id: 9, type: "patchcord", name: "9. ПАТЧ-КОРД", color: "", bg: "" }
         ];
-        if (!menuItems.some(m => m.type === 'debianserver')) {
-            menuItems.push({ id: 8, type: "debianserver", name: "8. DEBIAN СЕРВЕР", color: "", bg: "" });
-            localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
-        }
-        if (!menuItems.some(m => m.type === 'patchcord')) {
-            menuItems.push({ id: 9, type: "patchcord", name: "9. ПАТЧ-КОРД", color: "", bg: "" });
-            localStorage.setItem('menu_items_config', JSON.stringify(menuItems));
-        } else {
+        const savedMenuRaw = localStorage.getItem('menu_items_config');
+        let menuItems = savedMenuRaw !== null ? JSON.parse(savedMenuRaw) : JSON.parse(JSON.stringify(DEFAULT_MENU_ITEMS));
+        if (savedMenuRaw !== null) {
             const pcItem = menuItems.find(m => m.type === 'patchcord');
             if (pcItem && pcItem.name === '9. ПАЧКОРД') {
                 pcItem.name = '9. ПАТЧ-КОРД';
@@ -3031,19 +3026,32 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
         function renderEditItems() {
             const container = document.getElementById('itemsEditList');
             container.innerHTML = '';
+            if (menuItems.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.style.cssText = 'text-align:center; font-size:12px; color:var(--text-muted); padding:10px 0;';
+                emptyMsg.innerText = 'Все пункты меню удалены';
+                container.appendChild(emptyMsg);
+            }
             menuItems.forEach((item, index) => {
                 const row = document.createElement('div');
                 row.className = 'edit-item-row';
                 row.innerHTML = `
-                    <input type="text" value="${item.name}" oninput="updateItemName(${index}, this.value)" class="modal-input" style="flex: 1;">
+                    <input type="text" value="${escapeHtml(item.name)}" oninput="updateItemName(${index}, this.value)" class="modal-input" style="flex: 1;">
                     <input type="color" value="${item.color || '#334155'}" onchange="updateItemColor(${index}, this.value)" style="width: 28px; height: 28px; padding: 0; border: none; background: none; cursor: pointer;" title="Цвет текста">
                     <div class="move-btns">
-                        <button class="neu-btn btn-small" onclick="moveItem(${index}, -1)" ${index === 0 ? 'disabled' : ''}>▲</button>
-                        <button class="neu-btn btn-small" onclick="moveItem(${index}, 1)" ${index === menuItems.length - 1 ? 'disabled' : ''}>▼</button>
+                        <button class="neu-btn btn-small" onclick="moveItem(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="Вверх">▲</button>
+                        <button class="neu-btn btn-small" onclick="moveItem(${index}, 1)" ${index === menuItems.length - 1 ? 'disabled' : ''} title="Вниз">▼</button>
+                        <button class="neu-btn btn-small" onclick="deleteItem(${index})" style="color: var(--reset-color);" title="Удалить пункт">✕</button>
                     </div>
                 `;
                 container.appendChild(row);
             });
+            if (menuItems.length < DEFAULT_MENU_ITEMS.length) {
+                const restoreWrap = document.createElement('div');
+                restoreWrap.style.marginTop = '12px';
+                restoreWrap.innerHTML = `<button class="neu-btn btn-small" style="width: 100%; padding: 10px; color: var(--accent-color);" onclick="restoreDefaultMenuItems()">ВОССТАНОВИТЬ ВСЕ ПУНКТЫ ПО УМОЛЧАНИЮ</button>`;
+                container.appendChild(restoreWrap);
+            }
         }
 
         function updateItemName(index, val) { menuItems[index].name = val; saveAndRefreshMenu(); }
@@ -3054,6 +3062,20 @@ tail -f /var/log/php$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")-fp
             const temp = menuItems[index];
             menuItems[index] = menuItems[targetIndex];
             menuItems[targetIndex] = temp;
+            saveAndRefreshMenu();
+            renderEditItems();
+        }
+        function deleteItem(index) {
+            if (index < 0 || index >= menuItems.length) return;
+            const itemName = menuItems[index].name || 'этот пункт';
+            if (!confirm(`Удалить пункт меню «${itemName}»?`)) return;
+            menuItems.splice(index, 1);
+            saveAndRefreshMenu();
+            renderEditItems();
+        }
+        function restoreDefaultMenuItems() {
+            if (!confirm('Восстановить исходный список всех пунктов меню?')) return;
+            menuItems = JSON.parse(JSON.stringify(DEFAULT_MENU_ITEMS));
             saveAndRefreshMenu();
             renderEditItems();
         }
