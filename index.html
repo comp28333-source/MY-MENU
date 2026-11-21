@@ -699,26 +699,26 @@
 
             <div id="genTabFuel" style="display: none;">
                 <div class="input-group">
-                    <label for="fuelStartDate">НАЧАЛЬНАЯ ДАТА (В КАЛЕНДАРЕ):</label>
+                    <label for="fuelStartDate">НАЧ. ДАТА::</label>
                     <input type="date" id="fuelStartDate" onchange="calcFuel()">
                 </div>
                 <div class="input-group" style="margin-top: 12px;">
-                    <label for="fuelInitialVol">НАЧАЛЬНЫЙ ОБЪЕМ (Л):</label>
+                    <label for="fuelInitialVol">ТЕК. ОБЪЕМ (Л):</label>
                     <input type="number" id="fuelInitialVol" step="0.1" min="0" placeholder="НАПРИМЕР: 42" oninput="calcFuel()">
                 </div>
                 <div class="input-group" style="margin-top: 12px; margin-bottom: 15px;">
-                    <label for="fuelLitersDay">РАСХОД В ДЕНЬ (Л/СУТКИ):</label>
+                    <label for="fuelLitersDay">РАСХОД В ДЕНЬ (Л/С):</label>
                     <input type="number" id="fuelLitersDay" step="0.1" min="0.1" placeholder="НАПРИМЕР: 6" oninput="calcFuel()">
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button class="neu-btn" style="flex: 1; padding: 12px; color: var(--accent-color);" onclick="calcFuel(true)">РАССЧИТАТЬ ТАБЛИЦУ</button>
+                    <button class="neu-btn" style="flex: 1; padding: 12px; color: var(--accent-color);" onclick="calcFuel(true)">РАССЧИТАТЬ</button>
                     <button class="neu-btn" style="padding: 12px 16px; color: var(--reset-color);" onclick="resetFuelCalc()">СБРОС</button>
                 </div>
 
                 <div id="fuelResultBox" style="display: none;">
                     <div class="fuel-summary-box">
                         <div class="fuel-stat-item">
-                            <div class="fuel-stat-label">ХВАТИТ ДНЕЙ</div>
+                            <div class="fuel-stat-label">НА ДНЕЙ</div>
                             <div class="fuel-stat-value" id="fuelStatDays">0</div>
                         </div>
                         <div class="fuel-stat-item">
@@ -737,9 +737,9 @@
                                 <tr>
                                     <th>№</th>
                                     <th>ДАТА</th>
-                                    <th>НАЧАЛО (Л)</th>
-                                    <th>РАСХОД (Л)</th>
-                                    <th>ОСТАТОК (Л)</th>
+                                    <th>НАЧ. (Л)</th>
+                                    <th>РАСХ. (Л)</th>
+                                    <th>ОСТ. (Л)</th>
                                 </tr>
                             </thead>
                             <tbody id="fuelTableBody"></tbody>
