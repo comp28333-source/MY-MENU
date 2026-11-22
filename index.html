@@ -963,7 +963,7 @@
                             <div class="fuel-stat-value" id="fuelStatDays">0</div>
                         </div>
                         <div class="fuel-stat-item">
-                            <div class="fuel-stat-label">ОКОНЧАНИЕ</div>
+                            <div class="fuel-stat-label">ОСТАТОК</div>
                             <div class="fuel-stat-value" id="fuelStatEndDate">—</div>
                         </div>
                         <div class="fuel-stat-item">
@@ -3670,22 +3670,22 @@ tar -zxf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files --recursive
             const daysRemaining = Math.round(diffTimeRemaining / (1000 * 60 * 60 * 24));
 
             if (daysRemaining < 0) {
-                banner.innerHTML = `⚠️ ВНИМАНИЕ! СРОК ТО ПРОШЕЛ СВЫШЕ ${targetHours} М/Ч!`;
+                banner.innerHTML = `⚠️ ВНИМАНИЕ! СРОК Т/О ПРОШЕЛ СВЫШЕ ${targetHours} М/Ч!`;
                 banner.style.display = "block";
             } else if (daysRemaining === 0) {
-                banner.innerHTML = `🚨 ВНИМАНИЕ! СЕГОДНЯ СРОК ПРОВЕДЕНИЯ ТО!`;
+                banner.innerHTML = `🚨 ВНИМАНИЕ! СЕГОДНЯ СРОК ПРОВЕДЕНИЯ Т/О!`;
                 banner.style.display = "block";
             } else if (daysRemaining === 1) {
-                banner.innerHTML = `⚠️ ПРЕДУПРЕЖДЕНИЕ: ДО СЛЕДУЮЩЕГО ТО ОСТАЛСЯ 1 ДЕНЬ!`;
+                banner.innerHTML = `⚠️ ПРЕДУПРЕЖДЕНИЕ: ДО СЛЕДУЮЩЕГО Т/О ОСТАЛСЯ 1 ДЕНЬ!`;
                 banner.style.display = "block";
             } else if (daysRemaining === 2) {
-                banner.innerHTML = `⚠️ ПРЕДУПРЕЖДЕНИЕ: ДО СЛЕДУЮЩЕГО ТО ОСТАЛОСЬ 2 ДНЯ!`;
+                banner.innerHTML = `⚠️ ПРЕДУПРЕЖДЕНИЕ: ДО СЛЕДУЮЩЕГО Т/О ОСТАЛОСЬ 2 ДНЯ!`;
                 banner.style.display = "block";
             } else {
                 banner.style.display = "none";
             }
 
-            document.getElementById('lastServiceDisplay').innerHTML = `ДАТА ПОСЛЕДНЕГО ТО: <span class="highlight">${formatDate(startDate)}</span>`;
+            document.getElementById('lastServiceDisplay').innerHTML = `ДАТА ПОСЛЕДНЕГО Т/О: <span class="highlight">${formatDate(startDate)}</span>`;
             document.getElementById('daysPassed').innerHTML = `ПРОШЛО ДНЕЙ: <span class="highlight">${totalDays} ДН.</span>`;
             document.getElementById('totalTime').innerHTML = `ОБЩАЯ НАРАБОТКА: <span class="highlight">${resHours} Ч ${resMinutes} МИН</span>`;
             document.getElementById('totalDecimal').innerHTML = `В ДЕСЯТИЧНОМ ВИДЕ: <span class="highlight">${decimalHours} МОТОЧАСОВ</span>`;
@@ -3693,9 +3693,9 @@ tar -zxf /sdcard/termux-backup.tar.gz -C /data/data/com.termux/files --recursive
 
             const isOverdue = resHours >= targetHours;
             const nextServiceClass = isOverdue ? 'highlight-alert' : 'highlight';
-            const statusText = isOverdue ? ' (ТРЕБУЕТСЯ ТО!)' : '';
+            const statusText = isOverdue ? ' (ТРЕБУЕТСЯ Т/О!)' : '';
 
-            document.getElementById('nextServiceDate').innerHTML = `СЛЕДУЮЩЕЕ ТО (${targetHours} Ч): <span class="${nextServiceClass}">${formatDate(nextServiceDateObj)}${statusText}</span>`;
+            document.getElementById('nextServiceDate').innerHTML = `СЛЕДУЮЩЕЕ Т/О (${targetHours} Ч): <span class="${nextServiceClass}">${formatDate(nextServiceDateObj)}${statusText}</span>`;
             document.getElementById('result').style.display = 'flex';
             saveGenData();
         }
